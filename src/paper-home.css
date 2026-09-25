@@ -1,0 +1,167 @@
+/* v0.3.3 — the Daily Page is a ritual object, never the whole interface. */
+.interactive-daily-paper {
+  width: min(278px, 100%);
+  margin-inline: auto;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.interactive-daily-paper-stage {
+  width: 100%;
+  aspect-ratio: .73;
+  min-height: 350px;
+  max-height: 382px;
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+  background: transparent;
+}
+
+.interactive-daily-paper-stage canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: pan-y;
+}
+
+.interactive-daily-paper.is-time-locked .interactive-daily-paper-stage canvas {
+  cursor: default !important;
+}
+.interactive-daily-paper.is-tearable .interactive-daily-paper-stage canvas {
+  cursor: grab;
+}
+.interactive-daily-paper.is-tearable .interactive-daily-paper-stage canvas:active {
+  cursor: grabbing;
+}
+
+.interactive-daily-paper-status {
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(205, 226, 212, .43);
+  font-size: 9px;
+  letter-spacing: .075em;
+  text-transform: uppercase;
+}
+.paper-time-lock { display: inline-flex; align-items: center; gap: 5px; }
+.paper-ready { color: rgba(155,232,180,.72); }
+.paper-status-error { color: #e7a1a1; text-transform: none; letter-spacing: 0; }
+
+.paper-close-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: rgba(4, 11, 7, .5);
+  backdrop-filter: blur(7px);
+}
+.paper-close-card {
+  width: min(294px, 100%);
+  max-height: 94%;
+  overflow: auto;
+  position: relative;
+  padding: 17px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 17px;
+  color: #eaf5ed;
+  background: linear-gradient(180deg, rgba(14,34,23,.975), rgba(7,21,14,.985));
+  box-shadow: 0 22px 48px rgba(0,0,0,.4);
+}
+.paper-close-x {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  color: #82968b;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+}
+.paper-close-x:hover { color: #e8f4eb; background: rgba(255,255,255,.05); }
+.paper-close-kicker {
+  display: block;
+  padding-right: 30px;
+  margin-bottom: 8px;
+  color: #89cda0;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .13em;
+}
+.paper-close-card > strong { display: block; padding-right: 24px; font-size: 17px; line-height: 1.22; letter-spacing: -.02em; }
+.paper-close-card > p { margin: 8px 0 13px; color: #86998e; font-size: 10px; line-height: 1.5; }
+
+.paper-carry-list {
+  display: grid;
+  gap: 5px;
+  margin: 0 0 10px;
+}
+.paper-carry-row {
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 9px;
+  display: grid;
+  grid-template-columns: 24px minmax(0,1fr);
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  color: #b9c9bf;
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 11px;
+  background: rgba(255,255,255,.025);
+}
+.paper-carry-row.selected { border-color: rgba(155,232,180,.15); background: rgba(155,232,180,.055); color: #dce9df; }
+.paper-carry-check {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.12);
+  color: #0a1c11;
+}
+.paper-carry-row.selected .paper-carry-check { background: #9be8b4; border-color: #9be8b4; }
+.paper-carry-row > span:last-child { display: grid; gap: 2px; min-width: 0; }
+.paper-carry-row b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.paper-carry-row small { color: #6f8377; font-size: 8px; }
+
+.paper-close-choice {
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  color: #dce9df;
+  border: 1px solid rgba(155,232,180,.17);
+  border-radius: 12px;
+  background: rgba(155,232,180,.075);
+}
+.paper-close-choice span { display: grid; gap: 2px; }
+.paper-close-choice b { font-size: 11px; }
+.paper-close-choice small { color: #809389; font-size: 8px; }
+.paper-close-cancel {
+  margin: 11px auto 0;
+  display: block;
+  color: #789083;
+  border: 0;
+  background: transparent;
+  font-size: 9px;
+}
+.paper-close-cancel:hover { color: #bdd3c4; }
+
+@media (max-width: 900px) {
+  .interactive-daily-paper { width: min(286px, 88vw); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-daily-paper-status { transition: none; }
+}

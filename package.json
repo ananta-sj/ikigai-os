@@ -1,7 +1,7 @@
 {
   "name": "ikigai-os",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.8",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,13 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/fiber": "latest",
     "@vitejs/plugin-react": "latest",
     "dexie": "latest",
     "framer-motion": "latest",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-router-dom": "latest"
+    "react-router-dom": "latest",
+    "three": "latest"
   },
   "devDependencies": {
     "@types/react": "latest",

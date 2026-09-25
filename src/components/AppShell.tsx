@@ -1,41 +1,48 @@
-import { CalendarDays, Flower2, Home, Map, NotebookPen, BriefcaseBusiness, Settings, Brain } from 'lucide-react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { ensureSettings } from '../lib/settings';
+import { ensureSyncState, rebuildSyncManifest } from '../lib/sync';
+import type { UserSettings } from '../types';
+import { FloatingDock } from './FloatingDock';
+import { CompanionPet } from './CompanionPet';
 
-const nav = [
-  ['Today', '/', Home],
-  ['Journey', '/calendar', CalendarDays],
-  ['Garden', '/garden', Flower2],
-  ['Roadmap', '/roadmap', Map],
-  ['Reflection', '/reflection', NotebookPen],
-  ['Memories', '/memories', Brain],
-  ['Career', '/career', BriefcaseBusiness],
-  ['Settings', '/settings', Settings]
-] as const;
+function applyPreferences(settings: UserSettings) {
+  const root = document.documentElement;
+  root.dataset.ikigaiTheme = settings.appTheme;
+  root.dataset.ikigaiMotion = settings.reducedMotion ? 'reduced' : 'full';
+  root.dataset.ikigaiUiStyle = settings.interfaceStyle;
+  root.dataset.ikigaiUiScale = settings.interfaceScale;
+  root.dataset.ikigaiFont = settings.interfaceFont;
+  root.dataset.ikigaiTextScale = settings.interfaceTextScale;
+  root.style.colorScheme = settings.appTheme === 'washi-sanctuary' ? 'light' : 'dark';
+}
 
 export function AppShell() {
+  useEffect(() => {
+    let alive = true;
+    void ensureSettings().then(async settings => {
+      if (alive) applyPreferences(settings);
+      const state = await ensureSyncState();
+      if (!state.lastManifestAt) await rebuildSyncManifest();
+    });
+
+    const onSettings = (event: Event) => {
+      const settings = (event as CustomEvent<UserSettings>).detail;
+      if (settings) applyPreferences(settings);
+    };
+
+    window.addEventListener('ikigai-settings-changed', onSettings);
+    return () => {
+      alive = false;
+      window.removeEventListener('ikigai-settings-changed', onSettings);
+    };
+  }, []);
+
   return (
-    <div className="app-shell">
-      <aside className="sidebar glass-panel">
-        <div className="brand-block">
-          <span className="brand-mark">生</span>
-          <div>
-            <strong>Ikigai OS</strong>
-            <small>local-first life system</small>
-          </div>
-        </div>
-        <nav>
-          {nav.map(([label, path, Icon]) => (
-            <NavLink key={path} to={path} end={path === '/'} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-              <Icon size={18} />
-              <span>{label}</span>
-            </NavLink>
-          ))}
-        </nav>
-        <div className="sidebar-foot">
-          <span className="status-dot" /> Local data only
-        </div>
-      </aside>
-      <main className="main-stage">
+    <div className="app-shell living-shell">
+      <FloatingDock />
+      <CompanionPet />
+      <main className="main-stage" id="ikigai-main">
         <Outlet />
       </main>
     </div>

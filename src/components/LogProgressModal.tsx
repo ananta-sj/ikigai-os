@@ -1,14 +1,16 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { db } from '../db';
+import { queueSyncChange } from '../lib/sync';
 import { calculateXP } from '../lib/growth';
 import { toDateKey } from '../lib/date';
+import { TASK_CATEGORIES } from '../data/categories';
 import type { ActivityCategory } from '../types';
 
-const categories: ActivityCategory[] = ['ReFlow', 'Python', 'AI / ML', 'University', 'Career', 'Personal'];
+const categories: ActivityCategory[] = TASK_CATEGORIES;
 
 export function LogProgressModal({ open, onClose, onSaved }: { open: boolean; onClose: () => void; onSaved: () => void }) {
-  const [category, setCategory] = useState<ActivityCategory>('ReFlow');
+  const [category, setCategory] = useState<ActivityCategory>('Projects');
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
   const [duration, setDuration] = useState(45);
@@ -16,8 +18,9 @@ export function LogProgressModal({ open, onClose, onSaved }: { open: boolean; on
   async function save() {
     if (!title.trim()) return;
     const now = new Date();
+    const id = crypto.randomUUID();
     await db.activities.add({
-      id: crypto.randomUUID(),
+      id,
       date: toDateKey(now),
       category,
       title: title.trim(),
@@ -26,6 +29,7 @@ export function LogProgressModal({ open, onClose, onSaved }: { open: boolean; on
       xp: calculateXP(duration),
       createdAt: now.toISOString()
     });
+    await queueSyncChange('activities', id);
     setTitle('');
     setNote('');
     setDuration(45);
@@ -45,7 +49,7 @@ export function LogProgressModal({ open, onClose, onSaved }: { open: boolean; on
               {categories.map(item => <button key={item} className={item === category ? 'chip selected' : 'chip'} onClick={() => setCategory(item)}>{item}</button>)}
             </div>
             <label>What did you do?</label>
-            <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Fixed ReFlow agent routing bug" autoFocus />
+            <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Finished the first prototype" autoFocus />
             <label>Optional note</label>
             <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="What did you learn or discover?" rows={3} />
             <label>Focused minutes: <strong>{duration}</strong></label>

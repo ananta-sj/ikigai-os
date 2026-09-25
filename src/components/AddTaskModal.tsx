@@ -3,9 +3,10 @@ import { CalendarDays, Sparkles } from 'lucide-react';
 import { createTask } from '../lib/tasks';
 import { toDateKey } from '../lib/date';
 import { difficultyMeta } from '../lib/rewards';
+import { TASK_CATEGORIES } from '../data/categories';
 import type { TaskCategory, TaskDifficulty } from '../types';
 
-const categories: TaskCategory[] = ['ReFlow', 'Python', 'AI / ML', 'University', 'Career', 'Personal'];
+const categories = TASK_CATEGORIES;
 const difficulties: TaskDifficulty[] = ['small', 'normal', 'hard', 'quest'];
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 
 export function AddTaskModal({ open, defaultDate, onClose, onSaved }: Props) {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<TaskCategory>('ReFlow');
+  const [category, setCategory] = useState<TaskCategory>('Projects');
   const [difficulty, setDifficulty] = useState<TaskDifficulty>('normal');
   const [dueDate, setDueDate] = useState(defaultDate ?? toDateKey());
   const [notes, setNotes] = useState('');
@@ -26,6 +27,15 @@ export function AddTaskModal({ open, defaultDate, onClose, onSaved }: Props) {
   useEffect(() => {
     if (open) setDueDate(defaultDate ?? toDateKey());
   }, [open, defaultDate]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open, onClose]);
 
   if (!open) return null;
 
@@ -52,7 +62,7 @@ export function AddTaskModal({ open, defaultDate, onClose, onSaved }: Props) {
 
   return (
     <div className="modal-backdrop" onMouseDown={event => event.currentTarget === event.target && onClose()}>
-      <section className="modal task-modal glass-panel" role="dialog" aria-modal="true" aria-label="Add task">
+      <section className="modal task-modal glass-panel ik-surface" role="dialog" aria-modal="true" aria-label="Add task">
         <div className="modal-kicker"><Sparkles size={15} /> NEW QUEST</div>
         <h2>What deserves a checkmark?</h2>
         <p className="modal-subcopy">Only the title is required. Ikigai should reduce admin work, not create more of it.</p>
@@ -64,7 +74,7 @@ export function AddTaskModal({ open, defaultDate, onClose, onSaved }: Props) {
           value={title}
           onChange={event => setTitle(event.target.value)}
           onKeyDown={event => event.key === 'Enter' && save()}
-          placeholder="e.g. Fix ReFlow agent handoff"
+          placeholder="e.g. Draft the project outline"
         />
 
         <label>Area</label>
@@ -99,8 +109,8 @@ export function AddTaskModal({ open, defaultDate, onClose, onSaved }: Props) {
         </div>
 
         <div className="modal-actions">
-          <button type="button" className="button ghost" onClick={onClose}>Cancel</button>
-          <button type="button" className="button primary" disabled={!title.trim() || saving} onClick={save}>{saving ? 'Planting…' : 'Add task'}</button>
+          <button type="button" className="ik-button ik-button-quiet" onClick={onClose}>Cancel</button>
+          <button type="button" className="ik-button ik-button-primary" disabled={!title.trim() || saving} onClick={save}>{saving ? 'Planting…' : 'Add task'}</button>
         </div>
       </section>
     </div>
