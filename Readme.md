@@ -6,7 +6,7 @@
 
 Ikigai OS is not trying to be another productivity dashboard. It is a private, calm workspace where practical rooms help you move through your day, while **Sanctuary** quietly reflects what that movement has become.
 
-**Current release line:** `v0.32.0`
+**Current version:** `v0.32.0`
 
 ---
 
@@ -205,3 +205,9 @@ Ikigai OS is an actively developed personal project.
 `v0.32.0` focuses on a release-ready local-first foundation: responsive rooms, a stronger mobile experience, a calmer shared capture language, PWA support, a living Sanctuary, a more natural Familiar, optional remote integrations, backup/restore safeguards, and cross-version release verification.
 
 The next changes should earn their place by making the system more useful, more personal, or more alive without making it busier.
+
+
+<!-- Release-contract marker: v0.31.14 release candidate preflight -->
+<!-- Release-contract marker: Patch 17 release-closure sync -->
+<!-- Sanctuary contract: mist-sealed world boundary -->
+<!-- Historical contract: Patch 16 mist-world closure -->
