@@ -1,0 +1,148 @@
+.companion032-document-tray {
+  display: grid;
+  gap: 8px;
+}
+
+.companion032-document-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.companion032-document-row > small,
+.companion032-document-privacy {
+  color: var(--ik-faint);
+  font: var(--ik-type-caption);
+}
+
+.companion032-attach-button {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  border: 1px solid var(--ik-border);
+  border-radius: 999px;
+  color: var(--ik-muted);
+  background: color-mix(in srgb, var(--ik-surface) 78%, transparent);
+  font: 650 10px/1 var(--ik-mono);
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+.companion032-attach-button:hover:not(:disabled) { color: var(--ik-text); border-color: color-mix(in srgb, var(--ik-accent) 42%, var(--ik-border)); }
+.companion032-attach-button:disabled { opacity: .55; cursor: default; }
+
+.companion032-document-list { display: grid; gap: 6px; }
+
+.companion032-document-item {
+  border-top: 1px solid var(--ik-border);
+  padding-top: 7px;
+}
+
+.companion032-document-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--ik-faint);
+  font: var(--ik-type-caption);
+  cursor: pointer;
+  list-style: none;
+}
+
+.companion032-document-item summary::-webkit-details-marker { display: none; }
+.companion032-document-item summary > span { min-width: 0; display: inline-flex; align-items: center; gap: 6px; }
+.companion032-document-item summary b { max-width: min(46vw, 380px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ik-text); font-weight: 650; }
+
+.companion032-document-preview {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 11px;
+  border-left: 2px solid color-mix(in srgb, var(--ik-accent) 30%, var(--ik-border));
+  color: var(--ik-muted);
+  background: color-mix(in srgb, var(--ik-surface-soft) 64%, transparent);
+}
+
+.companion032-document-preview p {
+  max-height: 150px;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: var(--ik-type-body-sm);
+}
+
+.companion032-document-preview button {
+  width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  color: var(--ik-faint);
+  background: transparent;
+  font: var(--ik-type-caption);
+  cursor: pointer;
+}
+
+.companion032-document-preview button:hover { color: var(--ik-text); }
+.companion032-document-privacy { margin: 0; max-width: 760px; }
+.companion032-document-compact-note { color: var(--ik-faint); font: var(--ik-type-caption); line-height: 1.35; }
+.companion032-document-error { margin: 0; color: var(--ik-danger-text); font: var(--ik-type-caption); }
+
+.companion032-document-tray.is-compact { gap: 6px; }
+.companion032-document-tray.is-compact .companion032-document-row { justify-content: flex-start; }
+.companion032-document-tray.is-compact .companion032-attach-button { min-height: 28px; padding-inline: 8px; background: transparent; }
+.companion032-document-tray.is-compact .companion032-document-list { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.companion032-document-chip {
+  min-width: 0;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 6px 5px 8px;
+  border: 1px solid var(--ik-border);
+  border-radius: 999px;
+  color: var(--ik-muted);
+  background: color-mix(in srgb, var(--ik-surface) 84%, transparent);
+  font: 600 9px/1 var(--ik-mono);
+}
+
+.companion032-document-chip b {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.companion032-document-chip button {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.companion032-document-chip button:hover { color: var(--ik-text); background: var(--ik-surface-soft); }
+
+@media (max-width: 640px) {
+  .companion032-document-row { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .companion032-document-item summary { align-items: flex-start; flex-direction: column; gap: 3px; }
+  .companion032-document-item summary b { max-width: 72vw; }
+}
+
+/* v0.32 Patch 12 · compact trays must never widen a floating composer. */
+.companion032-document-tray { min-width: 0; max-width: 100%; }
+.companion032-document-list { min-width: 0; max-width: 100%; }
+.companion032-document-chip { overflow: hidden; }
+.companion032-document-chip b { min-width: 0; max-width: min(180px, calc(100vw - 150px)); }

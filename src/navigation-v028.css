@@ -1,0 +1,182 @@
+/* Ikigai OS v0.28.3 · Original living dock restoration.
+   The shell returns to the quiet icon-only dock introduced in v0.3.2.
+   Labels are contextual tooltips; navigation never expands into a panel. */
+
+/* Retire all interim navigation experiments. */
+.ik-edge-rail,
+.ik-orbit-dock,
+.ik-ribbon-nav,
+.ik-ribbon-popover-layer,
+.ik-compass-wrap,
+.ik-compass-layer,
+.ik-mobile-dock,
+.ik-mobile-more-backdrop { display: none !important; }
+
+/* Reimagine's old sidebar reservation must not remain in the shell. */
+.living-shell .main-stage {
+  padding-left: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Keep page content comfortably clear of the floating desktop dock. */
+@media (min-width: 681px) {
+  .living-shell .page {
+    padding-left: clamp(180px, 13vw, 214px);
+  }
+}
+
+/* Restore a little of the original dock's softness without changing its size. */
+.floating-brand,
+.floating-dock {
+  border-color: color-mix(in srgb, var(--ik-accent) 12%, var(--ik-border)) !important;
+  background: color-mix(in srgb, var(--ik-surface-strong) 84%, transparent) !important;
+  backdrop-filter: blur(22px) saturate(1.08);
+}
+
+/* The brand is a NavLink for navigation, but it should read as branding rather
+   than a browser-styled text link. Keep both lines clean in every link state. */
+.floating-brand,
+.floating-brand:link,
+.floating-brand:visited,
+.floating-brand:hover,
+.floating-brand:focus-visible,
+.floating-brand:active {
+  text-decoration: none !important;
+}
+
+.floating-dock {
+  transform: translateY(-50%);
+  isolation: isolate;
+  /* v0.31.20 repair · make the compact rail read as a softer capsule. */
+  border-radius: 30px !important;
+}
+
+.floating-dock-glow {
+  border-radius: 26px !important;
+}
+
+/* v0.31.16 · suppress the browser's native anchor/image drag ghost.
+   Room navigation remains click, keyboard and touch driven. */
+.floating-brand,
+.floating-brand *,
+.floating-dock,
+.floating-dock * {
+  -webkit-user-drag: none;
+}
+
+.floating-nav-link {
+  will-change: background, border-color;
+}
+
+.floating-nav-icon {
+  will-change: transform;
+}
+
+.floating-nav-link.active {
+  background: color-mix(in srgb, var(--ik-accent) 10%, transparent) !important;
+  border-color: color-mix(in srgb, var(--ik-accent) 22%, var(--ik-border)) !important;
+}
+
+.floating-nav-link.active .floating-nav-icon {
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ik-accent) 28%, transparent));
+}
+
+/* The brand already has one local-first status light beside its label.
+   Do not add a second decorative pulse to the canonical sprout mark: at compact sizes it reads
+   as a misplaced notification badge. */
+.floating-brand-mark::after { content: none !important; }
+
+/* Touch returns to the original icon-only bottom dock. */
+@media (max-width: 680px) {
+  .living-shell .page {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(112px, calc(env(safe-area-inset-bottom) + 94px));
+  }
+
+  .floating-dock {
+    transform: translateX(-50%) !important;
+    scroll-padding-inline: 8px;
+  }
+
+  .floating-brand-copy { display: none; }
+  .floating-brand { padding: 8px; }
+}
+
+
+/* v0.31.8 · desktop room-fit contract.
+   Today, Journey, Focus and Now Playing are primary rooms, not document pages.
+   At normal desktop scale they occupy one viewport; large/oversized accessibility
+   scales deliberately fall back to normal document scrolling instead of clipping. */
+@media (min-width: 1100px) and (min-height: 700px) {
+  :root:not([data-ikigai-ui-scale='large']):not([data-ikigai-ui-scale='oversized']):not([data-ikigai-text-scale='large']):not([data-ikigai-text-scale='xlarge']) .living-shell.room-fit-shell,
+  :root:not([data-ikigai-ui-scale='large']):not([data-ikigai-ui-scale='oversized']):not([data-ikigai-text-scale='large']):not([data-ikigai-text-scale='xlarge']) .living-shell.room-fit-shell .main-stage {
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+/* v0.32 · quiet brand signature ------------------------------------------------
+   The previous bordered card competed with the dock. At rest this is just the
+   sprout mark + wordmark; a surface appears only on hover/focus. */
+@media (min-width: 681px) {
+  .floating-brand {
+    gap: 9px !important;
+    padding: 5px 8px 5px 5px !important;
+    border-color: transparent !important;
+    border-radius: 16px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease !important;
+  }
+  .floating-brand:hover,
+  .floating-brand:focus-visible {
+    border-color: color-mix(in srgb, var(--ik-accent) 14%, var(--ik-border)) !important;
+    background: color-mix(in srgb, var(--ik-surface-strong) 78%, transparent) !important;
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--ik-shadow) 18%, transparent) !important;
+    backdrop-filter: blur(16px) saturate(1.04) !important;
+  }
+  .floating-brand-mark {
+    width: 38px !important;
+    height: 38px !important;
+    border: 1px solid color-mix(in srgb, var(--ik-accent) 18%, var(--ik-border)) !important;
+    border-radius: 13px 17px 14px 16px !important;
+    color: var(--ik-brand-ink) !important;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--ik-brand-surface) 92%, #fff 8%), var(--ik-brand-surface)) !important;
+    box-shadow: 0 7px 18px color-mix(in srgb, var(--ik-shadow) 16%, transparent) !important;
+  }
+  .floating-brand-copy { gap: 1px !important; }
+  .floating-brand-copy strong {
+    color: var(--ik-text) !important;
+    font: 650 12.5px/1.15 var(--ik-display) !important;
+    letter-spacing: -.018em !important;
+  }
+  .floating-brand-copy small {
+    color: var(--ik-faint) !important;
+    font: 600 8px/1.25 var(--ik-body) !important;
+    letter-spacing: .01em !important;
+  }
+  .floating-brand-copy .status-dot {
+    width: 5px !important;
+    height: 5px !important;
+    margin-right: 5px !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ik-accent) 9%, transparent) !important;
+  }
+}
+
+/* v0.31.20 patch 07 · the permanent brand is a signature, not an Easter-egg button. */
+.floating-brand {
+  cursor: default !important;
+  user-select: none;
+}
+@media (min-width: 681px) {
+  .floating-brand:hover {
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+}

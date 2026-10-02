@@ -1,0 +1,340 @@
+/* v0.32 · Capture dialog language
+   Career, Roadmap and quick task capture use an isolated body-level dialog namespace.
+   Visual acceptance is intentionally aligned with the Memory capture sheet: one quiet
+   surface, a soft divider under the heading, restrained fields, boxed progressive
+   disclosure, and actions separated by a hairline rather than a tinted footer slab. */
+
+.ik-workspace-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 420;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  padding: 24px;
+  overflow: auto;
+  background: color-mix(in srgb, var(--ik-bg) 74%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.ik-surface.ik-workspace-dialog {
+  --ik-workspace-dialog-width: 600px;
+  /* Kept as a named token for old regression coverage; it now resolves to the same
+     quiet surface mixture used by the accepted Memory capture sheet. */
+  --ik-workspace-paper: color-mix(in srgb, var(--ik-surface-strong) 88%, var(--ik-bg));
+  width: min(var(--ik-workspace-dialog-width), calc(100vw - 28px));
+  max-width: none;
+  max-height: min(820px, calc(100dvh - 28px));
+  margin: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow: auto;
+  border: 1px solid var(--ik-border) !important;
+  border-radius: 18px !important;
+  color: var(--ik-text);
+  background: var(--ik-workspace-paper) !important;
+  box-shadow: var(--ik-soft-shadow) !important;
+  isolation: isolate;
+  animation: ik-workspace-dialog-in 170ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.ik-workspace-dialog--project { --ik-workspace-dialog-width: 600px; }
+.ik-workspace-dialog--proof { --ik-workspace-dialog-width: 570px; }
+.ik-workspace-dialog--opportunity { --ik-workspace-dialog-width: 600px; }
+.ik-workspace-dialog--roadmap-phase { --ik-workspace-dialog-width: 600px; }
+.ik-workspace-dialog--roadmap-checkpoint { --ik-workspace-dialog-width: 570px; }
+.ik-workspace-dialog--task { --ik-workspace-dialog-width: 620px; }
+
+.ik-workspace-dialog__head {
+  min-width: 0;
+  margin: 0;
+  padding: 0 0 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  border: 0;
+  background: transparent !important;
+  box-shadow: inset 0 -1px 0 var(--ik-border);
+}
+
+.ik-workspace-dialog__head > div,
+.ik-workspace-dialog__intro { min-width: 0; }
+
+.ik-workspace-dialog__head .ik-section-kicker,
+.ik-workspace-dialog__eyebrow {
+  display: block;
+  color: var(--ik-muted) !important;
+  font: 700 7px/1.2 var(--ik-mono) !important;
+  letter-spacing: .09em !important;
+  text-transform: uppercase;
+}
+
+.ik-workspace-dialog__head h2 {
+  max-width: 520px;
+  margin: 7px 0 0;
+  color: var(--ik-text);
+  font: 600 26px/1.05 var(--ik-display);
+  letter-spacing: -.026em;
+}
+
+.ik-workspace-dialog__head p {
+  max-width: 520px;
+  margin: 8px 0 0;
+  color: var(--ik-muted);
+  font: 400 10px/1.55 var(--ik-body);
+  letter-spacing: 0;
+}
+
+.ik-workspace-dialog__close {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: var(--ik-muted);
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.ik-workspace-dialog__close:hover {
+  color: var(--ik-text);
+  border-color: var(--ik-border);
+  background: var(--ik-surface-soft);
+}
+
+.ik-workspace-dialog__body {
+  min-width: 0;
+  min-height: 0;
+  flex: 0 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 17px 0 0;
+  background: transparent !important;
+}
+
+.ik-workspace-dialog__field {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  color: var(--ik-muted);
+  font: 700 7px/1 var(--ik-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.ik-workspace-dialog__field input,
+.ik-workspace-dialog__field select,
+.ik-workspace-dialog__field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  height: auto;
+  margin: 0;
+  padding: 0 11px;
+  border: 1px solid var(--ik-border);
+  border-radius: 10px !important;
+  outline: 0;
+  color: var(--ik-text);
+  background: color-mix(in srgb, var(--ik-bg) 38%, var(--ik-surface));
+  box-shadow: none;
+  font: 400 11px/1.4 var(--ik-body);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.ik-workspace-dialog__field select { appearance: auto; }
+
+.ik-workspace-dialog__field--hero input {
+  min-height: 42px;
+  font-size: 11px;
+}
+
+.ik-workspace-dialog__field textarea {
+  min-height: 94px;
+  padding: 11px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.ik-workspace-dialog__field input:hover,
+.ik-workspace-dialog__field select:hover,
+.ik-workspace-dialog__field textarea:hover { border-color: var(--ik-border-strong); }
+
+.ik-workspace-dialog__field input:focus,
+.ik-workspace-dialog__field select:focus,
+.ik-workspace-dialog__field textarea:focus {
+  border-color: color-mix(in srgb, var(--ik-accent) 54%, var(--ik-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ik-accent) 9%, transparent);
+  background: color-mix(in srgb, var(--ik-accent) 2%, var(--ik-surface-strong));
+}
+
+.ik-workspace-dialog__grid {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+.ik-workspace-dialog__grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ik-workspace-dialog__grid--story { grid-template-columns: minmax(0, 1.45fr) minmax(175px, .72fr); }
+
+.ik-workspace-dialog__details {
+  margin: 1px 0 0;
+  border: 1px solid var(--ik-border);
+  border-top: 1px solid var(--ik-border);
+  border-radius: 12px;
+  background: var(--ik-surface-soft);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.ik-workspace-dialog__details > summary {
+  min-height: 43px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  list-style: none;
+  color: var(--ik-muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: 650 11px/1.3 var(--ik-body);
+}
+.ik-workspace-dialog__details > summary::-webkit-details-marker { display: none; }
+.ik-workspace-dialog__details > summary::before { content: none; }
+.ik-workspace-dialog__details[open] > summary::before { content: none; }
+.ik-workspace-dialog__details > summary::after {
+  content: '+';
+  margin-left: 2px;
+  color: var(--ik-muted);
+  font: 600 16px/1 var(--ik-body);
+}
+.ik-workspace-dialog__details[open] > summary::after { content: '−'; }
+.ik-workspace-dialog__details > summary small {
+  margin-left: auto;
+  color: var(--ik-faint);
+  font: 650 7px/1.2 var(--ik-mono);
+  letter-spacing: .04em;
+}
+
+.ik-workspace-dialog__details-body {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+  padding: 13px;
+  border: 0;
+  border-top: 1px solid var(--ik-border);
+  background: color-mix(in srgb, var(--ik-surface-strong) 46%, transparent);
+  animation: ik-workspace-details-in 140ms ease both;
+}
+
+.ik-workspace-dialog__option-section {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+.ik-workspace-dialog__option-section > span {
+  color: var(--ik-muted);
+  font: 700 7px/1 var(--ik-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.ik-workspace-dialog__actions {
+  margin: 4px 0 0;
+  padding: 14px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  border: 0;
+  border-top: 1px solid var(--ik-border);
+  background: transparent;
+  box-shadow: none !important;
+}
+
+.ik-workspace-dialog__actions .ik-button { min-height: 40px; }
+
+.ik-workspace-dialog__close:focus-visible,
+.ik-workspace-dialog__details > summary:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ik-accent) 68%, white);
+  outline-offset: 2px;
+}
+
+/* Task capture reuses the same sheet without inheriting the legacy .modal cascade. */
+.ik-workspace-dialog--task .category-grid { gap: 6px; }
+.ik-workspace-dialog--task .chip { min-height: 30px; font-size: 9px; }
+.ik-workspace-dialog--task .difficulty-grid { gap: 7px; }
+.ik-workspace-dialog--task .difficulty-card {
+  min-height: 54px;
+  padding: 9px 10px;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--ik-bg) 28%, var(--ik-surface-soft)) !important;
+}
+.ik-workspace-dialog--task .difficulty-card strong { font-size: 10px; }
+.ik-workspace-dialog--task .difficulty-card small { font-size: 8px; }
+
+@keyframes ik-workspace-dialog-in {
+  from { opacity: 0; transform: translateY(10px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes ik-workspace-details-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 680px) {
+  .ik-workspace-dialog-backdrop {
+    place-items: end center;
+    padding:
+      max(10px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+  .ik-surface.ik-workspace-dialog {
+    width: 100%;
+    max-height: calc(100dvh - max(20px, calc(env(safe-area-inset-top) + env(safe-area-inset-bottom) + 12px)));
+    padding: 18px;
+    position:relative;
+    padding-top:24px;
+    border-radius:24px 24px 14px 14px !important;
+  }
+  .ik-surface.ik-workspace-dialog::before {
+    content:'';
+    position:absolute;
+    left:50%;
+    top:8px;
+    width:34px;
+    height:3px;
+    border-radius:999px;
+    transform:translateX(-50%);
+    background:color-mix(in srgb,var(--ik-muted) 28%,transparent);
+  }
+  .ik-workspace-dialog__head { padding: 0 0 14px; }
+  .ik-workspace-dialog__body { padding: 15px 0 0; }
+  .ik-workspace-dialog__actions { padding: 2px 0 4px; padding-top: 13px; }
+  .ik-workspace-dialog__grid--two,
+  .ik-workspace-dialog__grid--story { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ik-workspace-dialog,
+  .ik-workspace-dialog__details-body { animation: none; }
+}

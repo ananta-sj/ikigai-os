@@ -1,0 +1,719 @@
+.daily026-page { min-height:100%; }
+.daily026-room { width:min(1450px,100%); margin:0 auto; }
+.daily026-header { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:16px; padding:0 4px; }
+.daily026-header time { color:var(--ik-muted); font:750 9px/1.2 var(--ik-mono); letter-spacing:.14em; text-transform:uppercase; }
+.daily026-header h1 { margin:7px 0 5px; font:650 clamp(32px,4vw,50px)/1 var(--ik-display); letter-spacing:-.045em; }
+.daily026-header p { margin:0; color:var(--ik-muted); font-size:12px; }
+.daily026-header-actions { display:flex; gap:7px; flex-wrap:wrap; }
+.daily026-header-actions a,.daily026-header-actions button { min-height:38px; display:inline-flex; align-items:center; gap:7px; padding:0 12px; border:1px solid var(--ik-border); border-radius:999px; color:var(--ik-text); background:var(--ik-surface-soft); font:inherit; font-size:10px; text-decoration:none; }
+
+.daily026-desk { --desk:#3c2f27; --desk-deep:#211913; position:relative; min-height:700px; overflow:hidden; isolation:isolate; padding:62px 160px 100px 112px; border:1px solid var(--ik-border); border-radius:28px; background:radial-gradient(circle at 16% 8%,rgba(255,216,143,.17),transparent 27%),repeating-linear-gradient(91deg,transparent 0 72px,rgba(255,255,255,.015) 73px,transparent 75px),linear-gradient(135deg,var(--desk),var(--desk-deep)); box-shadow:0 34px 88px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.04); transition:filter .24s ease; }
+.daily026-desk::after { content:""; position:absolute; z-index:8; inset:0; pointer-events:none; background:radial-gradient(circle at 14% 7%,rgba(255,222,160,.24),transparent 24%,rgba(0,0,0,.02) 55%,rgba(0,0,0,.26) 100%); mix-blend-mode:screen; transition:opacity .2s ease; }
+.daily026-room.lamp-off .daily026-desk { filter:brightness(.82) saturate(.88); }.daily026-room.lamp-off .daily026-desk::after { opacity:.22; }
+.daily026-desk-grain { position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.09; background-image:radial-gradient(circle at 20% 40%,#fff 0 .45px,transparent .6px),radial-gradient(circle at 64% 60%,#000 0 .6px,transparent .8px); background-size:12px 12px,19px 19px; }
+
+.daily026-lamp { position:absolute; z-index:12; left:22px; top:22px; width:72px; height:88px; display:grid; place-items:center; align-content:center; gap:5px; border:0; border-radius:22px; color:#f8e8ce; background:linear-gradient(155deg,rgba(255,255,255,.08),rgba(0,0,0,.1)); box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 14px 28px rgba(0,0,0,.16); }
+.daily026-lamp span { font-size:8px; letter-spacing:.1em; text-transform:uppercase; opacity:.7; }.daily026-lamp.is-on::after { content:""; position:absolute; left:-70px; top:-72px; width:230px; height:220px; border-radius:50%; background:radial-gradient(circle,rgba(255,215,138,.22),transparent 68%); pointer-events:none; z-index:-1; }
+.daily026-cup { position:absolute; z-index:3; right:30px; top:30px; width:76px; height:76px; border-radius:50%; background:radial-gradient(circle at 50% 46%,#25150f 0 34%,#d8bea1 36% 50%,#7f684f 51% 58%,transparent 59%); filter:drop-shadow(0 12px 14px rgba(0,0,0,.25)); }.daily026-cup i { position:absolute; right:-14px; top:23px; width:28px; height:32px; border:8px solid #9e8061; border-left:0; border-radius:0 18px 18px 0; }
+.daily026-eraser { position:absolute; z-index:3; left:36px; bottom:44px; width:62px; height:24px; border-radius:5px; transform:rotate(7deg); background:linear-gradient(90deg,#d98276 0 44%,#e8dfc7 45%); box-shadow:0 8px 14px rgba(0,0,0,.2); }
+
+.daily026-notebook { position:relative; z-index:4; display:grid; grid-template-columns:1fr 1fr; min-height:520px; border-radius:10px 15px 15px 10px; background:#f5eddc; box-shadow:0 30px 56px rgba(0,0,0,.3),0 0 0 1px rgba(47,36,25,.12); transform:rotate(.25deg); }
+.daily026-notebook::before,.daily026-notebook::after { content:""; position:absolute; z-index:-1; inset:8px -5px -7px 5px; border-radius:inherit; background:#d9cab2; box-shadow:0 6px 12px rgba(0,0,0,.12); }.daily026-notebook::after { inset:13px -8px -11px 8px; background:#c6b69e; z-index:-2; }
+.daily026-spine { position:absolute; z-index:4; left:50%; top:0; bottom:0; width:24px; transform:translateX(-50%); pointer-events:none; background:linear-gradient(90deg,rgba(88,68,46,.05),rgba(57,39,27,.18) 46%,rgba(255,255,255,.36) 52%,rgba(74,53,35,.09)); }
+.daily026-page-sheet { position:relative; min-width:0; padding:34px 38px 30px; color:#29241f; background:repeating-linear-gradient(180deg,transparent 0 29px,rgba(77,98,113,.08) 30px),radial-gradient(circle at 20% 15%,rgba(255,255,255,.7),transparent 28%); }
+.daily026-page-sheet.tasks { border-radius:10px 0 0 10px; }.daily026-page-sheet.notes { border-radius:0 15px 15px 0; }
+.daily026-page-date { display:grid; grid-template-columns:58px 64px 1fr; gap:10px; align-items:center; padding-bottom:18px; border-bottom:1px solid rgba(54,46,37,.16); }.daily026-page-date > span { align-self:start; color:#7a7163; font-size:7px; font-weight:800; letter-spacing:.13em; writing-mode:vertical-rl; }.daily026-page-date > strong { font:500 58px/.85 Georgia,serif; color:#5d896a; }.daily026-page-date div { display:grid; gap:2px; }.daily026-page-date b { font:500 23px Georgia,serif; }.daily026-page-date small { color:#81796d; font-size:8px; letter-spacing:.1em; }
+.daily026-progress-line { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:center; min-height:32px; color:#81796d; font-size:8px; }.daily026-progress-line i { height:2px; border-radius:4px; background:rgba(76,66,55,.12); overflow:hidden; }.daily026-progress-line b { display:block; height:100%; background:#6d9b76; }
+.daily026-main-task { display:grid; grid-template-columns:32px minmax(0,1fr); gap:8px; align-items:start; min-height:96px; padding:13px 8px 12px; border-bottom:1px solid rgba(54,46,37,.13); }.daily026-main-task button,.daily026-task-line button { border:0; background:transparent; color:#5d896a; padding:2px; }.daily026-main-task span { color:#7f776b; font-size:7px; letter-spacing:.12em; }.daily026-main-task h2 { margin:3px 0 0; font:500 20px/1.2 Georgia,serif; }.daily026-main-task p { margin:6px 0 0; color:#6f675c; font-size:9px; line-height:1.45; }
+.daily026-empty-task { min-height:96px; display:flex; align-items:center; justify-content:center; gap:8px; color:#8a8276; border-bottom:1px solid rgba(54,46,37,.13); font:italic 11px Georgia,serif; }
+.daily026-task-lines { display:grid; }.daily026-task-line { min-height:34px; display:grid; grid-template-columns:26px minmax(0,1fr) auto; gap:7px; align-items:center; border-bottom:1px dotted rgba(58,49,40,.12); font-size:10px; }.daily026-task-line > svg { margin-left:4px; color:#678b6d; }.daily026-task-line small { color:#8c8376; font-size:7px; text-transform:uppercase; }.daily026-task-line.done { opacity:.55; }.daily026-task-line.done span { text-decoration:line-through; }
+.daily026-write-line { display:grid; grid-template-columns:25px minmax(0,1fr) auto; gap:6px; align-items:center; margin-top:8px; color:#5d896a; }.daily026-write-line input { min-width:0; height:34px; padding:0 2px; border:0; border-bottom:1px solid rgba(52,45,37,.2); outline:none; color:#29241f; background:transparent; font:italic 11px Georgia,serif; }.daily026-write-line button,.daily026-task-details { border:0; color:#5c8769; background:transparent; font-size:8px; }.daily026-task-details { margin:6px 0 0 31px; padding:0; }
+
+.daily026-note-heading { display:grid; grid-template-columns:24px minmax(0,1fr) auto; gap:8px; align-items:start; padding-bottom:12px; border-bottom:1px solid rgba(54,46,37,.14); color:#5d896a; }.daily026-note-heading div { display:grid; gap:2px; }.daily026-note-heading span { color:#7d756a; font-size:7px; font-weight:800; letter-spacing:.12em; }.daily026-note-heading strong { color:#2e2923; font:500 16px Georgia,serif; }.daily026-note-heading small { color:#6f936f; font-size:8px; }
+.daily026-page-sheet.notes > textarea { width:100%; min-height:200px; resize:vertical; padding:16px 3px; border:0; outline:0; color:#342e27; background:transparent; font:italic 12px/1.72 Georgia,serif; }
+/* v0.32.0 · Today carries quiet context from the wider life system without becoming a dashboard. */
+.daily032-thread { display:grid; gap:0; margin-top:4px; padding-top:10px; border-top:1px solid rgba(54,46,37,.14); }
+.daily032-thread > span { margin-bottom:4px; color:#80776b; font-size:7px; font-weight:800; letter-spacing:.12em; }
+.daily032-thread > a { min-height:31px; display:grid; grid-template-columns:94px minmax(0,1fr) auto; gap:8px; align-items:center; border-bottom:1px dotted rgba(54,46,37,.11); color:#342e27; text-decoration:none; }
+.daily032-thread > a:last-child { border-bottom:0; }
+.daily032-thread b { color:#7f776c; font-size:7px; letter-spacing:.08em; }
+.daily032-thread strong { min-width:0; overflow:hidden; color:#393229; font:500 10px/1.25 Georgia,serif; text-overflow:ellipsis; white-space:nowrap; }
+.daily032-thread small { display:inline-flex; align-items:center; gap:3px; color:#5d896a; font-size:7px; text-transform:lowercase; }
+.daily032-thread > a:hover strong { color:#4f765a; }
+.daily032-thread > a:focus-visible { outline:2px solid color-mix(in srgb, #5d896a 72%, white); outline-offset:2px; border-radius:3px; }
+
+.daily026-horizon { margin-top:8px; padding-top:12px; border-top:1px solid rgba(54,46,37,.14); }.daily026-subhead { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }.daily026-subhead span { color:#80776b; font-size:7px; font-weight:800; letter-spacing:.12em; }.daily026-subhead a { color:#5d896a; font-size:8px; }.daily026-horizon-row { min-height:31px; display:grid; grid-template-columns:48px minmax(0,1fr) auto; gap:7px; align-items:center; border-bottom:1px dotted rgba(54,46,37,.11); }.daily026-horizon-row time { color:#5d896a; font-size:8px; }.daily026-horizon-row span { font-size:9px; }.daily026-horizon-row small { color:#8a8174; font-size:7px; text-transform:uppercase; }.daily026-horizon > p { margin:12px 0; color:#8a8174; font:italic 10px Georgia,serif; }
+
+.daily026-sanctuary-postcard { position:absolute; z-index:10; right:32px; top:142px; width:130px; min-height:178px; display:grid; align-content:end; gap:3px; padding:12px; border:8px solid #ece7db; color:#25302b; background:linear-gradient(180deg,#9cccb1 0 55%,#668b6d 56% 100%); box-shadow:0 18px 28px rgba(0,0,0,.25); transform:rotate(3.5deg); text-decoration:none; }.daily026-sanctuary-postcard > div { position:absolute; inset:8px 8px 58px; display:grid; place-items:center; font-size:50px; background:radial-gradient(circle,#dce7cb 0 12%,transparent 13%),linear-gradient(#9cccb1 0 58%,#688a68 59%); }.daily026-sanctuary-postcard > span:not(.daily026-postcard-pin) { position:relative; z-index:2; font-size:6px; font-weight:800; letter-spacing:.12em; }.daily026-sanctuary-postcard strong,.daily026-sanctuary-postcard small { position:relative; z-index:2; }.daily026-sanctuary-postcard strong { font-size:11px; }.daily026-sanctuary-postcard small { font-size:7px; }.daily026-postcard-pin { position:absolute; z-index:3; top:-13px; left:50%; width:12px; height:12px; border-radius:50%; transform:translateX(-50%); background:#d6a85e; box-shadow:0 3px 5px rgba(0,0,0,.28); }
+.daily026-handoff-tab { position:absolute; z-index:11; left:50%; bottom:24px; transform:translateX(-50%); min-height:38px; display:inline-flex; align-items:center; gap:7px; padding:0 13px; border:1px solid rgba(255,255,255,.11); border-radius:999px; color:#f5ead7; background:rgba(32,23,18,.58); box-shadow:0 10px 24px rgba(0,0,0,.18); backdrop-filter:blur(8px); cursor:pointer; }
+.daily026-handoff-tab:hover { background:rgba(45,34,27,.72); }
+
+.daily026-handoff-backdrop { position:fixed; z-index:130; inset:0; display:grid; place-items:center; padding:max(22px,env(safe-area-inset-top)) max(22px,env(safe-area-inset-right)) max(22px,env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left)); background:rgba(8,12,10,.64); backdrop-filter:blur(10px); }
+.daily026-handoff-card { position:relative; width:min(520px,100%); max-height:calc(100dvh - 44px); overflow:auto; padding:34px 34px 26px; border:1px solid rgba(85,70,51,.18); border-radius:5px 10px 12px 6px; color:#30291f; background:
+  repeating-linear-gradient(180deg,transparent 0 31px,rgba(85,105,119,.075) 32px),
+  radial-gradient(circle at 18% 10%,rgba(255,255,255,.78),transparent 34%),
+  #f5eddc;
+  box-shadow:0 36px 90px rgba(0,0,0,.42),0 2px 0 rgba(255,255,255,.4) inset;
+  transform:rotate(-.35deg);
+}
+.daily026-handoff-card::after { content:""; position:absolute; inset:7px -6px -8px 7px; z-index:-1; border-radius:inherit; background:#d9cab2; box-shadow:0 12px 22px rgba(0,0,0,.13); }
+.daily026-handoff-tape { position:absolute; left:50%; top:-9px; width:88px; height:24px; transform:translateX(-50%) rotate(1deg); background:rgba(222,205,165,.72); box-shadow:0 2px 4px rgba(0,0,0,.08); }
+.daily026-handoff-close { position:absolute; right:13px; top:13px; width:32px; height:32px; display:grid; place-items:center; border:0; border-radius:50%; color:#675e50; background:rgba(255,255,255,.38); cursor:pointer; }
+.daily026-handoff-card header { padding-right:34px; }
+.daily026-handoff-card header > span,.daily026-handoff-label { color:#7c7468; font-size:8px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+.daily026-handoff-card h2 { margin:7px 0 7px; font:500 28px/1.05 Georgia,serif; letter-spacing:-.03em; }
+.daily026-handoff-card header p { margin:0; max-width:430px; color:#6e665a; font-size:10px; line-height:1.55; }
+.daily026-handoff-summary { display:flex; gap:8px; margin:18px 0 14px; }
+.daily026-handoff-summary span { min-height:48px; flex:1; display:grid; align-content:center; gap:2px; padding:7px 10px; border:1px solid rgba(70,58,45,.12); border-radius:7px; background:rgba(255,255,255,.28); color:#766d61; font-size:8px; }
+.daily026-handoff-summary strong { color:#3c352c; font:500 17px Georgia,serif; }
+.daily026-handoff-list { display:grid; gap:5px; padding:13px 0 10px; border-top:1px solid rgba(67,55,43,.12); border-bottom:1px solid rgba(67,55,43,.12); }
+.daily026-handoff-list > button { min-height:34px; display:grid; grid-template-columns:24px minmax(0,1fr); gap:6px; align-items:center; padding:3px 2px; border:0; border-bottom:1px dotted rgba(63,53,43,.12); color:#3c352c; background:transparent; text-align:left; cursor:pointer; }
+.daily026-handoff-list > button:last-child { border-bottom:0; }
+.daily026-handoff-list > button i { width:18px; height:18px; display:grid; place-items:center; border:1px solid rgba(70,60,49,.26); border-radius:4px; color:#4f7e5c; font-style:normal; }
+.daily026-handoff-list > button.selected i { border-color:#5f8969; background:rgba(95,137,105,.12); }
+.daily026-handoff-list > button span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:italic 11px Georgia,serif; }
+.daily026-handoff-error { margin:10px 0 0; color:#9c4e42; font-size:9px; }
+.daily026-handoff-card footer { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-top:18px; }
+.daily026-handoff-card footer button { min-height:36px; border-radius:999px; font:inherit; font-size:9px; cursor:pointer; }
+.daily026-handoff-later { padding:0 12px; border:1px solid rgba(70,58,45,.14); color:#6b6256; background:rgba(255,255,255,.2); }
+.daily026-handoff-archive { display:inline-flex; align-items:center; gap:8px; padding:0 14px; border:1px solid #537a5d; color:#f7fbf5; background:#537a5d; }
+.daily026-handoff-archive:disabled { opacity:.55; cursor:wait; }
+
+@media (max-width:1120px) {
+  .daily026-desk { padding:72px 104px 100px 82px; }.daily026-notebook { grid-template-columns:1fr; }.daily026-spine { display:none; }.daily026-page-sheet.tasks { border-radius:10px 10px 0 0; }.daily026-page-sheet.notes { border-radius:0 0 15px 15px; }.daily026-sanctuary-postcard { right:20px; top:152px; transform:rotate(4deg) scale(.82); transform-origin:top right; }.daily026-cup { transform:scale(.8); transform-origin:top right; }
+}
+@media (max-width:760px) {
+  .daily026-header { align-items:flex-start; flex-direction:column; }.daily026-desk { min-height:660px; margin-inline:-4px; padding:66px 12px 94px; border-radius:20px; overflow:visible; }.daily026-lamp { left:12px; top:10px; transform:scale(.82); transform-origin:top left; }.daily026-cup { right:9px; top:14px; }.daily026-notebook { transform:none; }.daily026-page-sheet { padding:25px 22px 24px; }.daily026-sanctuary-postcard { position:relative; right:auto; top:auto; width:min(220px,72%); min-height:120px; margin:18px 20px 0 auto; transform:rotate(2deg); }.daily026-sanctuary-postcard > div { inset:8px 8px 48px; font-size:34px; }.daily026-handoff-tab { bottom:18px; }
+}
+@media (max-width:520px) {
+  .daily026-header h1 { font-size:34px; }.daily026-header-actions { width:100%; }.daily026-header-actions a,.daily026-header-actions button { flex:1 1 auto; justify-content:center; }.daily026-page-sheet { padding:21px 16px; }.daily026-page-date { grid-template-columns:42px 50px 1fr; }.daily026-page-date > strong { font-size:46px; }.daily026-page-date b { font-size:19px; }.daily026-main-task h2 { font-size:18px; }.daily026-horizon-row { grid-template-columns:44px minmax(0,1fr); }.daily026-horizon-row small { display:none; }.daily032-thread > a { grid-template-columns:1fr auto; gap:4px 8px; padding:5px 0; }.daily032-thread b { grid-column:1 / -1; }.daily032-thread strong { white-space:normal; }.daily026-handoff-backdrop { padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left)); }.daily026-handoff-card { max-height:calc(100dvh - max(20px,calc(env(safe-area-inset-top) + env(safe-area-inset-bottom) + 12px))); padding:28px 20px 22px; }
+}
+@media (prefers-reduced-motion: reduce) { .daily026-desk { transition:none; } }
+
+/* v0.31.8 · Today should read as one desk, not a vertically scrolling page. */
+@media (min-width:1100px) and (min-height:700px) {
+  :root:not([data-ikigai-ui-scale='large']):not([data-ikigai-ui-scale='oversized']):not([data-ikigai-text-scale='large']):not([data-ikigai-text-scale='xlarge']) .room-fit-shell .daily026-page {
+    height:100dvh;
+    min-height:0;
+    padding-top:22px;
+    padding-bottom:22px;
+    overflow:hidden;
+  }
+  :root:not([data-ikigai-ui-scale='large']):not([data-ikigai-ui-scale='oversized']):not([data-ikigai-text-scale='large']):not([data-ikigai-text-scale='xlarge']) .room-fit-shell .daily026-room {
+    height:100%;
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr);
+    gap:10px;
+  }
+  .room-fit-shell .daily026-header { margin-bottom:0; align-items:center; }
+  .room-fit-shell .daily026-header h1 { margin:4px 0 3px; font-size:clamp(30px,3vw,42px); }
+  .room-fit-shell .daily026-header p { font-size:11px; line-height:1.4; }
+  .room-fit-shell .daily026-header-actions a,
+  .room-fit-shell .daily026-header-actions button { min-height:34px; }
+  .room-fit-shell .daily026-desk {
+    height:100%;
+    min-height:0;
+    padding:42px 144px 54px 92px;
+    display:grid;
+    align-items:stretch;
+  }
+  .room-fit-shell .daily026-notebook {
+    height:100%;
+    min-height:0;
+    max-height:560px;
+    align-self:center;
+  }
+  .room-fit-shell .daily026-page-sheet { min-height:0; padding:24px 30px 22px; overflow:auto; }
+  .room-fit-shell .daily026-page-date { grid-template-columns:46px 54px 1fr; padding-bottom:12px; }
+  .room-fit-shell .daily026-page-date > strong { font-size:48px; }
+  .room-fit-shell .daily026-page-date b { font-size:20px; }
+  .room-fit-shell .daily026-progress-line { min-height:27px; }
+  .room-fit-shell .daily026-main-task,
+  .room-fit-shell .daily026-empty-task { min-height:72px; padding-block:9px; }
+  .room-fit-shell .daily026-page-sheet.notes > textarea { min-height:132px; padding-top:12px; }
+  .room-fit-shell .daily026-horizon-row { min-height:27px; }
+  .room-fit-shell .daily026-sanctuary-postcard { top:112px; width:112px; min-height:154px; right:26px; }
+  .room-fit-shell .daily026-lamp { width:62px; height:74px; }
+  .room-fit-shell .daily026-eraser { bottom:28px; }
+  .room-fit-shell .daily026-handoff-tab { bottom:14px; }
+}
+
+/* v0.32.0 patch 05 · keyboard-safe morning handoff ------------------------- */
+.daily026-handoff-card:focus { outline:none; }
+.daily026-handoff-close:focus-visible,
+.daily026-handoff-list > button:focus-visible,
+.daily026-handoff-card footer button:focus-visible {
+  outline:2px solid rgba(68,111,79,.72);
+  outline-offset:2px;
+}
+
+/* v0.32.0 patch 09 · responsive physical himekuri ------------------------- */
+.daily026-desk.has-physical-paper {
+  --daily-paper-width: 216px;
+  --daily-paper-reserve: 284px;
+  --daily-paper-top: 94px;
+  --daily-paper-tilt: -.35deg;
+  padding-right: var(--daily-paper-reserve);
+}
+.daily026-desk.has-physical-paper.paper-size-compact {
+  --daily-paper-width: 132px;
+  --daily-paper-reserve: 188px;
+  --daily-paper-top: 132px;
+  --daily-paper-tilt: -.65deg;
+}
+.daily026-desk.has-physical-paper.paper-size-large {
+  --daily-paper-width: 318px;
+  --daily-paper-reserve: 404px;
+  --daily-paper-top: 50px;
+  --daily-paper-tilt: .2deg;
+}
+.daily026-paper-object {
+  position: absolute;
+  z-index: 9;
+  top: var(--daily-paper-top);
+  right: 31px;
+  width: var(--daily-paper-width);
+  display: grid;
+  gap: 5px;
+  transform: rotate(var(--daily-paper-tilt));
+  transform-origin: 50% 8%;
+  filter: drop-shadow(0 20px 24px rgba(0,0,0,.25));
+  transition: filter .18s ease;
+}
+.daily026-paper-object:hover,
+.daily026-paper-object:focus-within {
+  filter: drop-shadow(0 24px 28px rgba(0,0,0,.3));
+}
+.daily026-paper-object::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 30px 9px 24px;
+  border-radius: 8px;
+  background: rgba(10, 8, 6, .15);
+  filter: blur(13px);
+  transform: translateY(9px);
+  pointer-events: none;
+}
+
+.daily026-desk.has-physical-paper .daily026-sanctuary-postcard {
+  top: auto;
+  right: 39px;
+  bottom: 27px;
+  width: 110px;
+  min-height: 146px;
+  transform: rotate(3.4deg) scale(.9);
+  transform-origin: bottom right;
+}
+.daily026-desk.has-physical-paper.paper-size-large .daily026-sanctuary-postcard {
+  right: 53px;
+  transform: rotate(3.1deg) scale(.78);
+}
+.daily026-room.lamp-off .daily026-paper-object { filter: brightness(.92) saturate(.92) drop-shadow(0 20px 24px rgba(0,0,0,.24)); }
+
+@media (max-width: 1120px) {
+  .daily026-desk.has-physical-paper { padding-right: 104px; }
+  .daily026-paper-object {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: min(var(--daily-paper-width), 34vw);
+    margin: 18px 8px 0 auto;
+    transform: rotate(1deg);
+  }
+  .daily026-desk.has-physical-paper .daily026-sanctuary-postcard {
+    top: 152px;
+    right: 20px;
+    bottom: auto;
+    width: 112px;
+    min-height: 154px;
+    transform: rotate(4deg) scale(.82);
+    transform-origin: top right;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1120px) and (min-height: 700px) {
+  .room-fit-shell .daily026-paper-object {
+    position: absolute;
+    top: 266px;
+    right: 14px;
+    width: min(var(--daily-paper-width), 138px);
+    margin: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .daily026-desk.has-physical-paper { padding-right: 12px; }
+  .daily026-paper-object {
+    width: min(var(--daily-paper-width), 78%);
+    margin: 18px auto 0 14px;
+    transform: rotate(-.75deg);
+  }
+  .daily026-desk.has-physical-paper.paper-size-large .daily026-paper-object { width:min(280px,78%); }
+  .daily026-desk.has-physical-paper .daily026-sanctuary-postcard {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    width: min(220px, 72%);
+    min-height: 120px;
+    margin: 18px 20px 0 auto;
+    transform: rotate(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .daily026-paper-object { transform: none; transition: none; }
+}
+
+
+/* v0.32.0 patch 10 · give physical objects distinct desk zones. */
+@media (min-width: 1121px) {
+  .daily026-desk.has-physical-paper .daily026-cup {
+    right: calc(var(--daily-paper-width) + 62px);
+    top: 28px;
+    transform: scale(.88);
+    transform-origin: top right;
+  }
+  .daily026-desk.has-physical-paper .daily026-paper-object {
+    top: calc(var(--daily-paper-top) + 14px);
+  }
+}
+@media (max-width: 1120px) {
+  .daily026-desk.has-physical-paper .daily026-cup {
+    right: 12px;
+    top: 14px;
+    transform: scale(.76);
+    transform-origin: top right;
+  }
+}
+
+
+/* v0.32.0 Patch 19 · phone Today is a deliberate two-leaf desk, not a
+   compressed desktop spread. Desktop/tablet composition remains unchanged. */
+.daily026-mobile-leaf-tabs { display:none; }
+
+@media (max-width:680px) {
+  .daily026-room { width:100%; }
+  .daily026-header {
+    gap:14px;
+    margin-bottom:14px;
+    padding-inline:2px;
+  }
+  .daily026-header h1 {
+    margin-top:6px;
+    font-size:clamp(30px,9vw,36px);
+    line-height:.98;
+  }
+  .daily026-header p {
+    max-width:34ch;
+    font-size:11px;
+    line-height:1.55;
+  }
+  .daily026-header-actions {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+  .daily026-header-actions a,
+  .daily026-header-actions button {
+    width:100%;
+    min-width:0;
+    min-height:42px;
+    justify-content:center;
+  }
+
+  .daily026-desk,
+  .daily026-desk.has-physical-paper {
+    min-height:0;
+    margin-inline:0;
+    padding:70px 10px 24px;
+    overflow:hidden;
+    border-radius:24px;
+  }
+  .daily026-desk.has-physical-paper { padding-right:10px; }
+
+  .daily026-lamp {
+    left:10px;
+    top:10px;
+    width:58px;
+    height:64px;
+    border-radius:18px;
+    transform:none;
+  }
+  .daily026-lamp svg { width:18px; height:18px; }
+  .daily026-lamp span { font-size:7px; }
+  .daily026-cup,
+  .daily026-desk.has-physical-paper .daily026-cup {
+    right:8px;
+    top:8px;
+    transform:scale(.68);
+    transform-origin:top right;
+  }
+  .daily026-eraser { display:none; }
+
+  .daily026-mobile-leaf-tabs {
+    position:relative;
+    z-index:13;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:4px;
+    margin:0 0 9px;
+    padding:4px;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:15px;
+    background:rgba(28,21,17,.46);
+    box-shadow:0 10px 26px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.05);
+    backdrop-filter:blur(12px);
+  }
+  .daily026-mobile-leaf-tabs button {
+    min-width:0;
+    min-height:42px;
+    display:grid;
+    grid-template-columns:18px minmax(0,1fr) auto;
+    align-items:center;
+    gap:7px;
+    padding:0 10px;
+    border:0;
+    border-radius:11px;
+    color:rgba(247,237,219,.72);
+    background:transparent;
+    font:650 10px/1 var(--ik-body);
+    text-align:left;
+  }
+  .daily026-mobile-leaf-tabs button small {
+    min-width:18px;
+    color:rgba(247,237,219,.48);
+    font:700 8px/1 var(--ik-mono);
+    text-align:right;
+  }
+  .daily026-mobile-leaf-tabs button.is-active {
+    color:#2d2923;
+    background:#f5eddc;
+    box-shadow:0 5px 14px rgba(0,0,0,.16),inset 0 0 0 1px rgba(71,55,39,.08);
+  }
+  .daily026-mobile-leaf-tabs button.is-active small { color:#66876d; }
+  .daily026-mobile-leaf-tabs button:focus-visible {
+    outline:2px solid rgba(230,242,224,.9);
+    outline-offset:2px;
+  }
+
+  .daily026-notebook {
+    min-height:0;
+    display:block;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    transform:none;
+  }
+  .daily026-notebook::before,
+  .daily026-notebook::after { display:none; }
+
+  .daily026-page-sheet {
+    display:none;
+    min-height:0;
+    padding:22px 18px 20px;
+    border-radius:17px !important;
+    box-shadow:
+      0 18px 34px rgba(0,0,0,.24),
+      0 0 0 1px rgba(47,36,25,.12),
+      inset 0 1px 0 rgba(255,255,255,.66);
+  }
+  .daily026-notebook.mobile-leaf-tasks .daily026-page-sheet.tasks,
+  .daily026-notebook.mobile-leaf-notes .daily026-page-sheet.notes { display:block; }
+
+  .daily026-page-date {
+    grid-template-columns:38px 48px minmax(0,1fr);
+    gap:8px;
+    padding-bottom:13px;
+  }
+  .daily026-page-date > strong { font-size:44px; }
+  .daily026-page-date b { font-size:19px; }
+  .daily026-progress-line { min-height:29px; }
+  .daily026-main-task,
+  .daily026-empty-task { min-height:78px; }
+  .daily026-main-task h2 { font-size:18px; }
+  .daily026-write-line input { height:40px; }
+
+  .daily026-page-sheet.notes > textarea {
+    min-height:150px;
+    max-height:42dvh;
+    resize:none;
+    padding-top:14px;
+    font-size:16px;
+    line-height:1.65;
+  }
+  .daily032-thread { margin-top:2px; }
+  .daily032-thread > a {
+    min-height:42px;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:3px 8px;
+    padding-block:6px;
+  }
+  .daily032-thread b { grid-column:1 / -1; }
+  .daily032-thread strong {
+    white-space:normal;
+    font-size:10px;
+    line-height:1.35;
+  }
+  .daily026-horizon-row { min-height:38px; }
+
+  .daily026-paper-object,
+  .daily026-desk.has-physical-paper .daily026-paper-object {
+    position:relative;
+    top:auto;
+    right:auto;
+    width:min(176px,52vw);
+    margin:16px auto 0;
+    transform:rotate(-.5deg);
+  }
+  .daily026-desk.has-physical-paper.paper-size-compact .daily026-paper-object {
+    width:min(136px,42vw);
+  }
+  .daily026-desk.has-physical-paper.paper-size-large .daily026-paper-object {
+    width:min(232px,68vw);
+  }
+
+  .daily026-sanctuary-postcard,
+  .daily026-desk.has-physical-paper .daily026-sanctuary-postcard,
+  .daily026-desk.has-physical-paper.paper-size-large .daily026-sanctuary-postcard {
+    position:relative;
+    top:auto;
+    right:auto;
+    bottom:auto;
+    width:100%;
+    min-height:84px;
+    margin:13px 0 0;
+    padding:12px 12px 12px 92px;
+    border-width:6px;
+    transform:none;
+    transform-origin:center;
+    align-content:center;
+    border-radius:3px;
+  }
+  .daily026-sanctuary-postcard > div,
+  .daily026-desk.has-physical-paper .daily026-sanctuary-postcard > div {
+    inset:6px auto 6px 6px;
+    width:72px;
+    display:grid;
+    place-items:center;
+    font-size:30px;
+  }
+  .daily026-sanctuary-postcard > span:not(.daily026-postcard-pin) { font-size:7px; }
+  .daily026-sanctuary-postcard strong { font-size:12px; }
+  .daily026-sanctuary-postcard small { font-size:8px; }
+  .daily026-postcard-pin {
+    top:-9px;
+    left:74px;
+  }
+
+  .daily026-handoff-tab {
+    position:relative;
+    left:auto;
+    bottom:auto;
+    width:100%;
+    min-height:42px;
+    justify-content:center;
+    margin-top:12px;
+    transform:none;
+  }
+}
+
+@media (max-width:380px) {
+  .daily026-desk,
+  .daily026-desk.has-physical-paper { padding-inline:8px; }
+  .daily026-mobile-leaf-tabs button { padding-inline:8px; gap:5px; }
+  .daily026-page-sheet { padding:20px 15px 18px; }
+  .daily026-page-date { grid-template-columns:34px 44px minmax(0,1fr); }
+  .daily026-page-date > strong { font-size:40px; }
+}
+
+/* v0.32.0 Patch 20 · phone-first Today composition ------------------------
+   The phone desk is a compact stationery scene, not a vertically stacked
+   desktop diorama. Keep the approved desktop composition untouched. */
+@media (max-width:680px) {
+  .daily026-page {
+    padding-top:max(88px,calc(env(safe-area-inset-top) + 72px)) !important;
+  }
+  .daily026-header {
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .daily026-header h1 {
+    margin:3px 0 3px;
+    font-size:clamp(29px,8.4vw,34px);
+  }
+  .daily026-header p {
+    max-width:38ch;
+    line-height:1.45;
+  }
+  .daily026-header-actions a,
+  .daily026-header-actions button { min-height:40px; }
+
+  .daily026-desk,
+  .daily026-desk.has-physical-paper {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    align-items:start;
+    column-gap:10px;
+    row-gap:0;
+    padding:58px 9px 14px;
+    border-radius:22px;
+  }
+  .daily026-mobile-leaf-tabs,
+  .daily026-notebook,
+  .daily026-handoff-tab { grid-column:1 / -1; }
+
+  .daily026-lamp {
+    top:8px;
+    left:9px;
+    width:52px;
+    height:54px;
+    gap:3px;
+    border-radius:16px;
+  }
+  .daily026-lamp span { font-size:6px; }
+  .daily026-cup,
+  .daily026-desk.has-physical-paper .daily026-cup {
+    top:4px;
+    right:5px;
+    transform:scale(.58);
+  }
+
+  .daily026-mobile-leaf-tabs {
+    margin-bottom:7px;
+    border-radius:14px;
+  }
+  .daily026-mobile-leaf-tabs button { min-height:39px; }
+
+  .daily026-page-sheet {
+    padding:16px 14px 13px;
+    border-radius:15px !important;
+  }
+  .daily026-page-date {
+    grid-template-columns:30px 42px minmax(0,1fr);
+    gap:7px;
+    padding-bottom:9px;
+  }
+  .daily026-page-date > span { font-size:6px; }
+  .daily026-page-date > strong { font-size:38px; }
+  .daily026-page-date b { font-size:17px; }
+  .daily026-page-date small { font-size:7px; }
+  .daily026-progress-line {
+    min-height:23px;
+    gap:8px;
+  }
+  .daily026-main-task,
+  .daily026-empty-task {
+    min-height:52px;
+    padding-block:7px;
+  }
+  .daily026-main-task { grid-template-columns:26px minmax(0,1fr); }
+  .daily026-main-task h2 { font-size:16px; }
+  .daily026-main-task p { margin-top:4px; }
+  .daily026-task-line { min-height:31px; }
+  .daily026-write-line { margin-top:5px; }
+  .daily026-write-line input { height:36px; }
+  .daily026-task-details { margin-top:4px; }
+
+  .daily026-page-sheet.notes > textarea {
+    min-height:118px;
+    max-height:34dvh;
+    padding-top:10px;
+  }
+  .daily032-thread { padding-top:7px; }
+  .daily032-thread > a { min-height:37px; }
+  .daily026-horizon { margin-top:5px; padding-top:8px; }
+  .daily026-horizon-row { min-height:34px; }
+
+  /* A physical calendar and Sanctuary postcard share one compact shelf. */
+  .daily026-paper-object,
+  .daily026-desk.has-physical-paper .daily026-paper-object {
+    grid-column:1;
+    align-self:end;
+    width:min(118px,33vw);
+    margin:11px auto 0;
+    transform:rotate(-.4deg);
+  }
+  .daily026-desk.has-physical-paper.paper-size-compact .daily026-paper-object {
+    width:min(94px,27vw);
+  }
+  .daily026-desk.has-physical-paper.paper-size-large .daily026-paper-object {
+    width:min(148px,40vw);
+  }
+
+  .daily026-sanctuary-postcard,
+  .daily026-desk.has-physical-paper .daily026-sanctuary-postcard,
+  .daily026-desk.has-physical-paper.paper-size-large .daily026-sanctuary-postcard {
+    grid-column:1 / -1;
+    width:100%;
+    min-height:72px;
+    margin:10px 0 0;
+    padding:9px 10px 9px 76px;
+    border-width:5px;
+  }
+  .daily026-desk:has(.daily026-paper-object) .daily026-sanctuary-postcard {
+    grid-column:2;
+    align-self:end;
+    min-height:106px;
+    margin:11px 0 0;
+    padding:56px 8px 8px;
+    text-align:center;
+  }
+  .daily026-sanctuary-postcard > div,
+  .daily026-desk.has-physical-paper .daily026-sanctuary-postcard > div {
+    inset:5px auto 5px 5px;
+    width:62px;
+    font-size:26px;
+  }
+  .daily026-desk:has(.daily026-paper-object) .daily026-sanctuary-postcard > div {
+    inset:5px 5px auto;
+    width:auto;
+    height:47px;
+    font-size:24px;
+  }
+  .daily026-desk:has(.daily026-paper-object) .daily026-postcard-pin {
+    left:50%;
+  }
+  .daily026-sanctuary-postcard strong { font-size:11px; }
+  .daily026-sanctuary-postcard small { font-size:7px; }
+
+  .daily026-handoff-tab {
+    min-height:40px;
+    margin-top:9px;
+  }
+}
+
+@media (max-width:380px) {
+  .daily026-page { padding-top:max(82px,calc(env(safe-area-inset-top) + 68px)) !important; }
+  .daily026-desk,
+  .daily026-desk.has-physical-paper { padding:55px 7px 12px; column-gap:7px; }
+  .daily026-page-sheet { padding:15px 12px 12px; }
+  .daily026-paper-object,
+  .daily026-desk.has-physical-paper .daily026-paper-object { width:min(108px,32vw); }
+  .daily026-desk.has-physical-paper.paper-size-large .daily026-paper-object { width:min(136px,40vw); }
+}
+
+/* v0.32.0 Patch 22 · mobile notebook paper stays paper --------------------
+   Phone Today uses a transparent notebook shell so each visible leaf must
+   carry its own opaque paper stock. Without this base, the dark desk bleeds
+   through and the diary reads like a tinted glass panel. */
+@media (max-width:680px) {
+  .daily026-page-sheet {
+    color:#29241f;
+    background:
+      repeating-linear-gradient(180deg,transparent 0 29px,rgba(77,98,113,.065) 30px),
+      radial-gradient(circle at 18% 12%,rgba(255,255,255,.76),transparent 31%),
+      linear-gradient(135deg,rgba(255,250,239,.52),rgba(242,229,207,.18)),
+      #f5eddc;
+    box-shadow:
+      0 16px 30px rgba(18,13,9,.2),
+      0 0 0 1px rgba(61,47,34,.11),
+      inset 0 1px 0 rgba(255,255,255,.76);
+  }
+
+  .daily026-page-sheet.tasks,
+  .daily026-page-sheet.notes {
+    background-color:#f5eddc;
+  }
+}

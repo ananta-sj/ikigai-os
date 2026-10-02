@@ -1,0 +1,293 @@
+/* v0.3.3 — the Daily Page is a ritual object, never the whole interface. */
+.interactive-daily-paper {
+  width: min(278px, 100%);
+  margin-inline: auto;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.interactive-daily-paper-stage {
+  width: 100%;
+  aspect-ratio: .73;
+  min-height: 350px;
+  max-height: 382px;
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+  background: transparent;
+}
+
+.interactive-daily-paper-stage canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: pan-y;
+}
+
+.interactive-daily-paper.is-time-locked .interactive-daily-paper-stage canvas {
+  cursor: default !important;
+}
+.interactive-daily-paper.is-tearable .interactive-daily-paper-stage canvas {
+  cursor: grab;
+}
+.interactive-daily-paper.is-tearable .interactive-daily-paper-stage canvas:active {
+  cursor: grabbing;
+}
+
+.interactive-daily-paper-status {
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(205, 226, 212, .43);
+  font-size: 9px;
+  letter-spacing: .075em;
+  text-transform: uppercase;
+}
+.paper-time-lock { display: inline-flex; align-items: center; gap: 5px; }
+.paper-ready { color: rgba(155,232,180,.72); }
+.paper-status-error { color: #e7a1a1; text-transform: none; letter-spacing: 0; }
+
+.paper-close-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: rgba(4, 11, 7, .5);
+  backdrop-filter: blur(7px);
+}
+.paper-close-card {
+  width: min(294px, 100%);
+  max-height: 94%;
+  overflow: auto;
+  position: relative;
+  padding: 17px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 17px;
+  color: #eaf5ed;
+  background: linear-gradient(180deg, rgba(14,34,23,.975), rgba(7,21,14,.985));
+  box-shadow: 0 22px 48px rgba(0,0,0,.4);
+}
+.paper-close-x {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  color: #82968b;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+}
+.paper-close-x:hover { color: #e8f4eb; background: rgba(255,255,255,.05); }
+.paper-close-kicker {
+  display: block;
+  padding-right: 30px;
+  margin-bottom: 8px;
+  color: #89cda0;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .13em;
+}
+.paper-close-card > strong { display: block; padding-right: 24px; font-size: 17px; line-height: 1.22; letter-spacing: -.02em; }
+.paper-close-card > p { margin: 8px 0 13px; color: #86998e; font-size: 10px; line-height: 1.5; }
+
+.paper-carry-list {
+  display: grid;
+  gap: 5px;
+  margin: 0 0 10px;
+}
+.paper-carry-row {
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 9px;
+  display: grid;
+  grid-template-columns: 24px minmax(0,1fr);
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  color: #b9c9bf;
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 11px;
+  background: rgba(255,255,255,.025);
+}
+.paper-carry-row.selected { border-color: rgba(155,232,180,.15); background: rgba(155,232,180,.055); color: #dce9df; }
+.paper-carry-check {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.12);
+  color: #0a1c11;
+}
+.paper-carry-row.selected .paper-carry-check { background: #9be8b4; border-color: #9be8b4; }
+.paper-carry-row > span:last-child { display: grid; gap: 2px; min-width: 0; }
+.paper-carry-row b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.paper-carry-row small { color: #6f8377; font-size: 8px; }
+
+.paper-close-choice {
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  color: #dce9df;
+  border: 1px solid rgba(155,232,180,.17);
+  border-radius: 12px;
+  background: rgba(155,232,180,.075);
+}
+.paper-close-choice span { display: grid; gap: 2px; }
+.paper-close-choice b { font-size: 11px; }
+.paper-close-choice small { color: #809389; font-size: 8px; }
+.paper-close-cancel {
+  margin: 11px auto 0;
+  display: block;
+  color: #789083;
+  border: 0;
+  background: transparent;
+  font-size: 9px;
+}
+.paper-close-cancel:hover { color: #bdd3c4; }
+
+@media (max-width: 900px) {
+  .interactive-daily-paper { width: min(286px, 88vw); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-daily-paper-status { transition: none; }
+}
+
+/* v0.32.0 patch 06 · the physics sheet can live on Today's desk as a real object. */
+.interactive-daily-paper.is-desk-object {
+  width: 100%;
+  gap: 7px;
+}
+.interactive-daily-paper.is-desk-object .interactive-daily-paper-stage {
+  width: 100%;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: .73;
+}
+.interactive-daily-paper.is-desk-object[data-reduced-motion='false'] .interactive-daily-paper-stage canvas {
+  touch-action: none;
+}
+.interactive-daily-paper.is-desk-object.is-time-locked[data-reduced-motion='false'] .interactive-daily-paper-stage canvas {
+  cursor: grab !important;
+}
+.interactive-daily-paper.is-desk-object.is-time-locked[data-reduced-motion='false'] .interactive-daily-paper-stage canvas:active {
+  cursor: grabbing !important;
+}
+.interactive-daily-paper.is-desk-object .interactive-daily-paper-status {
+  min-height: 14px;
+  padding-inline: 4px;
+  color: rgba(245, 234, 215, .56);
+  font-size: 7px;
+  line-height: 1.35;
+  letter-spacing: .055em;
+  text-align: center;
+}
+.interactive-daily-paper.is-desk-object .paper-time-lock {
+  justify-content: center;
+  gap: 4px;
+}
+.interactive-daily-paper.is-desk-object .paper-time-lock svg { width: 10px; height: 10px; }
+
+/* The desk object is deliberately small. Its carry-forward decision therefore moves to
+   a body-level sheet instead of squeezing a form into the miniature canvas. */
+.paper-close-overlay--desk {
+  position: fixed;
+  inset: 0;
+  z-index: 460;
+  width: 100vw;
+  height: 100dvh;
+  padding: 18px;
+  overflow: auto;
+  background: rgba(9, 12, 10, .68);
+  backdrop-filter: blur(9px) saturate(.9);
+}
+.paper-close-overlay--desk .paper-close-card {
+  width: min(420px, 100%);
+  max-height: calc(100dvh - 36px);
+  padding: 24px;
+  border: 1px solid rgba(78, 65, 49, .18);
+  border-radius: 18px 20px 22px 17px;
+  color: #332c23;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 30px, rgba(79, 99, 112, .045) 31px),
+    radial-gradient(circle at 18% 8%, rgba(255,255,255,.72), transparent 34%),
+    #f3ead8;
+  box-shadow: 0 34px 90px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.62);
+  transform: rotate(-.18deg);
+}
+.paper-close-overlay--desk .paper-close-card:focus { outline: none; }
+.paper-close-overlay--desk .paper-close-x {
+  color: #74695c;
+  background: rgba(255,255,255,.28);
+}
+.paper-close-overlay--desk .paper-close-x:hover { color: #30291f; background: rgba(255,255,255,.5); }
+.paper-close-overlay--desk .paper-close-kicker { color: #5d896a; }
+.paper-close-overlay--desk .paper-close-card > p { color: #71685b; }
+.paper-close-overlay--desk .paper-carry-row {
+  color: #4f473d;
+  border-color: rgba(72, 60, 47, .10);
+  background: rgba(255,255,255,.22);
+}
+.paper-close-overlay--desk .paper-carry-row.selected {
+  color: #30291f;
+  border-color: rgba(84, 126, 94, .22);
+  background: rgba(93, 137, 105, .10);
+}
+.paper-close-overlay--desk .paper-carry-check {
+  color: #f6efe2;
+  border-color: rgba(70, 58, 45, .22);
+}
+.paper-close-overlay--desk .paper-carry-row.selected .paper-carry-check {
+  border-color: #5d896a;
+  background: #5d896a;
+}
+.paper-close-overlay--desk .paper-carry-row small { color: #81776a; }
+.paper-close-overlay--desk .paper-close-choice {
+  color: #f7f2e9;
+  border-color: #557c60;
+  background: #557c60;
+}
+.paper-close-overlay--desk .paper-close-choice small { color: rgba(247,242,233,.72); }
+.paper-close-overlay--desk .paper-close-cancel { color: #74695c; }
+.paper-close-overlay--desk .paper-close-cancel:hover { color: #30291f; }
+.paper-close-overlay--desk :is(button, [role='button']):focus-visible {
+  outline: 2px solid rgba(75, 119, 86, .72);
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .paper-close-overlay--desk { padding: 10px; place-items: end center; }
+  .paper-close-overlay--desk .paper-close-card {
+    width: 100%;
+    max-height: calc(100dvh - 20px);
+    padding: 21px 18px 18px;
+    border-radius: 18px;
+    transform: none;
+  }
+}
+
+/* v0.32.0 patch 07 · the desk calendar behaves like an object, not a labeled widget. */
+.interactive-daily-paper.is-desk-object .interactive-daily-paper-status {
+  opacity: .16;
+  transition: opacity 160ms ease;
+}
+.daily026-paper-object:hover .interactive-daily-paper-status,
+.daily026-paper-object:focus-within .interactive-daily-paper-status {
+  opacity: .72;
+}
+@media (prefers-reduced-motion: reduce) {
+  .interactive-daily-paper.is-desk-object .interactive-daily-paper-status { transition: none; }
+}

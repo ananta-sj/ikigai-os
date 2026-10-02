@@ -1,0 +1,397 @@
+/* ========================================================================== */
+/* Ikigai OS v0.32 · Adaptive product shell                                  */
+/* One UI system for desktop, touch laptops, Android/iOS and narrow windows.  */
+/* This file owns containment/safe-area/input ergonomics, not room aesthetics. */
+/* ========================================================================== */
+
+html {
+  min-width: 0;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body,
+#root,
+.app-shell,
+.main-stage,
+.living-shell .page {
+  min-width: 0;
+  max-width: 100%;
+}
+
+body { overflow-x: hidden; }
+
+/* Touch devices should feel app-like without breaking mouse precision. */
+@media (pointer: coarse) {
+  :where(button, a, summary, input, textarea, select) { touch-action: manipulation; }
+
+  .floating-nav-link {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .familiar-nook { -webkit-tap-highlight-color: transparent; }
+  .floating-nav-label { pointer-events: none; }
+}
+
+/* Safe areas matter for iPhone/iPad standalone mode and Android cutouts. */
+@media (max-width: 680px) {
+  .living-shell .page {
+    --ik-adaptive-page-top: max(72px, calc(env(safe-area-inset-top) + 58px));
+    --ik-adaptive-page-bottom: max(118px, calc(env(safe-area-inset-bottom) + 96px));
+    padding:
+      var(--ik-adaptive-page-top)
+      max(16px, env(safe-area-inset-right))
+      var(--ik-adaptive-page-bottom)
+      max(16px, env(safe-area-inset-left)) !important;
+  }
+
+  .floating-brand {
+    left: max(12px, env(safe-area-inset-left));
+    top: max(10px, env(safe-area-inset-top));
+  }
+
+  .floating-dock {
+    bottom: max(10px, env(safe-area-inset-bottom));
+    max-width: calc(100vw - max(24px, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 16px)));
+  }
+
+  /* Horizontal setting tabs are intentionally scrollable rather than clipped. */
+  .settings-subnav {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .settings-subnav::-webkit-scrollbar { display: none; }
+  .settings-subnav button { flex: 0 0 auto; }
+
+  /* Modal fields should never rely on an intrinsic desktop width. */
+  :where(.ik-workspace-dialog, .memory-capture-modal, .familiar-drawer) :where(input, textarea, select) {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Every body-level capture sheet respects device cutouts/home indicators. */
+  .ik-workspace-dialog-backdrop,
+  .memory-modal-backdrop {
+    padding:
+      max(10px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .ik-surface.ik-workspace-dialog,
+  .memory-capture-modal {
+    max-height: calc(100dvh - max(20px, calc(env(safe-area-inset-top) + env(safe-area-inset-bottom) + 12px)));
+  }
+}
+
+/* Short landscape phones need a denser shell instead of a 64px dock eating the room. */
+@media (max-height: 560px) and (orientation: landscape) and (pointer: coarse) {
+  .living-shell .page {
+    --ik-adaptive-page-top: max(46px, calc(env(safe-area-inset-top) + 38px));
+    --ik-adaptive-page-bottom: max(82px, calc(env(safe-area-inset-bottom) + 66px));
+    padding-left:max(16px,env(safe-area-inset-left));
+    padding-right:max(16px,env(safe-area-inset-right));
+  }
+
+  .floating-brand {
+    left:max(8px,env(safe-area-inset-left));
+    top:max(6px,env(safe-area-inset-top));
+    transform:scale(.8);
+    transform-origin:top left;
+  }
+  .floating-brand-copy { display:none; }
+
+  /* A phone does not become a desktop just because it is rotated. Keep the
+     living dock thumb-reachable and horizontal on iOS/Android landscape. */
+  .floating-dock {
+    left:50%;
+    right:auto;
+    top:auto;
+    bottom:max(6px,env(safe-area-inset-bottom));
+    width:min(620px,calc(100vw - max(20px,calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 12px))));
+    max-width:calc(100vw - 20px);
+    min-height:48px;
+    padding:4px 6px;
+    flex-direction:row;
+    justify-content:flex-start;
+    overflow-x:auto;
+    overflow-y:hidden;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+    scroll-snap-type:x proximity;
+    transform:translateX(-50%);
+    scroll-padding-inline:44%;
+  }
+  .floating-dock::-webkit-scrollbar { display:none; }
+  .floating-dock-glow { display:none; }
+
+  .floating-nav-link {
+    flex:0 0 40px;
+    width:40px;
+    min-width:40px;
+    min-height:40px;
+    scroll-snap-align:center;
+  }
+  .floating-nav-link.active {
+    width:auto;
+    min-width:max-content;
+    flex-basis:auto;
+    padding-inline:9px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+  }
+  .floating-nav-link.active .floating-nav-label {
+    position:static;
+    display:block;
+    padding:0;
+    opacity:1;
+    transform:none;
+    color:currentColor;
+    border:0;
+    background:transparent;
+    box-shadow:none;
+    font:650 8.5px/1 var(--ik-body);
+  }
+
+  .ik-familiar-shell {
+    bottom:max(62px,calc(env(safe-area-inset-bottom) + 54px));
+  }
+  .familiar-drawer {
+    bottom:max(58px,calc(env(safe-area-inset-bottom) + 50px));
+    max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 66px);
+  }
+}
+
+/* Desktop windows can become narrow without suddenly adopting touch assumptions. */
+@media (min-width: 681px) and (max-width: 920px) {
+  .living-shell .page {
+    padding-left: clamp(108px, 13vw, 132px);
+    padding-right: 22px;
+  }
+
+  .ik-page-header { min-width: 0; }
+  .ik-page-actions { flex-wrap: wrap; }
+}
+
+/* Phone navigation keeps eleven rooms discoverable without becoming a row of
+   anonymous icons. The current room earns a compact label, and AppShell keeps
+   it centered when routes change. */
+@media (max-width: 680px) {
+  .floating-dock {
+    justify-content: flex-start;
+    scroll-padding-inline: 44%;
+  }
+
+  .floating-nav-link {
+    flex: 0 0 44px;
+    width: 44px;
+  }
+
+  .floating-nav-link.active {
+    width: auto;
+    min-width: max-content;
+    flex-basis: auto;
+    padding-inline: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .floating-nav-link.active .floating-nav-label {
+    position: static;
+    display: block;
+    padding: 0;
+    opacity: 1;
+    transform: none;
+    color: currentColor;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    font: 650 9px/1 var(--ik-body);
+  }
+}
+
+/* iOS Safari zooms the viewport when a focused form control renders below
+   16px. Page-level lazy CSS can load after the shared design system, so this
+   deliberately high-specificity mobile rule is expressed without !important
+   and remains authoritative even for portaled capture sheets. */
+@media (max-width: 680px) {
+  :root body input:not([type='checkbox']):not([type='radio']):not([data-ikigai-allow-small-input]),
+  :root body textarea:not([data-ikigai-allow-small-input]),
+  :root body select:not([data-ikigai-allow-small-input]) {
+    font-size: max(16px, 1em);
+  }
+
+  /* Virtual keyboards should not leave the focused field hidden behind the
+     dock/home indicator when browsers support scroll-margin on form controls. */
+  :root body :where(input, textarea, select) { scroll-margin-block: 96px; }
+}
+
+/* 320–380px phones are a real target, not a compressed desktop preview. */
+@media (max-width: 380px) {
+  .living-shell .page {
+    --ik-adaptive-page-top: max(68px, calc(env(safe-area-inset-top) + 54px));
+    --ik-adaptive-page-bottom: max(112px, calc(env(safe-area-inset-bottom) + 92px));
+  }
+
+  .floating-brand {
+    left: max(8px, env(safe-area-inset-left));
+    top: max(8px, env(safe-area-inset-top));
+    transform: scale(.84);
+    transform-origin: top left;
+  }
+
+  .floating-dock {
+    width: calc(100vw - max(12px, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 8px)));
+    max-width: none;
+    min-height: 58px;
+    padding: 6px;
+    border-radius: 18px;
+  }
+
+  .floating-nav-link,
+  .floating-nav-link.active {
+    min-height: 42px;
+  }
+  .floating-nav-link { flex-basis: 42px; width: 42px; }
+  .floating-nav-link.active { padding-inline: 8px; gap: 5px; }
+  .floating-nav-link.active .floating-nav-label {
+    max-width: 76px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 8.5px;
+  }
+
+  .familiar-drawer,
+  .side-left .familiar-drawer,
+  .side-right .familiar-drawer,
+  .world-resident-mode.side-left .familiar-drawer,
+  .world-resident-mode.side-right .familiar-drawer {
+    left: max(6px, env(safe-area-inset-left));
+    right: max(6px, env(safe-area-inset-right));
+    bottom: max(70px, calc(env(safe-area-inset-bottom) + 62px));
+    border-radius: 18px;
+  }
+
+  .familiar-drawer-head { min-height: 60px; padding-inline: 10px 8px; }
+  .familiar-drawer-tabs button { min-height: 42px; }
+  .familiar-compose textarea { resize: none; }
+
+  .settings-card { padding-inline: 16px; }
+  .settings-page .setting-row { grid-template-columns: minmax(0,1fr) 48px; gap: 12px; }
+
+  .ik-workspace-dialog__actions,
+  .memory-modal-actions > div {
+    width: 100%;
+  }
+  .ik-workspace-dialog__actions .ik-button,
+  .memory-modal-actions > div .ik-button {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+}
+
+/* v0.32 Patch 15 · release containment ------------------------------------- */
+/* A room may opt into its own composition, but no interactive surface is
+   allowed to create a horizontal page larger than the device viewport. */
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+:where(.living-shell .page, .ik-surface, form, fieldset, section, article) {
+  min-inline-size: 0;
+}
+
+:where(input, textarea, select) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+:where(img, picture, video, canvas) {
+  max-inline-size: 100%;
+}
+
+body :where([role='dialog']) {
+  min-inline-size: 0;
+  max-inline-size: calc(100vw - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right)));
+}
+
+body :where([role='dialog']) :where(input, textarea, select) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+:where(.ik-workspace-dialog, .memory-capture-modal, .familiar-drawer, .journey026-day-sheet, .modal) {
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+
+/* Installed builds should feel like an app surface rather than a web page
+   rubber-banding into browser chrome around the local-first workspace. */
+@media (display-mode: standalone) {
+  html,
+  body,
+  #root,
+  .app-shell {
+    min-height: 100dvh;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+  }
+}
+
+
+/* v0.32 Patch 17 · keyboard-first mobile finishing ------------------------ */
+/* When the software keyboard is active, the persistent dock should not spend
+   scarce visual-viewport height competing with the field being edited. The
+   Familiar stays visible only when its own drawer is the editing surface. */
+@media (max-width: 680px) {
+  body:has(input:focus, textarea:focus, select:focus) .floating-dock {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 14px);
+  }
+
+  body:has(input:focus, textarea:focus, select:focus) .ik-familiar-shell:not(.is-open) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .floating-dock,
+  .ik-familiar-shell {
+    transition:
+      opacity .16s ease,
+      transform .2s cubic-bezier(.2,.75,.25,1);
+  }
+}
+
+[data-ikigai-motion='reduced'] .floating-dock,
+[data-ikigai-motion='reduced'] .ik-familiar-shell {
+  transition: none;
+}
+
+/* v0.32 Patch 21 · mobile dock labels live inside the active capsule. Tooltip
+   surfaces are now scoped in theme-system.css to non-active links or true
+   hover pointers, so the inline mobile room name inherits the capsule itself. */
+@media (max-width: 680px) {
+  .floating-nav-link.active .floating-nav-label {
+    color: currentColor;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+}

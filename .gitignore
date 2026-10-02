@@ -1,0 +1,123 @@
+# Ikigai OS — repository hygiene
+# Keep package-lock.json committed for reproducible installs/builds.
+
+# -----------------------------------------------------------------------------
+# Dependencies
+# -----------------------------------------------------------------------------
+node_modules/
+
+# -----------------------------------------------------------------------------
+# Build / generated output
+# -----------------------------------------------------------------------------
+dist/
+dev-dist/
+.vite/
+coverage/
+.nyc_output/
+*.lcov
+*.tsbuildinfo
+
+# -----------------------------------------------------------------------------
+# Environment files / secrets
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# npm auth/config can contain registry tokens
+.npmrc
+
+# Signing / certificate material — never commit private keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.mobileprovision
+
+# -----------------------------------------------------------------------------
+# Logs / diagnostics
+# -----------------------------------------------------------------------------
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# -----------------------------------------------------------------------------
+# Test / browser automation output
+# -----------------------------------------------------------------------------
+playwright-report/
+test-results/
+.playwright/
+
+# -----------------------------------------------------------------------------
+# Hosting / deployment local state
+# -----------------------------------------------------------------------------
+.vercel/
+.netlify/
+.firebase/
+.wrangler/
+
+# -----------------------------------------------------------------------------
+# OS / editor state
+# -----------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Thumbs.db:encryptable
+desktop.ini
+
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# -----------------------------------------------------------------------------
+# Temporary / merge / backup files
+# -----------------------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*~
+
+# -----------------------------------------------------------------------------
+# Local release-work artifacts — source/docs remain tracked normally
+# -----------------------------------------------------------------------------
+/Ikigai_OS_v*.zip
+/ikigai_patch*/
+/ikigai_*_before/
+/ikigai_*_stage/
+
+# Local app backup exports should not accidentally become repository content.
+# Keep intentional fixtures under tests/ with a different explicit name.
+/ikigai-backup-*.json
+/Ikigai-backup-*.json
+
+# Ignore Markdown by default
+*.md
+
+# Public / required repository docs
+!Readme.md
+!README.md
+
+# Required release/test fixtures
+!DATA_SAFETY.md
+!REIMAGINE_ROADMAP.md
+!UI_SMOKE_CHECKLIST_V0.31.md
+!RELEASE_EVIDENCE_V0.32.md
+!MIGRATION_V0.32.0.md
+!MIGRATION_V0.31.16.md
+!MIGRATION_V0.31.18.md
+!MIGRATION_V0.31.19.md
+!MIGRATION_V0.31.20.md
+!MIGRATION_V0.31.20_PATCH_02.md

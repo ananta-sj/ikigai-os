@@ -1,0 +1,401 @@
+/* v0.31.20 · Career Workspace Repair
+   Career editors own their composition. The v0.31.20 patch 03 treatment intentionally
+   removes the older dashboard-like nested panels in favor of one calm, compact sheet. */
+
+.career-modal-backdrop {
+  display: grid !important;
+  place-items: center !important;
+  overflow: auto;
+  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  background: color-mix(in srgb, #07100d 60%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.career-modal.career-editor {
+  --career-editor-width: 610px;
+  width: min(var(--career-editor-width), calc(100vw - 36px)) !important;
+  max-height: min(790px, calc(100dvh - 36px)) !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  border: 1px solid color-mix(in srgb, var(--ik-border-strong) 72%, transparent) !important;
+  border-radius: 26px !important;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ik-surface-strong) 97%, white 3%), var(--ik-surface-strong)) !important;
+  box-shadow: 0 28px 78px color-mix(in srgb, #020807 27%, transparent) !important;
+  animation: career-editor-enter 180ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.career-editor--project { --career-editor-width: 620px; }
+.career-editor--proof { --career-editor-width: 590px; }
+.career-editor--opportunity { --career-editor-width: 620px; }
+
+.career-editor .career-editor__head {
+  margin: 0 !important;
+  padding: 25px 28px 10px !important;
+  gap: 18px;
+  align-items: flex-start;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.career-editor__intro {
+  min-width: 0;
+  display: grid;
+  gap: 0;
+}
+
+.career-editor__head h2 {
+  max-width: 500px;
+  margin: 7px 0 0 !important;
+  color: var(--ik-text);
+  font-size: clamp(22px, 2.6vw, 27px) !important;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+}
+
+.career-editor__head p {
+  max-width: 470px;
+  margin: 8px 0 0;
+  color: var(--ik-faint);
+  font: var(--ik-type-caption);
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+.career-editor .career-editor__close {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: var(--ik-faint);
+  background: transparent;
+  cursor: pointer;
+  transition: color var(--ik-motion-fast) var(--ik-ease-standard), background var(--ik-motion-fast) var(--ik-ease-standard), border-color var(--ik-motion-fast) var(--ik-ease-standard);
+}
+
+.career-editor .career-editor__close:hover {
+  color: var(--ik-text);
+  border-color: var(--ik-border);
+  background: color-mix(in srgb, var(--ik-surface-soft) 76%, transparent);
+}
+
+.career-editor .career-editor__close:focus-visible {
+  outline: 2px solid var(--ik-focus-ring);
+  outline-offset: 2px;
+}
+
+.career-editor__body {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 13px 28px 16px;
+}
+
+.career-editor__field {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  margin: 0 !important;
+  color: var(--ik-muted);
+  font: 700 9px/1.2 var(--ik-mono);
+  letter-spacing: .055em;
+}
+
+.career-editor__field input,
+.career-editor__field select,
+.career-editor__field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px !important;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--ik-border) 90%, transparent);
+  border-radius: 12px !important;
+  color: var(--ik-text);
+  background: color-mix(in srgb, var(--ik-surface) 88%, var(--ik-bg)) !important;
+  box-sizing: border-box;
+  font: var(--ik-type-body-sm);
+  letter-spacing: normal;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 20%, transparent);
+  transition: border-color var(--ik-motion-fast) var(--ik-ease-standard), background var(--ik-motion-fast) var(--ik-ease-standard), box-shadow var(--ik-motion-fast) var(--ik-ease-standard);
+}
+
+.career-editor__field--hero input {
+  min-height: 48px !important;
+  font-size: 13px;
+}
+
+.career-editor__field textarea {
+  min-height: 78px !important;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.career-editor__field input:hover,
+.career-editor__field select:hover,
+.career-editor__field textarea:hover {
+  border-color: var(--ik-border-strong);
+}
+
+.career-editor__field input:focus,
+.career-editor__field select:focus,
+.career-editor__field textarea:focus {
+  border-color: color-mix(in srgb, var(--ik-accent) 58%, var(--ik-border));
+  background: var(--ik-surface-strong) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ik-accent) 10%, transparent);
+}
+
+.career-editor__field input:focus-visible,
+.career-editor__field select:focus-visible,
+.career-editor__field textarea:focus-visible {
+  outline: none;
+}
+
+.career-editor__grid {
+  min-width: 0;
+  display: grid;
+  gap: 13px;
+}
+.career-editor__grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.career-editor__grid--story { grid-template-columns: minmax(0, 1.5fr) minmax(180px, .72fr); }
+
+/* Career-only progressive disclosure. It deliberately stops looking like a second card
+   inside the modal: one quiet line opens a lightly separated details area. */
+.career-editor .career-editor__details {
+  margin: 1px 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  overflow: visible;
+}
+
+.career-editor .career-editor__details > summary {
+  width: max-content;
+  max-width: 100%;
+  min-height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  color: var(--ik-muted);
+  border: 0 !important;
+  background: transparent !important;
+  cursor: pointer;
+  list-style: none;
+  font: 650 10px/1.2 var(--ik-body);
+}
+
+.career-editor .career-editor__details > summary::-webkit-details-marker { display: none; }
+.career-editor .career-editor__details > summary::before {
+  content: '+';
+  width: 22px;
+  height: 22px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--ik-border);
+  border-radius: 8px;
+  color: var(--ik-accent-text);
+  background: color-mix(in srgb, var(--ik-accent) 5%, var(--ik-surface-soft));
+  font: 700 14px/1 var(--ik-body);
+}
+.career-editor .career-editor__details[open] > summary::before { content: '−'; }
+.career-editor .career-editor__details > summary::after { content: none !important; }
+.career-editor .career-editor__details > summary > span { margin: 0; color: inherit; font: inherit; }
+.career-editor .career-editor__details > summary > small {
+  color: var(--ik-faint);
+  font: 500 8px/1 var(--ik-mono);
+  letter-spacing: .05em;
+}
+.career-editor .career-editor__details[open] > summary { color: var(--ik-text); }
+
+.career-editor .career-editor__details-body {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 14px !important;
+  margin-top: 8px;
+  padding: 17px 0 1px !important;
+  border-top: 1px solid var(--ik-border);
+  animation: career-details-enter 150ms ease-out both;
+}
+
+.career-editor .career-project-story-input,
+.career-editor .career-project-story textarea {
+  height: 44px !important;
+  min-height: 44px !important;
+  resize: none !important;
+  overflow: hidden !important;
+}
+
+.career-editor .career-editor__actions {
+  margin: 0 !important;
+  padding: 8px 28px 24px !important;
+  justify-content: flex-end;
+  gap: 8px;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.career-editor .career-editor__actions .ik-button {
+  min-height: 38px;
+  border-radius: 11px;
+  padding-inline: 14px;
+}
+
+.career-editor .career-editor__actions .ik-button-quiet {
+  border-color: transparent;
+  background: transparent;
+}
+
+@keyframes career-editor-enter {
+  from { opacity: 0; transform: translateY(10px) scale(.988); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes career-details-enter {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+  .career-modal.career-editor {
+    width: min(100%, calc(100vw - 20px)) !important;
+    max-height: calc(100dvh - 20px) !important;
+    border-radius: 20px !important;
+  }
+  .career-editor .career-editor__head { padding: 20px 20px 8px !important; }
+  .career-editor__head h2 { font-size: clamp(21px, 7vw, 25px) !important; }
+  .career-editor__head p { max-width: 92%; }
+  .career-editor__body { padding: 12px 20px 14px; gap: 14px; }
+  .career-editor .career-editor__actions { padding: 7px 20px 19px !important; }
+  .career-editor__grid--two,
+  .career-editor__grid--story { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 470px) {
+  .career-modal-backdrop { padding: 10px; }
+  .career-modal.career-editor { width: 100% !important; max-height: calc(100dvh - 20px) !important; }
+  .career-editor .career-editor__head { padding-inline: 17px !important; }
+  .career-editor__body { padding-inline: 17px; }
+  .career-editor .career-editor__actions { padding-inline: 17px !important; }
+  .career-editor__actions .ik-button { flex: 1 1 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .career-modal.career-editor,
+  .career-editor .career-editor__details-body { animation: none; }
+}
+
+/* GitHub is a connected signal, not another spreadsheet. Give the public activity
+   an identity object and a centered field without pretending it is GitHub's full
+   contribution calendar. */
+.career-github-title > span {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+}
+
+.career-github-stage {
+  width: min(100%, 980px);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--ik-border);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 10% 20%, color-mix(in srgb, var(--ik-accent) 10%, transparent), transparent 32%),
+    color-mix(in srgb, var(--ik-surface-soft) 72%, transparent);
+}
+
+.career-github-emblem {
+  width: 84px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 7px;
+  border: 1px solid color-mix(in srgb, var(--ik-accent) 24%, var(--ik-border));
+  border-radius: 22px;
+  color: var(--ik-accent-text);
+  background: color-mix(in srgb, var(--ik-accent) 8%, var(--ik-surface));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 38%, transparent), var(--ik-shadow-low);
+}
+.career-github-monogram {
+  color: var(--ik-text);
+  font: 700 24px/1 var(--ik-display);
+  letter-spacing: -.04em;
+}
+.career-github-emblem span {
+  font: 760 8px/1 var(--ik-mono);
+  letter-spacing: .14em;
+}
+
+.career-github-stage .career-github-activity {
+  width: 100%;
+  min-width: 0;
+  justify-items: stretch;
+  gap: 12px;
+  padding: 0;
+}
+.career-github-stage .career-github-activity-head {
+  width: 100%;
+  align-items: end;
+}
+.career-github-activity-head > div { display: grid; gap: 5px; }
+.career-github-activity-head strong {
+  color: var(--ik-text);
+  font: 650 clamp(28px, 3vw, 38px)/.9 var(--ik-display);
+}
+
+.career-github-stage .career-github-grid {
+  --github-cell: clamp(17px, 1.55vw, 24px);
+  justify-self: center;
+  margin-inline: auto;
+  padding: 2px 0 4px;
+}
+
+.career-github-legend {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ik-faint);
+  font-size: 8px;
+}
+.career-github-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ik-border) 72%, transparent);
+}
+.career-github-legend i[data-level="1"] { background: color-mix(in srgb, var(--ik-accent) 28%, var(--ik-border)); }
+.career-github-legend i[data-level="2"] { background: color-mix(in srgb, var(--ik-accent) 52%, var(--ik-border)); }
+.career-github-legend i[data-level="3"] { background: color-mix(in srgb, var(--ik-accent) 78%, var(--ik-border)); }
+.career-github-legend i[data-level="4"] { background: var(--ik-accent); }
+
+@media (max-width: 720px) {
+  .career-modal.career-editor {
+    width: min(100%, calc(100vw - 20px)) !important;
+    max-height: calc(100dvh - 20px) !important;
+    border-radius: 18px !important;
+  }
+  .career-editor .career-editor__head { padding: 18px 18px 15px !important; }
+  .career-editor__body { padding: 18px; gap: 15px; }
+  .career-editor .career-editor__actions { padding: 14px 18px 16px !important; }
+  .career-editor__grid--two,
+  .career-editor__grid--story { grid-template-columns: 1fr; }
+  .career-github-stage { grid-template-columns: 1fr; justify-items: center; padding: 15px; }
+  .career-github-emblem { width: 68px; border-radius: 18px; }
+  .career-github-stage .career-github-activity-head { align-items: start; }
+  .career-github-stage .career-github-grid { --github-cell: 14px; gap: 4px; max-width: 100%; overflow-x: auto; }
+}

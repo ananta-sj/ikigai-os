@@ -1,0 +1,1130 @@
+.journey0285-page {
+  min-height: 100%;
+  padding: clamp(18px, 2.4vw, 34px);
+  background:
+    radial-gradient(circle at 50% -18%, color-mix(in srgb, var(--jc-accent) 7%, transparent), transparent 42%),
+    var(--ik-bg, #07120d);
+}
+
+.journey0285-shell {
+  width: min(1460px, 100%);
+  margin: 0 auto;
+}
+
+.journey0285-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.journey0285-header > div { max-width: 760px; }
+.journey0285-header span {
+  display: block;
+  margin-bottom: 6px;
+  color: color-mix(in srgb, var(--jc-accent) 72%, #fff);
+  font: 700 .64rem/1.2 var(--ik-mono, monospace);
+  letter-spacing: .15em;
+}
+.journey0285-header h1 {
+  margin: 0;
+  color: var(--ik-text, #edf6ef);
+  font: 650 clamp(1.55rem, 2.5vw, 2.65rem)/1.04 var(--ik-display, Georgia, serif);
+  letter-spacing: -.025em;
+}
+.journey0285-header p {
+  margin: 8px 0 0;
+  color: var(--ik-muted, #91a398);
+  font-size: .9rem;
+  line-height: 1.55;
+}
+.journey0285-today {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 1px solid color-mix(in srgb, var(--jc-accent) 28%, rgba(255,255,255,.06));
+  border-radius: 999px;
+  color: var(--ik-text, #edf6ef);
+  background: color-mix(in srgb, var(--ik-surface, #102019) 94%, transparent);
+  cursor: pointer;
+}
+
+.journey0285-stage {
+  position: relative;
+  min-height: 690px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--jc-accent) 16%, rgba(255,255,255,.06));
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255,255,255,.035), transparent 38%),
+    linear-gradient(180deg, color-mix(in srgb, var(--ik-surface, #0d1d16) 94%, #fff 2%), var(--ik-bg, #07120d));
+  box-shadow: 0 24px 64px rgba(0,0,0,.23);
+  isolation: isolate;
+}
+.journey0285-stage:focus-visible { outline: 2px solid var(--jc-accent); outline-offset: 3px; }
+
+.journey0285-calendar-wrap {
+  position: relative;
+  width: min(980px, calc(100% - 96px));
+  margin: 42px auto 56px;
+  transition: transform .35s ease, width .35s ease;
+}
+.journey0285-stage.sheet-open .journey0285-calendar-wrap {
+  width: min(910px, calc(100% - 450px));
+  transform: translateX(-16%);
+}
+.journey0285-calendar-shadow {
+  position: absolute;
+  left: 9%; right: 9%; bottom: -26px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.3);
+  filter: blur(19px);
+  transform: rotateX(72deg);
+  pointer-events: none;
+}
+.journey0285-board {
+  position: relative;
+  padding: 34px 20px 20px;
+  border-radius: 16px 16px 22px 22px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--jc-board) 90%, #fff 8%), var(--jc-board));
+  box-shadow: 0 24px 54px var(--jc-shadow), inset 0 0 0 1px rgba(255,255,255,.16);
+}
+.journey0285-rings {
+  position: absolute;
+  z-index: 12;
+  left: 9%; right: 9%; top: 8px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.journey0285-rings i {
+  width: 19px; height: 19px;
+  border: 4px solid color-mix(in srgb, var(--jc-binding) 82%, #29241f);
+  border-bottom-color: color-mix(in srgb, var(--jc-binding) 52%, #fff);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--jc-paper-alt) 88%, #fff);
+  box-shadow: 0 2px 3px rgba(0,0,0,.18);
+}
+.journey0285-stack { position:absolute; inset:39px 13px 12px; pointer-events:none; }
+.journey0285-stack i {
+  position:absolute;
+  inset: 6px -5px -5px;
+  border-radius: 5px 5px 11px 11px;
+  background: color-mix(in srgb, var(--jc-paper-alt) 92%, #8b765e 8%);
+  box-shadow: 0 2px 0 rgba(80,62,44,.12);
+}
+.journey0285-stack i:nth-child(2) { inset: 12px -9px -10px; opacity: .72; }
+
+.journey0285-paper {
+  position: relative;
+  z-index: 5;
+  min-height: 555px;
+  padding: 32px 34px 24px;
+  overflow: hidden;
+  border-radius: 5px 5px 12px 12px;
+  color: var(--jc-ink);
+  background:
+    linear-gradient(90deg, rgba(85,60,35,.035), transparent 8%, transparent 92%, rgba(85,60,35,.045)),
+    linear-gradient(180deg, color-mix(in srgb, var(--jc-paper) 96%, #fff), var(--jc-paper));
+  box-shadow: 0 8px 18px rgba(68,48,31,.16), inset 0 0 0 1px rgba(83,64,46,.08);
+  backface-visibility: hidden;
+}
+.journey0285-paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .16;
+  background: repeating-linear-gradient(0deg, transparent 0 31px, rgba(73,61,48,.018) 32px);
+  mix-blend-mode: multiply;
+}
+
+.journey0285-calendar-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--jc-rule);
+}
+.journey0285-calendar-header small {
+  display:block;
+  color: color-mix(in srgb, var(--jc-ink) 42%, transparent);
+  font: 700 .66rem/1 var(--ik-mono, monospace);
+  letter-spacing: .16em;
+}
+.journey0285-calendar-header h2 {
+  margin: 6px 0 0;
+  font: 700 clamp(2.2rem, 4vw, 4rem)/.95 var(--ik-display, Georgia, serif);
+  letter-spacing: -.035em;
+}
+.journey0285-calendar-header button {
+  min-height: 32px;
+  padding: 0 11px;
+  border: 1px solid color-mix(in srgb, var(--jc-ink) 14%, transparent);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--jc-ink) 66%, transparent);
+  background: rgba(255,255,255,.18);
+  font-size: .68rem;
+  cursor: pointer;
+}
+
+.journey0285-weekdays {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 13px 0 8px;
+  color: color-mix(in srgb, var(--jc-ink) 42%, transparent);
+  font: 700 .55rem/1 var(--ik-mono, monospace);
+  letter-spacing: .09em;
+  text-align: center;
+}
+.journey0285-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid var(--jc-rule);
+  border-left: 1px solid var(--jc-rule);
+}
+.journey0285-grid button {
+  position: relative;
+  min-width: 0;
+  min-height: 68px;
+  border: 0;
+  border-right: 1px solid var(--jc-rule);
+  border-bottom: 1px solid var(--jc-rule);
+  color: inherit;
+  background: rgba(255,255,255,.022);
+  cursor: pointer;
+  transition: background .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.journey0285-grid button:hover,
+.journey0285-grid button:focus-visible {
+  z-index: 2;
+  outline: none;
+  background: color-mix(in srgb, var(--jc-accent) 10%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--jc-accent) 56%, transparent);
+}
+.journey0285-grid button:active { transform: scale(.985); }
+.journey0285-grid button.selected {
+  z-index: 2;
+  background: color-mix(in srgb, var(--jc-accent) 12%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--jc-accent) 72%, transparent);
+}
+.journey0285-grid button.outside { opacity: .28; }
+.journey0285-grid button.today > span { color: var(--jc-accent); font-weight: 800; }
+.journey0285-grid button > span {
+  position: absolute;
+  left: 9px; top: 8px;
+  font: 650 .77rem/1 var(--ik-body, system-ui);
+}
+.journey0285-grid button em {
+  position: absolute;
+  left: 9px; right: 9px; bottom: 8px;
+  display: flex;
+  gap: 4px;
+  font-style: normal;
+}
+.journey0285-grid button em i { width: 5px; height: 5px; border-radius: 50%; background: #817a70; }
+.journey0285-grid button em i.complete { background: #568a67; }
+.journey0285-grid button em i.marker { background: #b98a45; }
+.journey0285-grid button em i.note { background: #7b6a9a; }
+.journey0285-grid button b {
+  position:absolute;
+  right:8px; top:8px;
+  width:3px; height:3px;
+  border-radius:50%;
+  background:var(--jc-sunday);
+  opacity:.62;
+}
+.journey0285-paper footer {
+  position: relative;
+  z-index: 2;
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  padding-top:13px;
+  color:color-mix(in srgb,var(--jc-ink) 44%,transparent);
+  font:600 .6rem/1.3 var(--ik-mono,monospace);
+}
+
+.journey0285-page-turn {
+  position:absolute;
+  z-index:15;
+  top:49%;
+  width:44px; height:58px;
+  display:grid;
+  place-items:center;
+  border:1px solid color-mix(in srgb,var(--jc-binding) 45%,transparent);
+  border-radius:14px;
+  color:var(--jc-paper);
+  background:color-mix(in srgb,var(--jc-binding) 86%,#221c17);
+  box-shadow:0 8px 18px rgba(0,0,0,.2);
+  cursor:pointer;
+  opacity:.38;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.journey0285-calendar-wrap:hover .journey0285-page-turn,
+.journey0285-page-turn:focus-visible { opacity:.94; }
+.journey0285-page-turn.prev { left:-22px; }
+.journey0285-page-turn.next { right:-22px; }
+.journey0285-page-turn:hover { transform:translateY(-1px) scale(1.035); }
+
+/* The date sheet is temporary paper, never a permanent inspector/sidebar. */
+.journey0285-stage .journey026-day-sheet {
+  position:absolute;
+  z-index:72;
+  top:50%;
+  right:max(26px,env(safe-area-inset-right));
+  width:min(430px,calc(100% - 52px));
+  max-height:min(calc(100% - 48px),calc(100dvh - 128px));
+  overflow:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+  transform:translateY(-50%);
+  transform-origin:right center;
+  box-shadow:0 24px 62px rgba(0,0,0,.29),0 2px 0 rgba(255,255,255,.3) inset;
+}
+
+.journey0285-help {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:10px 3px 0;
+  color:var(--ik-muted,#8da094);
+  font-size:.69rem;
+}
+.journey0285-help kbd {
+  padding:1px 5px;
+  border:1px solid color-mix(in srgb,var(--ik-muted,#8da094) 24%,transparent);
+  border-radius:5px;
+  color:var(--ik-text,#eaf4ed);
+  background:color-mix(in srgb,var(--ik-surface,#102019) 84%,transparent);
+  font:600 .64rem/1.4 var(--ik-mono,monospace);
+}
+
+.journey-theme-midnight-desk .journey0285-paper {
+  box-shadow:0 9px 24px rgba(0,0,0,.34),inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+
+/* v0.31.2 · calendar skins behave like different printed objects, not recolours. */
+.journey-theme-nihon-sakura .journey0285-paper::before,
+.journey-theme-fuji-seasonal .journey0285-paper::before,
+.journey-theme-study-wall .journey0285-paper::before,
+.journey-theme-washi-minimal .journey0285-paper::before,
+.journey-theme-letterpress-ledger .journey0285-paper::before,
+.journey-theme-kraft-clip .journey0285-paper::before,
+.journey-theme-newsprint-month .journey0285-paper::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+.journey-theme-nihon-sakura .journey0285-paper::before {
+  height:9px;
+  background:var(--jc-accent);
+  box-shadow:0 1px 0 rgba(255,255,255,.55) inset;
+}
+.journey-theme-nihon-sakura .journey0285-calendar-header h2 { font-family:Georgia,'Times New Roman',serif; }
+
+.journey-theme-fuji-seasonal .journey0285-paper::before {
+  inset:0 0 auto;
+  height:150px;
+  opacity:.58;
+  background:
+    linear-gradient(165deg,transparent 0 49%,rgba(250,250,246,.88) 50% 59%,transparent 60%),
+    linear-gradient(180deg,#8ebbd2 0 50%,#dfe4df 51% 67%,#aab69b 68% 100%);
+  clip-path:polygon(0 0,100% 0,100% 72%,78% 66%,62% 78%,47% 60%,31% 78%,13% 66%,0 76%);
+}
+.journey-theme-fuji-seasonal .journey0285-calendar-header { padding-top:58px; }
+.journey-theme-fuji-seasonal .journey0285-grid { background:rgba(255,255,255,.42); }
+
+.journey-theme-study-wall .journey0285-board { border-radius:8px 8px 14px 14px; }
+.journey-theme-study-wall .journey0285-rings { left:6%; right:6%; }
+.journey-theme-study-wall .journey0285-rings i { width:11px; height:18px; border-width:3px; border-radius:6px; }
+.journey-theme-study-wall .journey0285-paper::before {
+  opacity:.38;
+  background:
+    linear-gradient(90deg,transparent 0 46px,rgba(189,91,91,.16) 46px 47px,transparent 47px),
+    repeating-linear-gradient(0deg,transparent 0 31px,rgba(90,110,103,.08) 31px 32px);
+}
+
+.journey-theme-washi-minimal .journey0285-paper {
+  border-radius:3px 8px 4px 10px;
+  background:
+    repeating-linear-gradient(7deg,rgba(102,83,58,.022) 0 1px,transparent 1px 5px),
+    repeating-linear-gradient(94deg,rgba(121,96,65,.016) 0 1px,transparent 1px 8px),
+    var(--jc-paper);
+}
+.journey-theme-washi-minimal .journey0285-paper::before {
+  box-shadow:inset 0 0 32px rgba(100,74,46,.07);
+  background:radial-gradient(ellipse at 8% 16%,rgba(255,255,255,.2),transparent 17%);
+}
+
+.journey-theme-midnight-desk .journey0285-paper {
+  background:
+    repeating-linear-gradient(92deg,rgba(255,255,255,.012) 0 1px,transparent 1px 5px),
+    linear-gradient(155deg,#171d1b,#111514);
+}
+.journey-theme-midnight-desk .journey0285-grid button { background:rgba(255,255,255,.012); }
+
+.journey-theme-letterpress-ledger .journey0285-paper {
+  border-radius:2px 2px 5px 5px;
+  background:
+    repeating-linear-gradient(0deg,rgba(88,61,37,.018) 0 1px,transparent 1px 4px),
+    linear-gradient(90deg,rgba(95,65,39,.025),transparent 7%,transparent 93%,rgba(95,65,39,.025)),
+    var(--jc-paper);
+  box-shadow:0 11px 22px rgba(55,39,24,.24),inset 0 0 0 4px rgba(103,76,49,.06),inset 0 0 0 5px rgba(255,255,255,.18);
+}
+.journey-theme-letterpress-ledger .journey0285-calendar-header h2 { font-family:Georgia,'Times New Roman',serif; text-shadow:0 1px 0 rgba(255,255,255,.72); }
+.journey-theme-letterpress-ledger .journey0285-grid { box-shadow:inset 0 0 0 1px rgba(86,60,35,.08); }
+.journey-theme-letterpress-ledger .journey0285-paper::before { inset:12px; border:1px double rgba(89,63,40,.18); }
+
+.journey-theme-kraft-clip .journey0285-board {
+  background:linear-gradient(145deg,color-mix(in srgb,var(--jc-board) 88%,#c7a979),var(--jc-board));
+  border-radius:10px;
+}
+.journey-theme-kraft-clip .journey0285-rings { left:39%; right:39%; }
+.journey-theme-kraft-clip .journey0285-rings i { width:26px; height:17px; border-radius:5px 5px 10px 10px; border-width:3px; border-color:#8d693b; background:linear-gradient(90deg,#a77a3c,#d2aa6b,#8c6536); }
+.journey-theme-kraft-clip .journey0285-paper {
+  background:
+    radial-gradient(circle at 19% 31%,rgba(64,43,25,.055) 0 1px,transparent 1.5px),
+    radial-gradient(circle at 72% 58%,rgba(255,255,255,.08) 0 1px,transparent 1.5px),
+    var(--jc-paper);
+  background-size:11px 11px,15px 15px,auto;
+  border-radius:1px 2px 6px 4px;
+}
+.journey-theme-kraft-clip .journey0285-paper::before { width:92px; height:22px; inset:8px auto auto 50%; transform:translateX(-50%) rotate(-1deg); background:rgba(235,220,183,.45); box-shadow:0 1px 2px rgba(75,52,29,.12); }
+
+.journey-theme-newsprint-month .journey0285-paper {
+  filter:saturate(.74);
+  border-radius:1px;
+  background:
+    radial-gradient(circle,rgba(27,29,27,.05) 0 .7px,transparent .9px),
+    linear-gradient(90deg,rgba(20,20,20,.025),transparent 4%,transparent 96%,rgba(20,20,20,.025)),
+    var(--jc-paper);
+  background-size:4px 4px,auto,auto;
+}
+.journey-theme-newsprint-month .journey0285-paper::before { opacity:.11; background:repeating-linear-gradient(90deg,transparent 0 13px,rgba(0,0,0,.08) 13px 14px); }
+.journey-theme-newsprint-month .journey0285-calendar-header h2,
+.journey-theme-newsprint-month .journey0285-grid button > span { font-family:var(--ik-mono,monospace); letter-spacing:-.04em; }
+
+@media (max-width:1120px) {
+  .journey0285-stage { min-height:650px; }
+  .journey0285-calendar-wrap { width:calc(100% - 68px); }
+  .journey0285-stage.sheet-open .journey0285-calendar-wrap { width:calc(100% - 360px); transform:translateX(-12%); }
+  .journey0285-paper { min-height:520px; padding:28px 24px 21px; }
+  .journey0285-grid button { min-height:62px; }
+  .journey0285-stage .journey026-day-sheet { right:18px; width:min(360px,calc(100% - 36px)); }
+}
+
+@media (max-width:820px) {
+  .journey0285-page { padding:10px; }
+  .journey0285-header { align-items:flex-start; }
+  .journey0285-header p { display:none; }
+  .journey0285-header h1 { font-size:1.4rem; }
+  .journey0285-stage { min-height:620px; overflow:hidden; border-radius:20px; }
+  .journey0285-calendar-wrap,
+  .journey0285-stage.sheet-open .journey0285-calendar-wrap { width:calc(100% - 28px); margin:26px auto 42px; transform:none; }
+  .journey0285-board { padding:29px 9px 12px; border-radius:13px 13px 17px 17px; }
+  .journey0285-rings { left:8%; right:8%; top:7px; }
+  .journey0285-rings i { width:15px; height:15px; border-width:3px; }
+  .journey0285-paper { min-height:485px; padding:23px 11px 17px; }
+  .journey0285-calendar-header h2 { font-size:2.25rem; }
+  .journey0285-grid button { min-height:54px; }
+  .journey0285-page-turn { width:34px; height:48px; opacity:.72; }
+  .journey0285-page-turn.prev { left:-8px; }
+  .journey0285-page-turn.next { right:-8px; }
+  .journey0285-stage .journey026-day-sheet {
+    position:fixed;
+    z-index:120;
+    left:max(12px,env(safe-area-inset-left)); right:max(12px,env(safe-area-inset-right)); top:auto;
+    bottom:max(86px,calc(env(safe-area-inset-bottom) + 78px));
+    width:auto;
+    max-height:min(68dvh,650px);
+    border-radius:14px;
+    transform:none !important;
+  }
+  .journey0285-help { display:none; }
+}
+
+@media (max-width:520px) {
+  .journey0285-header span { font-size:.58rem; }
+  .journey0285-today { min-height:36px; padding:0 10px; font-size:.75rem; }
+  .journey0285-stage { min-height:555px; }
+  .journey0285-calendar-wrap { width:calc(100% - 18px); margin-top:18px; }
+  .journey0285-paper { min-height:435px; padding:20px 7px 13px; }
+  .journey0285-calendar-header { padding-inline:5px; }
+  .journey0285-calendar-header h2 { font-size:1.9rem; }
+  .journey0285-calendar-header button { display:none; }
+  .journey0285-weekdays { font-size:.47rem; }
+  .journey0285-grid button { min-height:47px; }
+  .journey0285-grid button > span { left:6px; top:6px; font-size:.66rem; }
+  .journey0285-grid button em { left:6px; bottom:6px; gap:3px; }
+  .journey0285-grid button em i { width:4px; height:4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey0285-page *, .journey0285-page *::before, .journey0285-page *::after {
+    scroll-behavior:auto !important;
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+
+/* v0.31.8 · Journey fills one desktop viewport. The paper flexes vertically
+   instead of forcing the entire page to scroll. Date sheets keep their own
+   bounded overflow when a day genuinely contains more detail. */
+@media (min-width:1100px) and (min-height:700px) {
+  :root:not([data-ikigai-ui-scale='large']):not([data-ikigai-ui-scale='oversized']):not([data-ikigai-text-scale='large']):not([data-ikigai-text-scale='xlarge']) .room-fit-shell .journey0285-page {
+    height:100dvh;
+    min-height:0;
+    padding-top:18px;
+    padding-bottom:18px;
+    overflow:hidden;
+  }
+  .room-fit-shell .journey0285-shell {
+    height:100%;
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr) auto;
+    gap:9px;
+  }
+  .room-fit-shell .journey0285-header { margin-bottom:0; align-items:center; }
+  .room-fit-shell .journey0285-header span { margin-bottom:4px; }
+  .room-fit-shell .journey0285-header h1 { font-size:clamp(1.45rem,2.2vw,2.15rem); }
+  .room-fit-shell .journey0285-header p { margin-top:5px; font-size:.78rem; line-height:1.35; }
+  .room-fit-shell .journey0285-today { min-height:34px; }
+  .room-fit-shell .journey0285-stage { height:100%; min-height:0; border-radius:22px; }
+  .room-fit-shell .journey0285-calendar-wrap {
+    height:calc(100% - 28px);
+    width:min(960px,calc(100% - 82px));
+    margin:14px auto;
+  }
+  .room-fit-shell .journey0285-stage.sheet-open .journey0285-calendar-wrap {
+    height:calc(100% - 28px);
+    width:min(880px,calc(100% - 440px));
+  }
+  .room-fit-shell .journey0285-board { height:100%; padding:28px 18px 16px; }
+  .room-fit-shell .journey0285-stack { inset:33px 13px 10px; }
+  .room-fit-shell .journey0285-paper {
+    height:100%;
+    min-height:0;
+    padding:22px 28px 18px;
+    display:grid;
+    grid-template-rows:auto auto minmax(0,1fr) auto;
+  }
+  .room-fit-shell .journey0285-calendar-header { padding-bottom:11px; }
+  .room-fit-shell .journey0285-calendar-header h2 { font-size:clamp(2rem,3vw,3rem); }
+  .room-fit-shell .journey0285-weekdays { padding:9px 0 6px; }
+  .room-fit-shell .journey0285-grid { min-height:0; grid-template-rows:repeat(6,minmax(0,1fr)); }
+  .room-fit-shell .journey0285-grid button { min-height:0; }
+  .room-fit-shell .journey0285-paper footer { padding-top:8px; }
+  .room-fit-shell .journey0285-help { margin-top:0; min-height:24px; }
+  .room-fit-shell .journey0285-stage .journey026-day-sheet { max-height:calc(100% - 36px); overflow:auto; }
+}
+
+/* v0.31.10 · Journey skins are different calendar constructions, not palette swaps. */
+@media (min-width: 761px) {
+  /* Nihon Sakura — narrow hanging print with a vertical month panel. */
+  .journey-theme-nihon-sakura .journey0285-calendar-wrap { width: min(880px, calc(100% - 120px)); }
+  .journey-theme-nihon-sakura .journey0285-board {
+    padding: 28px 18px 20px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #5f493b, #8b715d 18%, #715846 82%, #4a382f);
+  }
+  .journey-theme-nihon-sakura .journey0285-rings { display: none; }
+  .journey-theme-nihon-sakura .journey0285-stack { inset: 28px 20px 18px; }
+  .journey-theme-nihon-sakura .journey0285-paper {
+    min-height: 590px;
+    padding: 30px 28px 24px;
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: 28px;
+    border-radius: 1px 1px 4px 4px;
+    box-shadow: 0 12px 24px rgba(46,32,25,.22), inset 0 0 0 1px rgba(90,55,48,.08);
+  }
+  .journey-theme-nihon-sakura .journey0285-paper::before {
+    inset: 0 auto 0 0;
+    width: 10px;
+    height: auto;
+    background: var(--jc-accent);
+  }
+  .journey-theme-nihon-sakura .journey0285-paper::after {
+    inset: 0;
+    opacity: .12;
+    background:
+      radial-gradient(circle at 72% 11%, color-mix(in srgb,var(--jc-accent) 45%,transparent) 0 2px, transparent 2.5px),
+      radial-gradient(circle at 78% 16%, color-mix(in srgb,var(--jc-accent) 32%,transparent) 0 1.5px, transparent 2px);
+    background-size: 72px 72px, 93px 93px;
+  }
+  .journey-theme-nihon-sakura .journey0285-calendar-header {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 8px 22px 8px 2px;
+    border: 0;
+    border-right: 1px solid color-mix(in srgb,var(--jc-accent) 42%,var(--jc-rule));
+  }
+  .journey-theme-nihon-sakura .journey0285-calendar-header h2 {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    margin: 14px 0 0;
+    font-size: clamp(2.1rem,3.4vw,3.25rem);
+    letter-spacing: .02em;
+  }
+  .journey-theme-nihon-sakura .journey0285-calendar-header button { align-self: flex-start; }
+  .journey-theme-nihon-sakura .journey0285-weekdays { grid-column: 2; padding-top: 8px; }
+  .journey-theme-nihon-sakura .journey0285-grid { grid-column: 2; }
+  .journey-theme-nihon-sakura .journey0285-grid button { min-height: 74px; }
+  .journey-theme-nihon-sakura .journey0285-paper footer { grid-column: 2; }
+
+  /* Fuji Seasonal — landscape poster first, compact calendar beneath it. */
+  .journey-theme-fuji-seasonal .journey0285-calendar-wrap { width: min(1040px, calc(100% - 74px)); }
+  .journey-theme-fuji-seasonal .journey0285-board { padding: 18px; border-radius: 8px; }
+  .journey-theme-fuji-seasonal .journey0285-rings { display: none; }
+  .journey-theme-fuji-seasonal .journey0285-paper { min-height: 570px; padding: 24px 30px 22px; border-radius: 2px; }
+  .journey-theme-fuji-seasonal .journey0285-paper::before {
+    inset: 0 0 auto;
+    height: 235px;
+    opacity: .9;
+    clip-path: none;
+    background:
+      radial-gradient(circle at 73% 22%, rgba(255,244,214,.72) 0 32px, transparent 33px),
+      linear-gradient(162deg, transparent 0 45%, rgba(252,252,248,.92) 46% 53%, transparent 54%),
+      linear-gradient(180deg,#77b4d2 0 46%,#d9e3e2 47% 58%,#a0af91 59% 75%,#71856d 76% 100%);
+  }
+  .journey-theme-fuji-seasonal .journey0285-paper::after {
+    inset: 204px 0 auto;
+    height: 34px;
+    opacity: .45;
+    background: linear-gradient(180deg, transparent, rgba(38,58,46,.2));
+  }
+  .journey-theme-fuji-seasonal .journey0285-calendar-header {
+    min-height: 184px;
+    align-items: flex-start;
+    padding: 22px 8px 18px;
+    border-bottom: 0;
+  }
+  .journey-theme-fuji-seasonal .journey0285-calendar-header > div { margin-top: 108px; padding: 9px 12px; background: rgba(255,255,255,.7); backdrop-filter: blur(4px); }
+  .journey-theme-fuji-seasonal .journey0285-calendar-header h2 { font-size: 2.4rem; }
+  .journey-theme-fuji-seasonal .journey0285-calendar-header button { margin-top: 112px; background: rgba(255,255,255,.72); }
+  .journey-theme-fuji-seasonal .journey0285-weekdays { padding-top: 11px; }
+  .journey-theme-fuji-seasonal .journey0285-grid button { min-height: 51px; background: rgba(255,255,255,.55); }
+
+  /* Study Wall — side-bound ruled planner. */
+  .journey-theme-study-wall .journey0285-calendar-wrap { width: min(900px, calc(100% - 110px)); }
+  .journey-theme-study-wall .journey0285-board { padding: 18px 18px 18px 42px; border-radius: 5px; background: #b8ad97; }
+  .journey-theme-study-wall .journey0285-rings {
+    display: flex;
+    flex-direction: column;
+    left: 8px;
+    right: auto;
+    top: 9%;
+    bottom: 9%;
+    justify-content: space-between;
+  }
+  .journey-theme-study-wall .journey0285-rings i { width: 20px; height: 12px; border-width: 3px; border-radius: 6px; }
+  .journey-theme-study-wall .journey0285-stack { inset: 16px 14px 14px 42px; }
+  .journey-theme-study-wall .journey0285-paper { min-height: 595px; padding: 31px 31px 25px 72px; border-radius: 2px 5px 5px 2px; transform: rotate(-.18deg); }
+  .journey-theme-study-wall .journey0285-paper::before {
+    inset: 0;
+    opacity: .62;
+    background:
+      linear-gradient(90deg, transparent 0 48px, rgba(190,80,80,.2) 48px 50px, transparent 50px),
+      repeating-linear-gradient(0deg, transparent 0 34px, rgba(83,108,99,.095) 34px 35px);
+  }
+  .journey-theme-study-wall .journey0285-paper::after { display: none; }
+  .journey-theme-study-wall .journey0285-calendar-header { border-bottom: 2px solid color-mix(in srgb,var(--jc-rule) 80%,transparent); }
+  .journey-theme-study-wall .journey0285-calendar-header h2 { font-family: var(--ik-body,system-ui); font-weight: 600; }
+  .journey-theme-study-wall .journey0285-grid { border-color: color-mix(in srgb,var(--jc-rule) 66%,transparent); }
+  .journey-theme-study-wall .journey0285-grid button { min-height: 73px; background: rgba(255,255,255,.18); }
+
+  /* Washi Minimal — a loose handmade sheet with open, unboxed days. */
+  .journey-theme-washi-minimal .journey0285-calendar-wrap { width: min(900px, calc(100% - 118px)); }
+  .journey-theme-washi-minimal .journey0285-board { padding: 0; background: transparent; box-shadow: none; }
+  .journey-theme-washi-minimal .journey0285-rings,
+  .journey-theme-washi-minimal .journey0285-stack { display: none; }
+  .journey-theme-washi-minimal .journey0285-paper {
+    min-height: 610px;
+    padding: 48px 52px 38px;
+    clip-path: polygon(.4% 1.2%, 9% .3%, 18% 1.1%, 29% .2%, 41% .8%, 53% .1%, 65% .9%, 78% .2%, 90% .8%, 99.5% .2%, 99% 13%, 99.7% 26%, 99.1% 40%, 99.8% 55%, 99.1% 72%, 99.6% 88%, 99% 99%, 88% 99.5%, 72% 99%, 54% 99.7%, 39% 99.1%, 23% 99.6%, 8% 99%, .5% 99.5%, 1% 86%, .3% 70%, .8% 52%, .2% 35%, .9% 18%);
+    box-shadow: 0 18px 38px rgba(72,53,35,.2);
+  }
+  .journey-theme-washi-minimal .journey0285-calendar-header { align-items: flex-start; padding-bottom: 26px; border-bottom: 0; }
+  .journey-theme-washi-minimal .journey0285-calendar-header h2 { font-weight: 500; font-size: clamp(2.8rem,5vw,4.8rem); }
+  .journey-theme-washi-minimal .journey0285-weekdays { padding: 9px 0 14px; border-bottom: 1px solid color-mix(in srgb,var(--jc-rule) 48%,transparent); }
+  .journey-theme-washi-minimal .journey0285-grid { gap: 0 14px; border: 0; }
+  .journey-theme-washi-minimal .journey0285-grid button {
+    min-height: 72px;
+    border: 0;
+    border-bottom: 1px solid color-mix(in srgb,var(--jc-rule) 42%,transparent);
+    background: transparent;
+  }
+  .journey-theme-washi-minimal .journey0285-grid button:hover,
+  .journey-theme-washi-minimal .journey0285-grid button:focus-visible,
+  .journey-theme-washi-minimal .journey0285-grid button.selected { box-shadow: inset 0 -2px 0 color-mix(in srgb,var(--jc-accent) 64%,transparent); }
+
+  /* Midnight Desk — a horizontal desk pad with separated day tiles. */
+  .journey-theme-midnight-desk .journey0285-calendar-wrap { width: min(1080px, calc(100% - 68px)); }
+  .journey-theme-midnight-desk .journey0285-board {
+    padding: 22px 26px 26px;
+    border-radius: 22px;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(255,255,255,.035), transparent 24%),
+      linear-gradient(145deg,#171814,#080b0a 70%);
+    box-shadow: 0 28px 68px rgba(0,0,0,.46), inset 0 0 0 1px rgba(210,190,142,.08);
+  }
+  .journey-theme-midnight-desk .journey0285-rings,
+  .journey-theme-midnight-desk .journey0285-stack { display: none; }
+  .journey-theme-midnight-desk .journey0285-paper { min-height: 545px; padding: 28px 30px 24px; border-radius: 14px; }
+  .journey-theme-midnight-desk .journey0285-calendar-header { padding-bottom: 14px; border-bottom: 0; }
+  .journey-theme-midnight-desk .journey0285-calendar-header h2 { font-family: var(--ik-body,system-ui); font-size: 3rem; font-weight: 500; }
+  .journey-theme-midnight-desk .journey0285-weekdays { padding: 8px 4px; }
+  .journey-theme-midnight-desk .journey0285-grid { gap: 7px; border: 0; }
+  .journey-theme-midnight-desk .journey0285-grid button {
+    min-height: 59px;
+    border: 1px solid color-mix(in srgb,var(--jc-rule) 75%,transparent);
+    border-radius: 8px;
+    background: linear-gradient(155deg,rgba(255,255,255,.025),rgba(255,255,255,.006));
+  }
+  .journey-theme-midnight-desk .journey0285-grid button:hover,
+  .journey-theme-midnight-desk .journey0285-grid button:focus-visible,
+  .journey-theme-midnight-desk .journey0285-grid button.selected { transform: translateY(-1px); }
+  .journey-theme-midnight-desk .journey0285-paper footer { justify-content: flex-end; }
+
+  /* Letterpress Ledger — bound ledger with month folio on the left and calendar on the right. */
+  .journey-theme-letterpress-ledger .journey0285-calendar-wrap { width: min(1060px, calc(100% - 72px)); }
+  .journey-theme-letterpress-ledger .journey0285-board {
+    padding: 18px;
+    border-radius: 9px;
+    background: linear-gradient(90deg,#4a372b,#70533c 7%,#5a4030 50%,#70533c 93%,#4a372b);
+  }
+  .journey-theme-letterpress-ledger .journey0285-rings,
+  .journey-theme-letterpress-ledger .journey0285-stack { display: none; }
+  .journey-theme-letterpress-ledger .journey0285-paper {
+    min-height: 565px;
+    padding: 34px 34px 26px;
+    display: grid;
+    grid-template-columns: 178px minmax(0,1fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: 36px;
+    border-radius: 4px 7px 7px 4px;
+  }
+  .journey-theme-letterpress-ledger .journey0285-paper::before {
+    inset: 0 auto 0 198px;
+    width: 22px;
+    border: 0;
+    background: linear-gradient(90deg,rgba(70,44,25,.08),rgba(255,255,255,.35),rgba(70,44,25,.1));
+    box-shadow: inset 1px 0 rgba(80,52,31,.1), inset -1px 0 rgba(80,52,31,.09);
+  }
+  .journey-theme-letterpress-ledger .journey0285-paper::after { inset: 13px; opacity: 1; border: 1px double rgba(89,63,40,.18); background: none; }
+  .journey-theme-letterpress-ledger .journey0285-calendar-header {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 12px 26px 10px 2px;
+    border: 0;
+  }
+  .journey-theme-letterpress-ledger .journey0285-calendar-header h2 { margin-top: 22px; font-size: 3.25rem; line-height: .88; }
+  .journey-theme-letterpress-ledger .journey0285-calendar-header button { border-radius: 2px; }
+  .journey-theme-letterpress-ledger .journey0285-weekdays { grid-column: 2; padding-top: 10px; }
+  .journey-theme-letterpress-ledger .journey0285-grid { grid-column: 2; border: 0; gap: 1px; background: color-mix(in srgb,var(--jc-rule) 45%,transparent); }
+  .journey-theme-letterpress-ledger .journey0285-grid button { min-height: 70px; border: 0; background: color-mix(in srgb,var(--jc-paper) 96%,#fff); }
+  .journey-theme-letterpress-ledger .journey0285-paper footer { grid-column: 2; justify-content: space-between; }
+
+  /* Kraft Clip — tall clipboard sheet with a single brass clamp. */
+  .journey-theme-kraft-clip .journey0285-calendar-wrap { width: min(790px, calc(100% - 150px)); }
+  .journey-theme-kraft-clip .journey0285-board { padding: 44px 26px 28px; border-radius: 14px; }
+  .journey-theme-kraft-clip .journey0285-rings { top: 8px; left: 42%; right: 42%; }
+  .journey-theme-kraft-clip .journey0285-rings i { display: none; }
+  .journey-theme-kraft-clip .journey0285-rings::before {
+    content: "";
+    width: 100%;
+    height: 28px;
+    border-radius: 4px 4px 13px 13px;
+    background: linear-gradient(90deg,#7d5b34,#cba66a 42%,#e4c98d 50%,#be9252 58%,#6f4f2d);
+    box-shadow: 0 4px 7px rgba(48,31,16,.28), inset 0 1px rgba(255,255,255,.38);
+  }
+  .journey-theme-kraft-clip .journey0285-stack { display: none; }
+  .journey-theme-kraft-clip .journey0285-paper { min-height: 620px; padding: 42px 34px 30px; border-radius: 2px; }
+  .journey-theme-kraft-clip .journey0285-paper::before { display: none; }
+  .journey-theme-kraft-clip .journey0285-calendar-header { align-items: flex-start; }
+  .journey-theme-kraft-clip .journey0285-calendar-header h2 { font-size: 3rem; }
+  .journey-theme-kraft-clip .journey0285-grid button { min-height: 76px; background: rgba(255,255,255,.055); }
+
+  /* Newsprint Month — flat broadsheet with masthead and editorial rules. */
+  .journey-theme-newsprint-month .journey0285-calendar-wrap { width: min(1120px, calc(100% - 64px)); }
+  .journey-theme-newsprint-month .journey0285-board { padding: 0; background: transparent; box-shadow: none; }
+  .journey-theme-newsprint-month .journey0285-rings,
+  .journey-theme-newsprint-month .journey0285-stack { display: none; }
+  .journey-theme-newsprint-month .journey0285-paper { min-height: 545px; padding: 25px 30px 22px; border-radius: 0; transform: rotate(.12deg); }
+  .journey-theme-newsprint-month .journey0285-paper::before {
+    inset: 74px 30px auto;
+    height: 4px;
+    opacity: 1;
+    background: linear-gradient(var(--jc-ink),var(--jc-ink)) top/100% 1px no-repeat,
+                linear-gradient(var(--jc-ink),var(--jc-ink)) bottom/100% 1px no-repeat;
+  }
+  .journey-theme-newsprint-month .journey0285-paper::after {
+    inset: 0;
+    opacity: .12;
+    background: radial-gradient(circle,rgba(25,27,24,.14) 0 .6px,transparent .75px);
+    background-size: 4px 4px;
+  }
+  .journey-theme-newsprint-month .journey0285-calendar-header { align-items: center; padding: 0 0 22px; border: 0; }
+  .journey-theme-newsprint-month .journey0285-calendar-header > div { display: flex; align-items: baseline; gap: 14px; }
+  .journey-theme-newsprint-month .journey0285-calendar-header small { order: 2; }
+  .journey-theme-newsprint-month .journey0285-calendar-header h2 { margin: 0; font: 800 3.35rem/.9 Georgia,'Times New Roman',serif; text-transform: uppercase; letter-spacing: -.02em; }
+  .journey-theme-newsprint-month .journey0285-calendar-header button { border-radius: 0; border-width: 1px 0; background: transparent; }
+  .journey-theme-newsprint-month .journey0285-weekdays { margin-top: 10px; padding: 9px 0 7px; border-top: 2px solid var(--jc-ink); border-bottom: 1px solid var(--jc-ink); }
+  .journey-theme-newsprint-month .journey0285-grid { border: 0; }
+  .journey-theme-newsprint-month .journey0285-grid button {
+    min-height: 61px;
+    border: 0;
+    border-right: 1px dotted color-mix(in srgb,var(--jc-ink) 46%,transparent);
+    border-bottom: 1px solid color-mix(in srgb,var(--jc-ink) 38%,transparent);
+    background: transparent;
+  }
+  .journey-theme-newsprint-month .journey0285-grid button:nth-child(7n) { border-right: 0; }
+  .journey-theme-newsprint-month .journey0285-paper footer { border-top: 2px solid var(--jc-ink); justify-content: space-between; }
+}
+
+/* v0.31.12 · seasonal / cultural Journey editions. These are different objects,
+   not recolours of the core calendar. */
+@media (min-width: 761px) {
+  /* Hanami Scroll — long hanging print with blossom margin and paired rails. */
+  .journey-theme-hanami-scroll .journey0285-calendar-wrap { width:min(880px,calc(100% - 120px)); }
+  .journey-theme-hanami-scroll .journey0285-board { padding:31px 24px; border-radius:3px; background:linear-gradient(90deg,#785f52,#b69a82 9%,#b69a82 91%,#785f52); }
+  .journey-theme-hanami-scroll .journey0285-rings,.journey-theme-hanami-scroll .journey0285-stack { display:none; }
+  .journey-theme-hanami-scroll .journey0285-board::before,.journey-theme-hanami-scroll .journey0285-board::after { content:""; position:absolute; z-index:3; left:8%; right:8%; height:12px; border-radius:7px; background:linear-gradient(180deg,#6e5447,#a88770 48%,#684e42); box-shadow:0 4px 8px rgba(65,43,37,.24); }
+  .journey-theme-hanami-scroll .journey0285-board::before { top:13px; }.journey-theme-hanami-scroll .journey0285-board::after { bottom:13px; }
+  .journey-theme-hanami-scroll .journey0285-paper { min-height:600px; padding:38px 38px 30px 126px; border-radius:1px; }
+  .journey-theme-hanami-scroll .journey0285-paper::before { inset:0 auto 0 0; width:96px; opacity:.8; background:radial-gradient(circle at 28% 14%,rgba(207,111,137,.38) 0 5px,transparent 6px),radial-gradient(circle at 62% 24%,rgba(207,111,137,.24) 0 4px,transparent 5px),radial-gradient(circle at 34% 47%,rgba(207,111,137,.18) 0 3px,transparent 4px),linear-gradient(180deg,rgba(207,111,137,.09),transparent 70%); background-size:58px 70px,77px 83px,49px 61px,auto; }
+  .journey-theme-hanami-scroll .journey0285-calendar-header { padding-bottom:18px; border-bottom:2px solid color-mix(in srgb,var(--jc-accent) 35%,transparent); }
+  .journey-theme-hanami-scroll .journey0285-calendar-header h2 { font-size:3.45rem; font-weight:500; }
+  .journey-theme-hanami-scroll .journey0285-grid { border:0; gap:6px; }
+  .journey-theme-hanami-scroll .journey0285-grid button { min-height:68px; border:0; border-bottom:1px solid color-mix(in srgb,var(--jc-rule) 58%,transparent); background:rgba(255,255,255,.16); }
+
+  /* Winter Advent — card stock on a green cloth board; days become little folded cards. */
+  .journey-theme-winter-advent .journey0285-calendar-wrap { width:min(1000px,calc(100% - 80px)); }
+  .journey-theme-winter-advent .journey0285-board { padding:24px; border-radius:18px; background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 2px,transparent 2px 8px),linear-gradient(145deg,#526452,#32473a); box-shadow:0 24px 48px rgba(34,48,39,.28); }
+  .journey-theme-winter-advent .journey0285-rings { display:none; }.journey-theme-winter-advent .journey0285-stack { inset:29px 30px 18px; }
+  .journey-theme-winter-advent .journey0285-paper { min-height:565px; padding:28px 32px 26px; border-radius:13px; }
+  .journey-theme-winter-advent .journey0285-paper::before { inset:0; opacity:.32; background:linear-gradient(rgba(49,92,72,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(142,51,55,.028) 1px,transparent 1px); background-size:22px 22px; }
+  .journey-theme-winter-advent .journey0285-calendar-header { align-items:center; border-bottom:0; padding-bottom:14px; }
+  .journey-theme-winter-advent .journey0285-calendar-header h2 { font-size:3rem; }
+  .journey-theme-winter-advent .journey0285-weekdays { padding:8px 6px; border-radius:8px; background:color-mix(in srgb,var(--jc-board) 14%,transparent); }
+  .journey-theme-winter-advent .journey0285-grid { gap:7px; border:0; padding-top:8px; }
+  .journey-theme-winter-advent .journey0285-grid button { min-height:63px; border:1px solid color-mix(in srgb,var(--jc-rule) 72%,transparent); border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,rgba(255,255,255,.56),rgba(255,255,255,.12)); box-shadow:0 4px 8px rgba(50,64,52,.07); }
+  .journey-theme-winter-advent .journey0285-grid button:nth-child(5n) { box-shadow:inset 0 3px 0 color-mix(in srgb,var(--jc-accent) 36%,transparent),0 4px 8px rgba(50,64,52,.07); }
+
+  /* Holi Powder — loose poster with colour clouds around an airy card grid. */
+  .journey-theme-holi-powder .journey0285-calendar-wrap { width:min(1080px,calc(100% - 70px)); }
+  .journey-theme-holi-powder .journey0285-board { padding:0; background:transparent; box-shadow:none; }
+  .journey-theme-holi-powder .journey0285-rings,.journey-theme-holi-powder .journey0285-stack { display:none; }
+  .journey-theme-holi-powder .journey0285-paper { min-height:555px; padding:32px 36px 28px; border-radius:22px 7px 22px 7px; transform:rotate(-.12deg); }
+  .journey-theme-holi-powder .journey0285-paper::before { inset:-30px; opacity:.9; background:radial-gradient(circle at 5% 15%,rgba(229,76,143,.25),transparent 16%),radial-gradient(circle at 93% 20%,rgba(68,121,181,.24),transparent 17%),radial-gradient(circle at 86% 91%,rgba(235,168,55,.22),transparent 18%),radial-gradient(circle at 12% 85%,rgba(75,164,109,.18),transparent 16%); }
+  .journey-theme-holi-powder .journey0285-calendar-header { border-bottom:0; padding-bottom:9px; }
+  .journey-theme-holi-powder .journey0285-calendar-header h2 { font-family:var(--ik-body); font-size:3.5rem; font-weight:750; letter-spacing:-.05em; }
+  .journey-theme-holi-powder .journey0285-weekdays { color:var(--jc-ink); opacity:.72; }
+  .journey-theme-holi-powder .journey0285-grid { gap:8px; border:0; }
+  .journey-theme-holi-powder .journey0285-grid button { min-height:65px; border:0; border-radius:11px; background:rgba(255,255,255,.5); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--jc-rule) 50%,transparent); }
+  .journey-theme-holi-powder .journey0285-grid button:nth-child(4n+1) { background:color-mix(in srgb,#e65b92 9%,var(--jc-paper)); }.journey-theme-holi-powder .journey0285-grid button:nth-child(4n+2) { background:color-mix(in srgb,#4d84ca 8%,var(--jc-paper)); }.journey-theme-holi-powder .journey0285-grid button:nth-child(4n+3) { background:color-mix(in srgb,#edb13e 9%,var(--jc-paper)); }.journey-theme-holi-powder .journey0285-grid button:nth-child(4n) { background:color-mix(in srgb,#58a778 8%,var(--jc-paper)); }
+
+  /* Diwali Diya — illuminated night ledger with an ornamental frame. */
+  .journey-theme-diwali-diya .journey0285-calendar-wrap { width:min(990px,calc(100% - 90px)); }
+  .journey-theme-diwali-diya .journey0285-board { padding:24px; border-radius:16px; background:radial-gradient(circle at 50% 0,rgba(242,184,75,.16),transparent 32%),linear-gradient(145deg,#10162a,#080d1c); box-shadow:0 28px 62px rgba(0,0,0,.45); }
+  .journey-theme-diwali-diya .journey0285-rings,.journey-theme-diwali-diya .journey0285-stack { display:none; }
+  .journey-theme-diwali-diya .journey0285-paper { min-height:565px; padding:34px 38px 30px; border-radius:8px; box-shadow:0 0 0 1px rgba(242,184,75,.2),0 0 34px rgba(242,184,75,.09); }
+  .journey-theme-diwali-diya .journey0285-paper::before { inset:13px; opacity:1; border:1px solid rgba(242,184,75,.24); border-radius:5px; background:repeating-radial-gradient(circle at 50% 0,transparent 0 22px,rgba(242,184,75,.045) 23px 24px,transparent 25px 34px); }
+  .journey-theme-diwali-diya .journey0285-calendar-header { border-bottom:1px solid rgba(242,184,75,.28); }
+  .journey-theme-diwali-diya .journey0285-calendar-header h2 { font-size:3.35rem; color:#fff1c9; text-shadow:0 0 16px rgba(242,184,75,.12); }
+  .journey-theme-diwali-diya .journey0285-grid { gap:5px; border:0; }
+  .journey-theme-diwali-diya .journey0285-grid button { min-height:66px; border:1px solid rgba(242,184,75,.16); border-radius:4px; background:rgba(255,238,190,.022); }
+  .journey-theme-diwali-diya .journey0285-grid button.selected { box-shadow:0 0 0 1px var(--jc-accent),0 0 18px rgba(242,184,75,.15); }
+
+  /* Momentum Month — studio board with strong weekly rhythm and checkpoint stripe. */
+  .journey-theme-momentum-month .journey0285-calendar-wrap { width:min(1100px,calc(100% - 64px)); }
+  .journey-theme-momentum-month .journey0285-board { padding:18px; border-radius:3px; background:linear-gradient(90deg,#b7b1a6,#d1cbc0 50%,#b7b1a6); box-shadow:7px 9px 0 rgba(48,48,45,.08),0 22px 44px rgba(48,48,45,.16); }
+  .journey-theme-momentum-month .journey0285-rings,.journey-theme-momentum-month .journey0285-stack { display:none; }
+  .journey-theme-momentum-month .journey0285-paper { min-height:545px; padding:26px 30px 23px; border-radius:2px; background-image:linear-gradient(rgba(60,65,68,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(60,65,68,.025) 1px,transparent 1px); background-size:24px 24px; }
+  .journey-theme-momentum-month .journey0285-paper::before { inset:0 auto 0 0; width:10px; background:var(--jc-accent); opacity:1; }
+  .journey-theme-momentum-month .journey0285-calendar-header { align-items:center; padding-bottom:13px; border-bottom:3px solid var(--jc-ink); }
+  .journey-theme-momentum-month .journey0285-calendar-header h2 { font-family:var(--ik-body); font-size:3.25rem; font-weight:800; letter-spacing:-.055em; }
+  .journey-theme-momentum-month .journey0285-weekdays { padding:9px 0 7px; font-weight:800; }
+  .journey-theme-momentum-month .journey0285-grid { border:0; gap:5px 7px; }
+  .journey-theme-momentum-month .journey0285-grid button { min-height:64px; border:1px solid color-mix(in srgb,var(--jc-rule) 58%,transparent); border-left:4px solid color-mix(in srgb,var(--jc-accent) 54%,transparent); border-radius:2px; background:rgba(255,255,255,.42); }
+  .journey-theme-momentum-month .journey0285-paper footer { border-top:2px solid var(--jc-ink); }
+}
+
+/* v0.32 Patch 21 · Journey constructions survive phone widths ---------------
+   Desktop has full-size physical constructions. Phones use simplified versions
+   of the same objects instead of collapsing every theme back to one ring-bound
+   white calendar with only a palette change. */
+.journey0285-theme-signature { display:none; }
+
+@media (max-width:760px) {
+  .journey0285-theme-signature {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:8px;
+    color:color-mix(in srgb,var(--jc-ink) 60%,transparent);
+    font:700 .48rem/1 var(--ik-mono,monospace);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .journey0285-theme-signature b {
+    min-width:20px;
+    min-height:20px;
+    display:inline-grid;
+    place-items:center;
+    border:1px solid color-mix(in srgb,var(--jc-accent) 34%,transparent);
+    border-radius:50%;
+    color:var(--jc-accent);
+    font:700 .65rem/1 var(--ik-body,system-ui);
+    letter-spacing:0;
+  }
+  .journey0285-theme-signature em { font-style:normal; }
+
+  /* Nihon Sakura · hanging market print. */
+  .journey-theme-nihon-sakura .journey0285-board {
+    padding:17px 9px 12px;
+    border-radius:5px;
+    background:linear-gradient(90deg,#5d473a,#90735d 18%,#765b48 82%,#49372e);
+  }
+  .journey-theme-nihon-sakura .journey0285-rings { display:none; }
+  .journey-theme-nihon-sakura .journey0285-stack { inset:18px 11px 10px; }
+  .journey-theme-nihon-sakura .journey0285-paper { border-radius:1px 1px 4px 4px; padding-left:18px; }
+  .journey-theme-nihon-sakura .journey0285-paper::before {
+    inset:0 auto 0 0;
+    width:7px;
+    height:auto;
+    background:var(--jc-accent);
+    box-shadow:none;
+  }
+  .journey-theme-nihon-sakura .journey0285-paper::after {
+    opacity:.16;
+    background:
+      radial-gradient(circle at 86% 12%,color-mix(in srgb,var(--jc-accent) 42%,transparent) 0 3px,transparent 4px),
+      radial-gradient(circle at 78% 20%,color-mix(in srgb,var(--jc-accent) 28%,transparent) 0 2px,transparent 3px);
+    background-size:56px 60px,71px 74px;
+  }
+  .journey-theme-nihon-sakura .journey0285-calendar-header { border-bottom-color:color-mix(in srgb,var(--jc-accent) 38%,var(--jc-rule)); }
+  .journey-theme-nihon-sakura .journey0285-calendar-header h2 { font-family:Georgia,'Times New Roman',serif; font-weight:500; }
+
+  /* Fuji Seasonal · poster landscape above the month. */
+  .journey-theme-fuji-seasonal .journey0285-board { padding:10px; border-radius:7px; }
+  .journey-theme-fuji-seasonal .journey0285-rings { display:none; }
+  .journey-theme-fuji-seasonal .journey0285-paper { padding-top:98px; border-radius:2px; }
+  .journey-theme-fuji-seasonal .journey0285-paper::before {
+    inset:0 0 auto;
+    height:88px;
+    opacity:.92;
+    clip-path:none;
+    background:
+      radial-gradient(circle at 75% 24%,rgba(255,245,214,.78) 0 17px,transparent 18px),
+      linear-gradient(163deg,transparent 0 45%,rgba(252,252,248,.94) 46% 54%,transparent 55%),
+      linear-gradient(180deg,#7fb5cf 0 46%,#d9e3e2 47% 58%,#9daf90 59% 75%,#71836d 76% 100%);
+  }
+  .journey-theme-fuji-seasonal .journey0285-paper::after { display:none; }
+  .journey-theme-fuji-seasonal .journey0285-calendar-header { padding-top:0; }
+
+  /* Study Wall · ruled side-bound planner. */
+  .journey-theme-study-wall .journey0285-board { padding:12px 8px 12px 27px; border-radius:6px; background:#b8ad97; }
+  .journey-theme-study-wall .journey0285-rings {
+    display:flex;
+    flex-direction:column;
+    left:6px; right:auto; top:9%; bottom:9%;
+    justify-content:space-between;
+  }
+  .journey-theme-study-wall .journey0285-rings i { width:13px; height:8px; border-width:2px; border-radius:5px; }
+  .journey-theme-study-wall .journey0285-stack { inset:14px 9px 10px 28px; }
+  .journey-theme-study-wall .journey0285-paper { padding-left:28px; border-radius:2px 5px 5px 2px; }
+  .journey-theme-study-wall .journey0285-paper::before {
+    inset:0;
+    opacity:.55;
+    background:
+      linear-gradient(90deg,transparent 0 17px,rgba(190,80,80,.18) 17px 18px,transparent 18px),
+      repeating-linear-gradient(0deg,transparent 0 28px,rgba(83,108,99,.08) 28px 29px);
+  }
+  .journey-theme-study-wall .journey0285-paper::after { display:none; }
+  .journey-theme-study-wall .journey0285-calendar-header h2 { font-family:var(--ik-body,system-ui); font-weight:600; }
+
+  /* Washi Minimal · loose handmade sheet. */
+  .journey-theme-washi-minimal .journey0285-board { padding:0; background:transparent; box-shadow:none; }
+  .journey-theme-washi-minimal .journey0285-rings,
+  .journey-theme-washi-minimal .journey0285-stack { display:none; }
+  .journey-theme-washi-minimal .journey0285-paper {
+    padding:27px 15px 18px;
+    border-radius:3px 7px 4px 9px;
+    clip-path:polygon(.8% 1%,13% .3%,27% .9%,42% .2%,59% .8%,74% .2%,88% .8%,99% .3%,99.5% 17%,99% 37%,99.7% 58%,99% 80%,99.5% 99%,82% 99.4%,63% 99%,42% 99.6%,22% 99%,.5% 99.4%,1% 78%,.4% 55%,1% 31%);
+  }
+  .journey-theme-washi-minimal .journey0285-calendar-header { border-bottom:0; }
+  .journey-theme-washi-minimal .journey0285-grid { border:0; gap:0 5px; }
+  .journey-theme-washi-minimal .journey0285-grid button { border:0; border-bottom:1px solid color-mix(in srgb,var(--jc-rule) 42%,transparent); background:transparent; }
+
+  /* Midnight Desk · modular dark desk pad. */
+  .journey-theme-midnight-desk .journey0285-board {
+    padding:11px;
+    border-radius:16px;
+    background:radial-gradient(circle at 8% 10%,rgba(255,255,255,.04),transparent 26%),linear-gradient(145deg,#171814,#080b0a 70%);
+    box-shadow:0 20px 40px rgba(0,0,0,.42),inset 0 0 0 1px rgba(210,190,142,.08);
+  }
+  .journey-theme-midnight-desk .journey0285-rings,
+  .journey-theme-midnight-desk .journey0285-stack { display:none; }
+  .journey-theme-midnight-desk .journey0285-paper { border-radius:11px; padding:20px 10px 14px; }
+  .journey-theme-midnight-desk .journey0285-grid { border:0; gap:4px; }
+  .journey-theme-midnight-desk .journey0285-grid button { border:1px solid color-mix(in srgb,var(--jc-rule) 72%,transparent); border-radius:6px; }
+  .journey-theme-midnight-desk .journey0285-calendar-header { border-bottom:0; }
+  .journey-theme-midnight-desk .journey0285-calendar-header h2 { font-family:var(--ik-body,system-ui); font-weight:500; }
+
+  /* Letterpress Ledger · bound cream ledger. */
+  .journey-theme-letterpress-ledger .journey0285-board { padding:13px 11px 13px 18px; background:linear-gradient(90deg,#5a4939 0 8px,#b9aa90 8px); border-radius:4px; }
+  .journey-theme-letterpress-ledger .journey0285-rings { display:none; }
+  .journey-theme-letterpress-ledger .journey0285-stack { inset:16px 10px 10px 18px; }
+  .journey-theme-letterpress-ledger .journey0285-paper { border-radius:2px; box-shadow:0 9px 19px rgba(55,39,24,.22),inset 0 0 0 3px rgba(103,76,49,.055),inset 0 0 0 4px rgba(255,255,255,.2); }
+  .journey-theme-letterpress-ledger .journey0285-paper::before { inset:8px; border:1px double rgba(89,63,40,.18); background:none; }
+  .journey-theme-letterpress-ledger .journey0285-calendar-header h2 { font-family:Georgia,'Times New Roman',serif; }
+  .journey-theme-letterpress-ledger .journey0285-grid { box-shadow:inset 0 0 0 1px rgba(86,60,35,.06); }
+
+  /* Kraft Clip · clipboard with one dominant clip instead of nine rings. */
+  .journey-theme-kraft-clip .journey0285-board { padding:22px 9px 12px; border-radius:8px; background:linear-gradient(145deg,#8b7559,#756149); }
+  .journey-theme-kraft-clip .journey0285-rings { display:none; }
+  .journey-theme-kraft-clip .journey0285-board::before {
+    content:"";
+    position:absolute;
+    z-index:12;
+    top:5px; left:38%; right:38%; height:17px;
+    border-radius:4px 4px 9px 9px;
+    background:linear-gradient(90deg,#76552f,#c49a59,#76552f);
+    box-shadow:0 2px 4px rgba(55,38,21,.3);
+  }
+  .journey-theme-kraft-clip .journey0285-stack { inset:25px 10px 10px; }
+  .journey-theme-kraft-clip .journey0285-paper { border-radius:2px 2px 6px 4px; }
+
+  /* Newsprint Month · broadsheet. */
+  .journey-theme-newsprint-month .journey0285-board { padding:9px; border-radius:2px; background:#aaa9a2; }
+  .journey-theme-newsprint-month .journey0285-rings,
+  .journey-theme-newsprint-month .journey0285-stack { display:none; }
+  .journey-theme-newsprint-month .journey0285-paper { border-radius:1px; padding-top:24px; }
+  .journey-theme-newsprint-month .journey0285-calendar-header { border-top:3px double var(--jc-ink); border-bottom:2px solid var(--jc-ink); padding-top:8px; }
+  .journey-theme-newsprint-month .journey0285-calendar-header h2,
+  .journey-theme-newsprint-month .journey0285-grid button > span { font-family:var(--ik-mono,monospace); }
+  .journey-theme-newsprint-month .journey0285-grid { border:0; }
+  .journey-theme-newsprint-month .journey0285-grid button { border:0; border-right:1px dotted color-mix(in srgb,var(--jc-ink) 40%,transparent); border-bottom:1px solid color-mix(in srgb,var(--jc-ink) 34%,transparent); background:transparent; }
+
+  /* Hanami Scroll · paired wood rails and blossom margin. */
+  .journey-theme-hanami-scroll .journey0285-board { padding:20px 10px; border-radius:3px; background:linear-gradient(90deg,#785f52,#b69a82 10%,#b69a82 90%,#785f52); }
+  .journey-theme-hanami-scroll .journey0285-rings,
+  .journey-theme-hanami-scroll .journey0285-stack { display:none; }
+  .journey-theme-hanami-scroll .journey0285-board::before,
+  .journey-theme-hanami-scroll .journey0285-board::after {
+    content:"";
+    position:absolute;
+    z-index:8;
+    left:7%; right:7%; height:8px;
+    border-radius:5px;
+    background:linear-gradient(180deg,#6e5447,#a88770 48%,#684e42);
+    box-shadow:0 3px 6px rgba(65,43,37,.22);
+  }
+  .journey-theme-hanami-scroll .journey0285-board::before { top:6px; }
+  .journey-theme-hanami-scroll .journey0285-board::after { bottom:6px; }
+  .journey-theme-hanami-scroll .journey0285-paper { padding-left:38px; border-radius:1px; }
+  .journey-theme-hanami-scroll .journey0285-paper::before {
+    inset:0 auto 0 0;
+    width:28px;
+    opacity:.78;
+    background:
+      radial-gradient(circle at 38% 14%,rgba(207,111,137,.42) 0 4px,transparent 5px),
+      radial-gradient(circle at 65% 31%,rgba(207,111,137,.25) 0 3px,transparent 4px),
+      linear-gradient(180deg,rgba(207,111,137,.1),transparent 72%);
+    background-size:33px 54px,41px 67px,auto;
+  }
+  .journey-theme-hanami-scroll .journey0285-grid { border:0; gap:3px; }
+  .journey-theme-hanami-scroll .journey0285-grid button { border:0; border-bottom:1px solid color-mix(in srgb,var(--jc-rule) 55%,transparent); background:rgba(255,255,255,.14); }
+
+  /* Winter Advent · evergreen card board. */
+  .journey-theme-winter-advent .journey0285-board {
+    padding:13px;
+    border-radius:14px;
+    background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 2px,transparent 2px 8px),linear-gradient(145deg,#526452,#32473a);
+  }
+  .journey-theme-winter-advent .journey0285-rings { display:none; }
+  .journey-theme-winter-advent .journey0285-stack { inset:17px 15px 10px; }
+  .journey-theme-winter-advent .journey0285-paper { border-radius:10px; }
+  .journey-theme-winter-advent .journey0285-weekdays { margin-top:4px; border-radius:6px; background:color-mix(in srgb,var(--jc-board) 13%,transparent); }
+  .journey-theme-winter-advent .journey0285-grid { border:0; gap:4px; padding-top:5px; }
+  .journey-theme-winter-advent .journey0285-grid button { border:1px solid color-mix(in srgb,var(--jc-rule) 70%,transparent); border-radius:6px 6px 3px 3px; background:linear-gradient(180deg,rgba(255,255,255,.56),rgba(255,255,255,.12)); }
+
+  /* Holi Powder · colour-cloud poster. */
+  .journey-theme-holi-powder .journey0285-board { padding:0; background:transparent; box-shadow:none; }
+  .journey-theme-holi-powder .journey0285-rings,
+  .journey-theme-holi-powder .journey0285-stack { display:none; }
+  .journey-theme-holi-powder .journey0285-paper { border-radius:16px 5px 16px 5px; }
+  .journey-theme-holi-powder .journey0285-paper::before {
+    inset:-20px;
+    opacity:.92;
+    background:
+      radial-gradient(circle at 4% 14%,rgba(229,76,143,.26),transparent 18%),
+      radial-gradient(circle at 95% 18%,rgba(68,121,181,.24),transparent 18%),
+      radial-gradient(circle at 88% 92%,rgba(235,168,55,.23),transparent 19%),
+      radial-gradient(circle at 8% 86%,rgba(75,164,109,.2),transparent 18%);
+  }
+  .journey-theme-holi-powder .journey0285-calendar-header { border-bottom:0; }
+  .journey-theme-holi-powder .journey0285-calendar-header h2 { font-family:var(--ik-body,system-ui); font-weight:800; }
+  .journey-theme-holi-powder .journey0285-grid { border:0; gap:4px; }
+  .journey-theme-holi-powder .journey0285-grid button { border:0; border-radius:7px; box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--jc-rule) 45%,transparent); }
+  .journey-theme-holi-powder .journey0285-grid button:nth-child(4n+1) { background:color-mix(in srgb,#e65b92 10%,var(--jc-paper)); }
+  .journey-theme-holi-powder .journey0285-grid button:nth-child(4n+2) { background:color-mix(in srgb,#4d84ca 9%,var(--jc-paper)); }
+  .journey-theme-holi-powder .journey0285-grid button:nth-child(4n+3) { background:color-mix(in srgb,#edb13e 10%,var(--jc-paper)); }
+  .journey-theme-holi-powder .journey0285-grid button:nth-child(4n) { background:color-mix(in srgb,#58a778 9%,var(--jc-paper)); }
+
+  /* Diwali Diya · illuminated night ledger. */
+  .journey-theme-diwali-diya .journey0285-board {
+    padding:13px;
+    border-radius:13px;
+    background:radial-gradient(circle at 50% 0,rgba(242,184,75,.17),transparent 34%),linear-gradient(145deg,#10162a,#080d1c);
+    box-shadow:0 22px 45px rgba(0,0,0,.42);
+  }
+  .journey-theme-diwali-diya .journey0285-rings,
+  .journey-theme-diwali-diya .journey0285-stack { display:none; }
+  .journey-theme-diwali-diya .journey0285-paper { border-radius:7px; box-shadow:0 0 0 1px rgba(242,184,75,.2),0 0 25px rgba(242,184,75,.08); }
+  .journey-theme-diwali-diya .journey0285-paper::before { inset:8px; opacity:1; border:1px solid rgba(242,184,75,.22); border-radius:4px; background:repeating-radial-gradient(circle at 50% 0,transparent 0 16px,rgba(242,184,75,.045) 17px 18px,transparent 19px 26px); }
+  .journey-theme-diwali-diya .journey0285-calendar-header { border-bottom-color:rgba(242,184,75,.28); }
+  .journey-theme-diwali-diya .journey0285-calendar-header h2 { color:#fff1c9; text-shadow:0 0 12px rgba(242,184,75,.13); }
+  .journey-theme-diwali-diya .journey0285-grid { border:0; gap:3px; }
+  .journey-theme-diwali-diya .journey0285-grid button { border:1px solid rgba(242,184,75,.15); border-radius:4px; background:rgba(255,238,190,.025); }
+
+  /* Momentum Month · studio planning board. */
+  .journey-theme-momentum-month .journey0285-board { padding:9px; border-radius:3px; background:linear-gradient(90deg,#b7b1a6,#d1cbc0 50%,#b7b1a6); box-shadow:5px 7px 0 rgba(48,48,45,.07),0 18px 34px rgba(48,48,45,.14); }
+  .journey-theme-momentum-month .journey0285-rings,
+  .journey-theme-momentum-month .journey0285-stack { display:none; }
+  .journey-theme-momentum-month .journey0285-paper { border-radius:2px; background-image:linear-gradient(rgba(60,65,68,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(60,65,68,.025) 1px,transparent 1px); background-size:18px 18px; }
+  .journey-theme-momentum-month .journey0285-paper::before { inset:0 auto 0 0; width:7px; background:var(--jc-accent); opacity:1; }
+  .journey-theme-momentum-month .journey0285-calendar-header { border-bottom:2px solid var(--jc-ink); }
+  .journey-theme-momentum-month .journey0285-calendar-header h2 { font-family:var(--ik-body,system-ui); font-weight:850; letter-spacing:-.05em; }
+  .journey-theme-momentum-month .journey0285-grid { border:0; gap:3px; }
+  .journey-theme-momentum-month .journey0285-grid button { border:1px solid color-mix(in srgb,var(--jc-rule) 56%,transparent); border-left:3px solid color-mix(in srgb,var(--jc-accent) 58%,transparent); border-radius:2px; background:rgba(255,255,255,.42); }
+}
