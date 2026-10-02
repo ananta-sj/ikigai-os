@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Ikigai OS",
-  "version": "0.1.0",
+  "version": "0.32.0",
   "identifier": "io.github.anantasj.ikigaios",
   "build": {
     "frontendDist": "../dist",
@@ -35,6 +35,12 @@
     ],
     "android": {
       "debugApplicationIdSuffix": ".debug"
+    },
+    "windows": {
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico"
+      }
     }
   }
 }
