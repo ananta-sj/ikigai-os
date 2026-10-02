@@ -754,3 +754,18 @@
 .onboarding-v050 .momentum-month .journey-mini { border-radius:2px; background-image:linear-gradient(rgba(60,65,68,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(60,65,68,.035) 1px,transparent 1px); background-size:14px 14px; box-shadow:4px 4px 0 rgba(50,50,47,.08); }
 .onboarding-v050 .momentum-month .journey-mini::before { inset:0 auto 0 0; width:7px; height:auto; background:var(--journey-accent); }
 .onboarding-v050 .momentum-month .journey-mini b { font-family:var(--ik-body); font-weight:850; }
+
+
+/* v0.33 native/window-safe First Light footer clearance */
+@media (min-width: 901px) and (min-height: 680px) {
+  .onboarding-stage {
+    height: auto;
+    min-height: calc(100dvh - 64px);
+    padding-bottom: 150px;
+  }
+
+  .onboarding-step {
+    max-height: none;
+    padding-bottom: 0;
+  }
+}
