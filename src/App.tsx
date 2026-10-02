@@ -37,7 +37,6 @@ function withSuspense(element: ReactNode) {
   return <Suspense fallback={<RouteLoading />}>{element}</Suspense>;
 }
 
-
 function RouteErrorPage() {
   const routeError = useRouteError();
   const detail = routeError instanceof Error
@@ -75,7 +74,14 @@ function RequireOnboarding() {
     return () => { alive = false; };
   }, []);
 
-  if (ready === null) return <div className="onboarding-route-check" role="status" aria-label="Loading Ikigai"><span className="ik-loading-mark" aria-hidden="true"><IkigaiMark /></span></div>;
+  if (ready === null) {
+    return (
+      <div className="onboarding-route-check" role="status" aria-label="Loading Ikigai">
+        <span className="ik-loading-mark" aria-hidden="true"><IkigaiMark /></span>
+      </div>
+    );
+  }
+
   if (!ready) return <Navigate to="/welcome" replace />;
   return <Outlet />;
 }
@@ -105,6 +111,12 @@ const router = createBrowserRouter([
       }
     ]
   }
-]);
+], {
+  // Production keeps BASE_URL="/". GitHub Pages demo builds use "/ikigai-os/".
+  // Supplying the Vite base to React Router keeps both deployments on the same route tree.
+  basename: import.meta.env.BASE_URL
+});
 
-export default function App() { return <RouterProvider router={router} />; }
+export default function App() {
+  return <RouterProvider router={router} />;
+}
