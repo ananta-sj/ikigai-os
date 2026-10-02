@@ -1,0 +1,51 @@
+name: native-windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - v0.33-native
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-windows:
+    name: build Windows installer
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22.12
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: npm
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Verify Ikigai web application
+        run: npm run verify
+
+      - name: Audit production dependencies
+        run: npm run audit:deps
+
+      - name: Build Tauri Windows installer
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: --bundles nsis
+          uploadWorkflowArtifacts: true
+          workflowArtifactNamePattern: ikigai-os-[version]-windows-[arch]-[bundle]
