@@ -169,20 +169,6 @@ function validDateParts(year: number, month: number, day: number) {
   );
 }
 
-function parseFriendlyDate(value: string) {
-  const trimmed = value.trim();
-  const iso = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(trimmed);
-  const friendly = /^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/.exec(trimmed);
-  const match = iso ?? friendly;
-  if (!match) return null;
-
-  const year = Number(iso ? match[1] : match[3]);
-  const month = Number(match[2]);
-  const day = Number(iso ? match[3] : match[1]);
-  if (!validDateParts(year, month, day)) return null;
-  return dateToIso(year, month, day);
-}
-
 function SegmentedDateField({
   value,
   onChange
@@ -191,12 +177,10 @@ function SegmentedDateField({
   onChange: (value: string) => void;
 }) {
   const parsed = isoParts(value);
-  const editingRef = useRef(false);
 
   const [day, setDay] = useState(parsed.day);
   const [month, setMonth] = useState(parsed.month);
   const [year, setYear] = useState(parsed.year);
-  const [invalidDate, setInvalidDate] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const selected = value ? new Date(`${value}T12:00:00`) : null;
@@ -210,54 +194,25 @@ function SegmentedDateField({
   );
 
   useEffect(() => {
-    if (editingRef.current) return;
     const next = isoParts(value);
     setDay(next.day);
     setMonth(next.month);
     setYear(next.year);
-    setInvalidDate(false);
   }, [value]);
 
-  function applyIso(iso: string) {
-    const parts = isoParts(iso);
-    setDay(parts.day);
-    setMonth(parts.month);
-    setYear(parts.year);
-    setInvalidDate(false);
-    onChange(iso);
-  }
-
   function commit(nextDay: string, nextMonth: string, nextYear: string) {
-    const hasAny = Boolean(nextDay || nextMonth || nextYear);
-    const complete = nextDay.length === 2 && nextMonth.length === 2 && nextYear.length === 4;
-
-    if (!hasAny) {
-      setInvalidDate(false);
-      onChange('');
-      return;
-    }
-
-    if (!complete) {
-      // Clear the stored draft while manual editing is incomplete so an old
-      // valid date can never be saved behind a half-edited visible date.
-      setInvalidDate(false);
-      onChange('');
-      return;
-    }
-
     const d = Number(nextDay);
     const m = Number(nextMonth);
     const y = Number(nextYear);
-    if (validDateParts(y, m, d)) {
-      setInvalidDate(false);
-      onChange(dateToIso(y, m, d));
+
+    if (nextDay.length === 2 && nextMonth.length === 2 && nextYear.length === 4) {
+      if (validDateParts(y, m, d)) onChange(dateToIso(y, m, d));
       return;
     }
 
-    // Keep the authored text visible for correction, but never retain a stale
-    // previously-valid date in the onboarding data model.
-    setInvalidDate(true);
-    onChange('');
+    // Keep partial manual entry local so typing DD / MM / YYYY never clears the
+    // field mid-edit. Only an entirely empty segmented field clears the draft.
+    if (!nextDay && !nextMonth && !nextYear) onChange('');
   }
 
   function updateDay(next: string) {
@@ -279,15 +234,20 @@ function SegmentedDateField({
   }
 
   function chooseDate(nextDay: number) {
-    applyIso(dateToIso(viewYear, viewMonth + 1, nextDay));
+    const iso = dateToIso(viewYear, viewMonth + 1, nextDay);
+    onChange(iso);
+
+    const parts = isoParts(iso);
+    setDay(parts.day);
+    setMonth(parts.month);
+    setYear(parts.year);
+
     setCalendarOpen(false);
   }
 
   function shiftMonth(amount: number) {
     const next = new Date(viewYear, viewMonth + amount, 1);
-    const nextYear = next.getFullYear();
-    if (nextYear < 1900 || nextYear > 2200) return;
-    setViewYear(nextYear);
+    setViewYear(next.getFullYear());
     setViewMonth(next.getMonth());
   }
 
@@ -307,33 +267,15 @@ function SegmentedDateField({
   return (
     <div
       className="ik-date-field"
-      onFocusCapture={() => { editingRef.current = true; }}
       onBlur={event => {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          editingRef.current = false;
-          setCalendarOpen(false);
-        }
-      }}
-      onKeyDown={event => {
-        if (event.key === 'Escape' && calendarOpen) {
-          event.preventDefault();
           setCalendarOpen(false);
         }
       }}
     >
-      <div
-        className={`ik-date-segments ${invalidDate ? 'is-invalid' : ''}`}
-        aria-label="Protected date"
-        onPaste={event => {
-          const iso = parseFriendlyDate(event.clipboardData.getData('text'));
-          if (!iso) return;
-          event.preventDefault();
-          applyIso(iso);
-        }}
-      >
+      <div className="ik-date-segments" aria-label="Protected date">
         <input
           aria-label="Day"
-          aria-invalid={invalidDate || undefined}
           inputMode="numeric"
           maxLength={2}
           value={day}
@@ -346,7 +288,6 @@ function SegmentedDateField({
 
         <input
           aria-label="Month"
-          aria-invalid={invalidDate || undefined}
           inputMode="numeric"
           maxLength={2}
           value={month}
@@ -359,7 +300,6 @@ function SegmentedDateField({
 
         <input
           aria-label="Year"
-          aria-invalid={invalidDate || undefined}
           inputMode="numeric"
           maxLength={4}
           value={year}
@@ -387,10 +327,8 @@ function SegmentedDateField({
         </button>
       </div>
 
-      {invalidDate ? <small className="ik-date-error" role="status">Check the day, month and year.</small> : null}
-
       {calendarOpen ? (
-        <div className="ik-date-calendar" role="dialog" aria-label={`Choose a date in ${monthName}`}>
+        <div className="ik-date-calendar">
           <header>
             <button
               type="button"
@@ -424,8 +362,9 @@ function SegmentedDateField({
               }
 
               const iso = dateToIso(viewYear, viewMonth + 1, calendarDay);
-              const calendarDate = new Date(viewYear, viewMonth, calendarDay);
+
               const isSelected = iso === value;
+
               const isToday =
                 calendarDay === today.getDate() &&
                 viewMonth === today.getMonth() &&
@@ -435,9 +374,6 @@ function SegmentedDateField({
                 <button
                   key={iso}
                   type="button"
-                  aria-label={new Intl.DateTimeFormat(undefined, { dateStyle: 'long' }).format(calendarDate)}
-                  aria-current={isToday ? 'date' : undefined}
-                  aria-pressed={isSelected}
                   className={[
                     isSelected ? 'selected' : '',
                     isToday ? 'today' : ''
@@ -457,7 +393,6 @@ function SegmentedDateField({
                 setDay('');
                 setMonth('');
                 setYear('');
-                setInvalidDate(false);
                 onChange('');
                 setCalendarOpen(false);
               }}
@@ -468,10 +403,9 @@ function SegmentedDateField({
             <button
               type="button"
               onClick={() => {
-                applyIso(dateToIso(today.getFullYear(), today.getMonth() + 1, today.getDate()));
                 setViewYear(today.getFullYear());
                 setViewMonth(today.getMonth());
-                setCalendarOpen(false);
+                chooseDate(today.getDate());
               }}
             >
               Today
@@ -491,27 +425,10 @@ function MilestoneTypePicker({
   onChange: (value: MilestoneKind) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
-  const selectedIndex = Math.max(0, milestoneKinds.findIndex(option => option.value === value));
-  const selected = milestoneKinds[selectedIndex];
-
-  function focusOption(index: number) {
-    const wrapped = (index + milestoneKinds.length) % milestoneKinds.length;
-    window.requestAnimationFrame(() => optionRefs.current[wrapped]?.focus());
-  }
-
-  function openMenu(index = selectedIndex) {
-    setOpen(true);
-    focusOption(index);
-  }
-
-  function choose(kind: MilestoneKind) {
-    onChange(kind);
-    setOpen(false);
-    window.requestAnimationFrame(() => triggerRef.current?.focus());
-  }
+  const selected =
+    milestoneKinds.find(option => option.value === value) ??
+    milestoneKinds[0];
 
   return (
     <div
@@ -523,61 +440,32 @@ function MilestoneTypePicker({
       }}
     >
       <button
-        ref={triggerRef}
         type="button"
         className="ik-milestone-trigger"
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => open ? setOpen(false) : openMenu()}
-        onKeyDown={event => {
-          if (event.key === 'ArrowDown') {
-            event.preventDefault();
-            openMenu(selectedIndex);
-          } else if (event.key === 'ArrowUp') {
-            event.preventDefault();
-            openMenu(selectedIndex);
-          } else if (event.key === 'Escape' && open) {
-            event.preventDefault();
-            setOpen(false);
-          }
-        }}
+        onClick={() => setOpen(current => !current)}
       >
         <span>{selected.label}</span>
         <ChevronDown size={15} />
       </button>
 
       {open ? (
-        <div className="ik-milestone-menu" role="listbox" aria-label="Protected date type">
-          {milestoneKinds.map((option, index) => (
+        <div className="ik-milestone-menu" role="listbox">
+          {milestoneKinds.map(option => (
             <button
               type="button"
-              ref={node => { optionRefs.current[index] = node; }}
               key={option.value}
               role="option"
               aria-selected={value === option.value}
               className={value === option.value ? 'selected' : ''}
-              onClick={() => choose(option.value)}
-              onKeyDown={event => {
-                if (event.key === 'Escape') {
-                  event.preventDefault();
-                  setOpen(false);
-                  triggerRef.current?.focus();
-                } else if (event.key === 'ArrowDown') {
-                  event.preventDefault();
-                  focusOption(index + 1);
-                } else if (event.key === 'ArrowUp') {
-                  event.preventDefault();
-                  focusOption(index - 1);
-                } else if (event.key === 'Home') {
-                  event.preventDefault();
-                  focusOption(0);
-                } else if (event.key === 'End') {
-                  event.preventDefault();
-                  focusOption(milestoneKinds.length - 1);
-                }
+              onClick={() => {
+                onChange(option.value);
+                setOpen(false);
               }}
             >
               <span>{option.label}</span>
+
               {value === option.value ? <Check size={14} /> : null}
             </button>
           ))}
@@ -627,12 +515,7 @@ export function OnboardingPage() {
   const [sanctuaryEffectsSound, setSanctuaryEffectsSound] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
-  const worldRef = useRef<HTMLDivElement>(null);
-  const journeyPreviewStageRef = useRef<HTMLDivElement>(null);
-  const journeyPreviewCanvasRef = useRef<HTMLDivElement>(null);
-  const journeyPreviewBoardRef = useRef<HTMLDivElement>(null);
   const completedRef = useRef(false);
-  const [journeyPreviewFit, setJourneyPreviewFit] = useState({ scale: 1, height: 260 });
 
   useEffect(() => {
     let alive = true;
@@ -671,53 +554,6 @@ export function OnboardingPage() {
     });
     return () => { alive = false; };
   }, []);
-
-  useEffect(() => {
-    if (!loaded) return;
-    // Each First Light page starts at its own beginning. On short/narrow windows
-    // earlier steps can scroll; carrying that scroll offset into the next step
-    // makes its heading look clipped even though the content still exists.
-    worldRef.current?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-  }, [loaded, step]);
-
-  useEffect(() => {
-    if (!loaded || step !== 7) return;
-    const stage = journeyPreviewStageRef.current;
-    const canvas = journeyPreviewCanvasRef.current;
-    const board = journeyPreviewBoardRef.current;
-    if (!stage || !canvas || !board) return;
-
-    let frame = 0;
-    const measure = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const availableWidth = Math.max(1, stage.clientWidth - 24);
-        const naturalWidth = Math.max(1, board.offsetWidth);
-        const naturalHeight = Math.max(1, board.offsetHeight);
-        const scale = Math.min(1, availableWidth / naturalWidth);
-        const height = Math.ceil((naturalHeight * scale) + 24);
-
-        setJourneyPreviewFit(current => (
-          Math.abs(current.scale - scale) < 0.002 && current.height === height
-            ? current
-            : { scale, height }
-        ));
-      });
-    };
-
-    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null;
-    observer?.observe(stage);
-    observer?.observe(board);
-    window.addEventListener('resize', measure);
-    measure();
-
-    return () => {
-      observer?.disconnect();
-      window.removeEventListener('resize', measure);
-      window.cancelAnimationFrame(frame);
-    };
-  }, [journeyCalendarTheme, loaded, step]);
 
   useEffect(() => {
     if (!loaded) return;
@@ -830,7 +666,7 @@ export function OnboardingPage() {
   if (!loaded) return <div className="onboarding-boot"><span className="onboarding-boot-mark"><IkigaiMark /></span><p>Waking Ikigai…</p></div>;
 
   return (
-    <div ref={worldRef} className="onboarding-world">
+    <div className="onboarding-world">
       <div className="onboarding-aurora" aria-hidden="true"><i /><i /><i /></div>
       <div className="onboarding-grain" aria-hidden="true" />
 
@@ -1021,25 +857,14 @@ export function OnboardingPage() {
                       data-preview-journey-theme={journeyCalendarTheme}
                       style={journeyPreviewStyle}
                     >
-                      <div
-                        ref={journeyPreviewStageRef}
-                        className="journey-calendar-demo-stage onboarding-journey-fit-stage"
-                        aria-hidden="true"
-                        style={{ height: `${journeyPreviewFit.height}px` }}
-                      >
-                        <div
-                          ref={journeyPreviewCanvasRef}
-                          className="onboarding-journey-fit-canvas"
-                          style={{ transform: `scale(${journeyPreviewFit.scale})` }}
-                        >
-                          <div ref={journeyPreviewBoardRef} className="journey-calendar-demo-board">
-                            <div className="journey-calendar-demo-binding"><i /><i /><i /><i /><i /><i /></div>
-                            <div className="journey-calendar-demo-paper">
-                              <div className="journey-calendar-demo-head"><div><span>OCTOBER</span><strong>2026</strong></div><b>10</b></div>
-                              <div className="journey-calendar-demo-weekdays">{['MON','TUE','WED','THU','FRI','SAT','SUN'].map(day => <span key={day}>{day}</span>)}</div>
-                              <div className="journey-calendar-demo-grid">
-                                {journeyPreviewDays.map((day, index) => <span key={`${day}-${index}`} className={day === 18 ? 'is-marked' : day === 0 ? 'is-empty' : ''}>{day || ''}{day === 4 || day === 26 ? <i /> : null}{day === 18 ? <em>note</em> : null}</span>)}
-                              </div>
+                      <div className="journey-calendar-demo-stage" aria-hidden="true">
+                        <div className="journey-calendar-demo-board">
+                          <div className="journey-calendar-demo-binding"><i /><i /><i /><i /><i /><i /></div>
+                          <div className="journey-calendar-demo-paper">
+                            <div className="journey-calendar-demo-head"><div><span>OCTOBER</span><strong>2026</strong></div><b>10</b></div>
+                            <div className="journey-calendar-demo-weekdays">{['MON','TUE','WED','THU','FRI','SAT','SUN'].map(day => <span key={day}>{day}</span>)}</div>
+                            <div className="journey-calendar-demo-grid">
+                              {journeyPreviewDays.map((day, index) => <span key={`${day}-${index}`} className={day === 18 ? 'is-marked' : day === 0 ? 'is-empty' : ''}>{day || ''}{day === 4 || day === 26 ? <i /> : null}{day === 18 ? <em>note</em> : null}</span>)}
                             </div>
                           </div>
                         </div>

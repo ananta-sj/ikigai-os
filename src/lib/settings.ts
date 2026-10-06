@@ -31,6 +31,7 @@ export const defaultSettings: UserSettings = {
   nowPlayingProvider: 'none',
   spotifyClientId: '',
   spotifyPlaybackControls: false,
+  systemMediaPlaybackControls: false,
   familiarMusicPresence: true,
   gardenTheme: defaultGardenTheme,
   sanctuaryQuality: 'auto',
@@ -156,7 +157,7 @@ function normalizeSpotifyClientIdSetting(value: unknown) {
 }
 
 function normalizeNowPlayingProvider(value: unknown): UserSettings['nowPlayingProvider'] {
-  return value === 'spotify' ? 'spotify' : 'none';
+  return value === 'system' || value === 'spotify' ? value : 'none';
 }
 
 function notifySettings(next: UserSettings) {
@@ -204,6 +205,7 @@ export async function ensureSettings(): Promise<UserSettings> {
       nowPlayingProvider: normalizeNowPlayingProvider(existing.nowPlayingProvider),
       spotifyClientId: normalizeSpotifyClientIdSetting(existing.spotifyClientId),
       spotifyPlaybackControls: Boolean(existing.spotifyPlaybackControls),
+      systemMediaPlaybackControls: Boolean(existing.systemMediaPlaybackControls),
       familiarMusicPresence: existing.familiarMusicPresence !== false,
       sanctuaryQuality: normalizeSanctuaryQuality(existing.sanctuaryQuality),
       sanctuaryAmbientSound: Boolean(existing.sanctuaryAmbientSound),

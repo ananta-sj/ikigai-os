@@ -515,7 +515,6 @@ export function GardenPage() {
             onSecretInteract={id => { void interactSecret(id); }}
             onStillnessRequest={enterStillness}
             onTeaHouseInteract={enterTeaHouse}
-            onFreeExploreExit={() => setFreeExplore(false)}
             onFamiliarInteract={() => {
               setWorldMessage({
                 label: 'FAMILIAR · RESIDENT',
@@ -540,7 +539,7 @@ export function GardenPage() {
           </div> : null}
 
           {!stillness && !introOpen && tourStep === null ? <div className="sanctuary-world-hint" aria-hidden="true">
-            {freeExplore ? <><span>WASD to wander</span><i /><span>drag to look</span><i /><span>Esc to exit</span></> : <><span>drag to look</span><i /><span>click a bench to sit</span><i /><span>the tea house is open</span></>}
+            {freeExplore ? <><span>WASD to wander</span><i /><span>drag to look</span><i /><span>wheel to change distance</span></> : <><span>drag to look</span><i /><span>click a bench to sit</span><i /><span>the tea house is open</span></>}
           </div> : null}
 
           {introOpen ? <div className="sanctuary-arrival-backdrop" role="presentation">
@@ -571,7 +570,7 @@ export function GardenPage() {
           <span className="sanctuary-region-strip-label"><Compass size={15} /> Explore</span>
           <button type="button" className="sanctuary-free-explore-toggle" aria-pressed={freeExplore} onClick={() => setFreeExplore(current => !current)}>
             <span>{freeExplore ? 'Free explore on' : 'Free explore'}</span>
-            <small>{freeExplore ? 'WASD · drag · wheel · Esc' : 'Wander inside the island boundary'}</small>
+            <small>{freeExplore ? 'WASD · drag · wheel' : 'Wander inside the island boundary'}</small>
           </button>
           <div>
             {sanctuaryRegions.map((region, index) => (

@@ -1,0 +1,69 @@
+IKIGAI OS v0.33 — Native Windows CI — Patch 01
+
+PURPOSE
+-------
+Build the first Windows Tauri installer on GitHub's Windows runner instead of
+installing Visual Studio Build Tools and Rust on the developer PC.
+
+NEW FILES
+---------
+.github/workflows/native-windows.yml
+tests/v033NativeWindowsCi.test.ts
+
+IMPORTANT
+---------
+This patch assumes `npx tauri init` has already created `src-tauri/` locally
+and that package.json/package-lock.json already contain @tauri-apps/cli.
+
+The first CI build is a TEST ARTIFACT only. It does not create or modify a
+GitHub Release and it does not publish an installer publicly.
+
+WHAT GITHUB WILL DO
+-------------------
+1. Start a disposable windows-latest runner.
+2. Use Node 22.12.0.
+3. Install Rust on that disposable runner.
+4. npm ci.
+5. Run Ikigai's existing verify and dependency audit.
+6. Build only the Tauri NSIS setup.exe.
+7. Upload the setup.exe as an Actions workflow artifact.
+
+YOUR PC DOES NOT NEED
+---------------------
+- Visual Studio Build Tools
+- Rust
+- Cargo
+
+APPLY
+-----
+Extract this ZIP into C:\Projects\Ikigai_OS
+
+Then run:
+
+git branch --show-current
+git status --short
+
+You should be on:
+v0.33-native
+
+Make sure src-tauri/ is visible in git status. It MUST be committed because
+GitHub cannot build files that exist only on your PC.
+
+Run the normal web checks locally:
+npm run verify
+npm run audit:deps
+
+Then commit the native bootstrap + CI workflow:
+
+git add package.json package-lock.json src-tauri .github/workflows/native-windows.yml tests/v033NativeWindowsCi.test.ts
+git commit -m "feat: add CI-built Windows native shell"
+git push -u origin v0.33-native
+
+After push:
+GitHub -> Actions -> native-windows
+
+When it finishes:
+open the run -> Artifacts -> download the ikigai-os-...-windows-...-nsis artifact.
+
+Do NOT merge to main and do NOT publish it as v0.33.0 yet.
+First install/test the generated app.

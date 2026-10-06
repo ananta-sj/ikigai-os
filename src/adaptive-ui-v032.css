@@ -395,3 +395,25 @@ body :where([role='dialog']) :where(input, textarea, select) {
     box-shadow: none;
   }
 }
+
+
+/* v0.33 responsive repair · Settings tabs stop floating over content when the
+   desktop window becomes narrow or short. A sticky rail is useful on a roomy
+   desktop, but on reduced windows it consumes scarce vertical space and makes
+   the cards appear to slide underneath it. Keep the same tabs, make them part
+   of normal flow, and let the row scroll horizontally when necessary. */
+@media (max-width: 1100px), (max-height: 760px) {
+  .settings-subnav {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .settings-subnav::-webkit-scrollbar { display: none; }
+  .settings-subnav button { flex: 0 0 auto; }
+}

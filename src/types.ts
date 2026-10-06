@@ -63,7 +63,7 @@ export type FamiliarActivity = 'lively' | 'calm' | 'still' | 'hidden';
 export type FamiliarDesign = 'sprout' | 'wisp' | 'mossling';
 export type FamiliarColor = 'mint' | 'sakura' | 'amber' | 'lunar';
 export type FamiliarTheme = 'natural' | 'dream' | 'minimal' | 'moss' | 'terracotta';
-export type NowPlayingProvider = 'none' | 'spotify';
+export type NowPlayingProvider = 'none' | 'system' | 'spotify';
 export type FamiliarSide = 'left' | 'right';
 export interface FamiliarPosition { x: number; y: number; }
 export type GardenTheme = 'verdant-sanctuary' | 'moonwell' | 'aether-bloom' | 'sunhive';
@@ -114,6 +114,7 @@ export interface UserSettings {
   nowPlayingProvider: NowPlayingProvider;
   spotifyClientId: string;
   spotifyPlaybackControls: boolean;
+  systemMediaPlaybackControls: boolean;
   familiarMusicPresence: boolean;
   gardenTheme: GardenTheme;
   sanctuaryQuality: SanctuaryQuality;
@@ -385,10 +386,17 @@ export interface FocusTimerState {
 }
 
 
-export type NowPlayingItemType = 'track' | 'episode';
+export type NowPlayingItemType = 'track' | 'episode' | 'media';
+
+export interface NowPlayingControlCapabilities {
+  play: boolean;
+  pause: boolean;
+  next: boolean;
+  previous: boolean;
+}
 
 export interface NowPlayingItem {
-  provider: 'spotify';
+  provider: Exclude<NowPlayingProvider, 'none'>;
   itemType: NowPlayingItemType;
   title: string;
   context: string;
@@ -397,12 +405,15 @@ export interface NowPlayingItem {
   progressMs?: number;
   externalUrl?: string;
   deviceName?: string;
+  sourceId?: string;
+  sourceLabel?: string;
   canControl: boolean;
+  controlCapabilities?: NowPlayingControlCapabilities;
   fetchedAt: string;
 }
 
 export interface NowPlayingRuntime {
-  provider: 'spotify';
+  provider: NowPlayingProvider;
   connected: boolean;
   item: NowPlayingItem | null;
   refreshing: boolean;

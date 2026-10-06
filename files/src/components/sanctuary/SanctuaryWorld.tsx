@@ -40,7 +40,6 @@ interface SanctuaryWorldProps {
   onFamiliarInteract?: () => void;
   onStillnessRequest?: (view: SanctuaryStillViewId) => void;
   onTeaHouseInteract?: () => void;
-  onFreeExploreExit?: () => void;
   theme?: GardenTheme;
   period?: SanctuaryDayPeriod;
   /** Local time as a 0..1 fraction of the current day, used for continuous celestial motion. */
@@ -2187,7 +2186,6 @@ function SanctuaryScene({
   onFamiliarInteract,
   onStillnessRequest,
   onTeaHouseInteract,
-  onFreeExploreExit,
   theme = 'verdant-sanctuary',
   period = 'day',
   dayProgress = .5,
@@ -2350,7 +2348,6 @@ export function SanctuaryWorld({
   onFamiliarInteract,
   onStillnessRequest,
   onTeaHouseInteract,
-  onFreeExploreExit,
   theme = 'verdant-sanctuary',
   period = 'day',
   dayProgress = .5,
@@ -2389,13 +2386,6 @@ export function SanctuaryWorld({
   const [activeRegion, setActiveRegion] = useState<SanctuaryRegionId | null>('home-grove');
 
   useEffect(() => { preloadSanctuaryAssets(); }, []);
-
-  useEffect(() => {
-    if (!freeExplore || interactionMode === 'stillness') return;
-    // The Explore toggle lives outside the canvas. Move focus into the world so
-    // WASD works immediately instead of requiring a second click on the scene.
-    rootRef.current?.focus({ preventScroll: true });
-  }, [freeExplore, interactionMode]);
 
   useEffect(() => {
     const handleResize = () => setDetectedLowPower(detectLowPower());
@@ -2587,10 +2577,7 @@ export function SanctuaryWorld({
     if (interactionMode === 'stillness') return;
     cancelCameraTransition();
     const key = event.key.toLowerCase();
-    if (freeExplore && event.key === 'Escape') {
-      event.preventDefault();
-      onFreeExploreExit?.();
-    } else if (freeExplore && ['w', 'a', 's', 'd'].includes(key)) {
+    if (freeExplore && ['w', 'a', 's', 'd'].includes(key)) {
       event.preventDefault();
       if (key === 'w') nudgeExplore(1, 0);
       if (key === 's') nudgeExplore(-1, 0);

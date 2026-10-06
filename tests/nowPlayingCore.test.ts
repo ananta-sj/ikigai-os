@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   normalizeSpotifyClientId,
   parseSpotifyPlayback,
+  parseSystemMediaSnapshot,
   spotifyScopeString,
   spotifyScopesAllowControls,
   spotifyTokenStorageOrder,
@@ -73,3 +74,54 @@ test('spotify redirect uri guard follows the current loopback and https contract
   assert.equal(spotifyRedirectUriIssue('https://example.com/now-playing'), '');
   assert.match(spotifyRedirectUriIssue('http://example.com/now-playing'), /must use HTTPS/i);
 });
+
+test('windows system media parsing is bounded and playback controls stay opt-in', () => {
+  const readOnly = parseSystemMediaSnapshot({
+    supported: true,
+    available: true,
+    sourceId: 'SpotifyAB.SpotifyMusic_zpdnekdrzrea0!Spotify',
+    sourceLabel: 'Spotify',
+    title: 'Current track',
+    artist: 'Current artist',
+    albumTitle: 'Current album',
+    isPlaying: true,
+    durationMs: 180_000,
+    progressMs: 999_999,
+    canPlay: true,
+    canPause: true,
+    canNext: true,
+    canPrevious: true
+  }, false, '2026-10-06T00:00:00.000Z');
+
+  assert.equal(readOnly?.provider, 'system');
+  assert.equal(readOnly?.itemType, 'media');
+  assert.equal(readOnly?.progressMs, 180_000);
+  assert.equal(readOnly?.canControl, false);
+  assert.equal(readOnly?.controlCapabilities, undefined);
+
+  const controlled = parseSystemMediaSnapshot({
+    available: true,
+    sourceId: 'player.example!app',
+    sourceLabel: 'Player',
+    title: 'Current track',
+    isPlaying: false,
+    canPlay: true,
+    canPause: false,
+    canNext: false,
+    canPrevious: true
+  }, true);
+  assert.equal(controlled?.canControl, true);
+  assert.deepEqual(controlled?.controlCapabilities, { play: true, pause: false, next: false, previous: true });
+});
+
+test('windows system media rejects unsafe source identity for controls', () => {
+  const item = parseSystemMediaSnapshot({
+    available: true,
+    sourceId: 'player\u0000spoof',
+    title: 'Track',
+    canPlay: true
+  }, true);
+  assert.equal(item?.sourceId, undefined);
+  assert.equal(item?.canControl, false);
+});
+

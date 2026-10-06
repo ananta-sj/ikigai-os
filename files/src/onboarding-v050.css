@@ -829,16 +829,6 @@
   border-color: color-mix(in srgb, var(--ik-accent) 70%, var(--ik-border));
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ik-accent) 9%, transparent), inset 0 1px 0 rgba(255,255,255,.08);
 }
-.ik-date-segments.is-invalid {
-  border-color: color-mix(in srgb, var(--ik-danger, #c97367) 72%, var(--ik-border));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ik-danger, #c97367) 8%, transparent);
-}
-.ik-date-error {
-  display: block;
-  margin: 5px 2px 0;
-  color: var(--ik-danger-text, #c97367);
-  font: 650 8px/1.35 var(--ik-body);
-}
 .important-date-row .ik-date-segments input {
   width: 26px;
   min-width: 0;
@@ -1010,13 +1000,7 @@
 .onboarding-daily-preview > div small { color: var(--ik-muted); font: 700 8px/1 var(--ik-mono); text-transform: uppercase; letter-spacing: .08em; }
 .onboarding-journey-live { margin: 0; min-height: 250px; padding: 0; border-radius: 17px; overflow: hidden; }
 .onboarding-journey-live .journey-calendar-demo-stage { min-height: 205px; padding: 12px; }
-/* Legacy fallback for the pre-autofit DOM shape only. The v0.33 fitter nests
-   the themed board inside .onboarding-journey-fit-canvas, so this must not
-   override the construction-specific widths from design-system.css. */
-.onboarding-journey-live .journey-calendar-demo-stage > .journey-calendar-demo-board {
-  width: min(100%, 250px);
-  transform: scale(.84);
-}
+.onboarding-journey-live .journey-calendar-demo-board { width: min(100%, 250px); transform: scale(.84); }
 .onboarding-journey-live > footer { padding: 10px 12px; }
 .onboarding-journey-live > footer p { display: none; }
 .onboarding-time-preview-note { color: var(--ik-faint); font-size: 9px; line-height: 1.45; }
@@ -1033,84 +1017,5 @@
 }
 @media (max-width: 620px) {
   .ik-date-calendar { width: min(290px, calc(100vw - 42px)); }
-  .onboarding-time-preview-grid { grid-template-columns: 1fr; }
-}
-
-/* v0.33 protected-date rows keep their authored controls usable when the
-   onboarding grid collapses. Older responsive rules targeted <select> and
-   input[type=date], which no longer exist after First Light polish. */
-@media (max-width: 900px) {
-  .important-date-row {
-    grid-template-columns: 36px minmax(0, 1fr) minmax(150px, .58fr) 38px;
-    grid-template-rows: auto auto;
-  }
-  .important-date-row .date-row-number { grid-column: 1; grid-row: 1 / 3; align-self: center; }
-  .important-date-row > input[aria-label="Date title"] { grid-column: 2 / 4; grid-row: 1; }
-  .important-date-row > .ik-date-field { grid-column: 2; grid-row: 2; }
-  .important-date-row > .ik-milestone-picker { grid-column: 3; grid-row: 2; }
-  .important-date-row > button[aria-label="Remove date"] { grid-column: 4; grid-row: 1 / 3; align-self: center; }
-}
-
-@media (max-width: 620px) {
-  .important-date-row {
-    grid-template-columns: 30px minmax(0, 1fr) 36px;
-    grid-template-rows: auto auto auto;
-  }
-  .important-date-row .date-row-number { grid-column: 1; grid-row: 1 / 4; align-self: start; margin-top: 14px; }
-  .important-date-row > input[aria-label="Date title"] { grid-column: 2; grid-row: 1; }
-  .important-date-row > button[aria-label="Remove date"] { grid-column: 3; grid-row: 1; align-self: center; }
-  .important-date-row > .ik-date-field { grid-column: 2 / 4; grid-row: 2; }
-  .important-date-row > .ik-milestone-picker { grid-column: 2 / 4; grid-row: 3; }
-}
-
-
-/* v0.33 responsive repair · component-aware Journey preview fitting.
-   Journey themes intentionally use different physical constructions. A single
-   CSS width cannot safely fit every one of them inside First Light. Render the
-   real construction on a stable natural canvas, measure that canvas, then
-   scale the whole object uniformly to the actual preview width. */
-.onboarding-paper-live-layout { align-items: start; }
-.onboarding-time-preview { align-self: start; }
-.onboarding-time-preview-grid {
-  grid-template-columns: minmax(0, .48fr) minmax(0, 1.52fr);
-  align-items: start;
-}
-
-.onboarding-journey-live { min-height: 0; }
-.onboarding-journey-live .onboarding-journey-fit-stage {
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  min-height: 0;
-  max-height: none;
-  padding: 0;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.onboarding-journey-fit-canvas {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  width: 920px;
-  max-width: none;
-  margin-left: -460px;
-  display: grid;
-  place-items: start center;
-  transform-origin: top center;
-  will-change: transform;
-}
-
-.onboarding-journey-fit-canvas > .journey-calendar-demo-board {
-  max-width: 100%;
-}
-
-@media (max-width: 900px) {
-  .onboarding-time-preview-grid {
-    grid-template-columns: minmax(0, .68fr) minmax(0, 1.32fr);
-  }
-}
-
-@media (max-width: 620px) {
   .onboarding-time-preview-grid { grid-template-columns: 1fr; }
 }

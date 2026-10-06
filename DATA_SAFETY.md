@@ -142,6 +142,16 @@ The read-only connection asks only for playback-state/current-item access. Playb
 
 The Familiar's music presence is driven only by the boolean active-playback state. Ikigai does not request audio-analysis data, inspect waveforms/tempo/beats, or synchronize visual animation to Spotify content.
 
+## v0.33 native candidate — Windows System Media
+
+The Windows-native v0.33 line adds **Windows System Media** as the preferred Now Playing source. This source is deliberately local and transient: the Tauri backend asks Windows for the current system media session, returns only bounded playback metadata needed for the Now Playing surface, and does not create a listening-history database. Title, artist/album context, source application identity, playing state and timeline values stay in the in-memory Now Playing runtime and are not added to IndexedDB, sync records, portable backups or provider-token storage.
+
+System media is not enabled silently. The user explicitly chooses it in the Source dialog. Metadata reading and playback control are separate permissions inside Ikigai: **playback controls default to off**. When controls are enabled, Ikigai accepts only play, pause, next and previous, checks whether Windows reports the specific action as available, and revalidates the active source application immediately before sending the command so a stale UI cannot casually control a different media app. The source identity used for that check is ephemeral runtime data, not a persisted activity log.
+
+Browser/PWA builds do not receive a simulated or hidden equivalent. They cannot read Windows system-wide media sessions through this path and the product states that limitation explicitly. Spotify therefore remains an advanced optional provider rather than a requirement for native Now Playing. Its existing PKCE/token-storage boundaries remain unchanged: no Client Secret, read-only access by default, controls as a separate opt-in, and provider tokens excluded from Dexie sync and portable backups.
+
+The native media bridge does not capture microphone input, inspect audio buffers, decode media, or request listening-history data. It exposes metadata and explicit transport commands only. Turning the Now Playing source off stops the provider polling path rather than continuing to observe media in the background for product analytics.
+
 ## v0.25 — Red-team and hostile-input hardening
 
 v0.25 treats backup files, external links and custom AI endpoints as untrusted input rather than assuming that locally entered data is safe forever.

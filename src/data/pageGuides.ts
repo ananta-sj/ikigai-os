@@ -60,14 +60,15 @@ export const pageGuides: Record<string, PageGuideDefinition> = {
     path: '/now-playing',
     eyebrow: 'NOW PLAYING GUIDE',
     title: 'A glance at playback, not another dashboard.',
-    summary: 'Once a supported provider is connected, Now Playing follows its current metadata automatically while keeping credentials outside portable backups. The web/PWA build does not capture audio or read the Windows system media session directly.',
+    summary: 'The installed Windows app can read the current Windows System Media session locally. Browser/PWA builds cannot access that native session, while Spotify remains an optional advanced provider. No listening history is stored.',
     features: [
-      { title: 'Glance first', detail: 'The room centers the current title, artist/context, device, progress and only the controls you explicitly authorized.' },
-      { title: 'Setup stays secondary', detail: 'Open Source only when you need to connect, disconnect or change Spotify permissions. Read access remains the default and playback control remains separately opt-in.' },
+      { title: 'Local first on Windows', detail: 'Windows System Media is the recommended native source. It reads metadata Windows already exposes, needs no Spotify developer app, Client ID or Spotify Premium, and must be enabled again on a different installation even after backup restore.' },
+      { title: 'Controls stay separate', detail: 'Reading the current session and sending playback controls are different permissions inside Ikigai. Playback control is off by default and only sends actions the active media app exposes.' },
+      { title: 'Spotify stays optional', detail: 'Spotify Web API setup is available as an advanced provider for people who want it, with its Premium/Development Mode requirements shown before setup.' },
       { title: 'Let the Familiar notice', detail: 'Active playback can give the Familiar a generic music pose. Ikigai does not inspect beats, waveforms or tempo and does not synchronize visual motion to audio.' }
     ],
-    customize: 'Open Source to manage Spotify or Familiar music presence. The browser build cannot inspect arbitrary native-app playback; a provider connection supplies the metadata instead.',
-    keyboard: ['Tab reaches the media controls and Source button.', 'Opening Source traps focus until Escape or Close returns you to the room.', 'Provider playback continues in its own Spotify client; Ikigai does not stream audio.']
+    customize: 'Open Source to choose Windows System Media, the optional Spotify Web API provider, no source, or Familiar music presence. Browser/PWA builds explicitly explain that they cannot read Windows media sessions.',
+    keyboard: ['Tab reaches the media controls and Source button.', 'Opening Source traps focus until Escape or Close returns you to the room.', 'Ikigai reads metadata only; audio keeps playing in the original media app.']
   },
   '/garden': {
     path: '/garden',

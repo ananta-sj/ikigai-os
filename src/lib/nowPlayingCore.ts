@@ -106,3 +106,71 @@ export function parseSpotifyPlayback(payload: SpotifyPlaybackPayload, canControl
     fetchedAt
   };
 }
+
+export interface SystemMediaSnapshotPayload {
+  supported?: unknown;
+  available?: unknown;
+  sourceId?: unknown;
+  sourceLabel?: unknown;
+  title?: unknown;
+  artist?: unknown;
+  albumTitle?: unknown;
+  isPlaying?: unknown;
+  durationMs?: unknown;
+  progressMs?: unknown;
+  canPlay?: unknown;
+  canPause?: unknown;
+  canNext?: unknown;
+  canPrevious?: unknown;
+}
+
+function cleanSourceId(value: unknown) {
+  if (typeof value !== 'string') return '';
+  const normalized = value.trim().slice(0, 260);
+  return /^[^\u0000-\u001F\u007F]+$/.test(normalized) ? normalized : '';
+}
+
+function boundedMs(value: unknown) {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return undefined;
+  return Math.min(Math.round(value), 1000 * 60 * 60 * 24 * 7);
+}
+
+export function parseSystemMediaSnapshot(payload: SystemMediaSnapshotPayload, allowControls: boolean, fetchedAt = new Date().toISOString()): NowPlayingItem | null {
+  if (payload?.available !== true) return null;
+  const title = cleanText(payload.title, 220);
+  if (!title) return null;
+
+  const artist = cleanText(payload.artist, 140);
+  const album = cleanText(payload.albumTitle, 180);
+  const sourceId = cleanSourceId(payload.sourceId);
+  const sourceLabel = cleanText(payload.sourceLabel, 120) || 'Windows media';
+  const durationMs = boundedMs(payload.durationMs);
+  const rawProgress = boundedMs(payload.progressMs);
+  const progressMs = durationMs !== undefined && rawProgress !== undefined
+    ? Math.min(rawProgress, durationMs)
+    : rawProgress;
+  const controlCapabilities = {
+    play: payload.canPlay === true,
+    pause: payload.canPause === true,
+    next: payload.canNext === true,
+    previous: payload.canPrevious === true
+  };
+  const canControl = allowControls && Boolean(sourceId) && Object.values(controlCapabilities).some(Boolean);
+
+  return {
+    provider: 'system',
+    itemType: 'media',
+    title,
+    context: artist || album,
+    isPlaying: payload.isPlaying === true,
+    durationMs,
+    progressMs,
+    deviceName: sourceLabel,
+    sourceId: sourceId || undefined,
+    sourceLabel,
+    canControl,
+    controlCapabilities: allowControls ? controlCapabilities : undefined,
+    fetchedAt
+  };
+}
+
