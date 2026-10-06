@@ -4,6 +4,7 @@ import {
   normalizeSpotifyClientId,
   parseSpotifyPlayback,
   parseSystemMediaSnapshot,
+  projectPlaybackPositionMs,
   spotifyScopeString,
   spotifyScopesAllowControls,
   spotifyTokenStorageOrder,
@@ -123,5 +124,30 @@ test('windows system media rejects unsafe source identity for controls', () => {
   }, true);
   assert.equal(item?.sourceId, undefined);
   assert.equal(item?.canControl, false);
+});
+
+
+test('playback position projects locally while playing and freezes while paused', () => {
+  const playing = {
+    durationMs: 180_000,
+    fetchedAt: '2026-10-06T12:00:00.000Z',
+    isPlaying: true,
+    progressMs: 15_000
+  };
+  assert.equal(projectPlaybackPositionMs(playing, Date.parse('2026-10-06T12:00:05.000Z')), 20_000);
+  assert.equal(projectPlaybackPositionMs(playing, Date.parse('2026-10-06T12:10:00.000Z')), 180_000);
+
+  const paused = { ...playing, isPlaying: false };
+  assert.equal(projectPlaybackPositionMs(paused, Date.parse('2026-10-06T12:00:05.000Z')), 15_000);
+});
+
+test('playback position projection tolerates invalid timestamps and missing snapshots', () => {
+  assert.equal(projectPlaybackPositionMs(null, Date.now()), undefined);
+  assert.equal(projectPlaybackPositionMs({
+    durationMs: 60_000,
+    fetchedAt: 'not-a-date',
+    isPlaying: true,
+    progressMs: 12_000
+  }, Date.now()), 12_000);
 });
 

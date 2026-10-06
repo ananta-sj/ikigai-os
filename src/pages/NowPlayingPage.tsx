@@ -37,7 +37,7 @@ import {
   systemMediaEnabledOnThisDevice,
   updateSystemMediaControls
 } from '../lib/nowPlaying';
-import { normalizeSpotifyClientId, spotifyRedirectUriIssue, spotifyScopesAllowControls } from '../lib/nowPlayingCore';
+import { normalizeSpotifyClientId, projectPlaybackPositionMs, spotifyRedirectUriIssue, spotifyScopesAllowControls } from '../lib/nowPlayingCore';
 import { safeExternalHref } from '../lib/security';
 import { systemMediaBridgeAvailable } from '../lib/tauriBridge';
 import { useNowPlaying } from '../hooks/useNowPlaying';
@@ -71,6 +71,7 @@ export function NowPlayingPage() {
   const [guideOpen, setGuideOpen] = useState(false);
   const [spotifyAdvancedOpen, setSpotifyAdvancedOpen] = useState(false);
   const [copiedField, setCopiedField] = useState('');
+  const [progressClockMs, setProgressClockMs] = useState(() => Date.now());
   const sourceDialogRef = useDialogFocus<HTMLDivElement>(setupOpen, () => setSetupOpen(false));
   const nativeSystemMedia = systemMediaBridgeAvailable();
 
@@ -138,6 +139,21 @@ export function NowPlayingPage() {
     };
   }, []);
 
+  useEffect(() => {
+    const item = runtime.item;
+    if (!item?.isPlaying || item.progressMs === undefined || !item.durationMs) return;
+
+    setProgressClockMs(Date.now());
+    const timer = window.setInterval(() => setProgressClockMs(Date.now()), 1_000);
+    return () => window.clearInterval(timer);
+  }, [
+    runtime.item?.durationMs,
+    runtime.item?.fetchedAt,
+    runtime.item?.isPlaying,
+    runtime.item?.progressMs,
+    runtime.item?.provider
+  ]);
+
   const spotifyGrantedControls = spotifyScopesAllowControls(spotifyGrantedScopes());
   const trackHref = runtime.item?.provider === 'spotify' ? safeExternalHref(runtime.item.externalUrl) : undefined;
   const redirectIssue = redirectUri ? spotifyRedirectUriIssue(redirectUri) : '';
@@ -146,12 +162,15 @@ export function NowPlayingPage() {
   const nativeLoopback = spotifyUsesNativeLoopback();
   const spotifyDashboardHref = safeExternalHref(SPOTIFY_DASHBOARD);
   const spotifyConnected = spotifyHasConnection();
+  const playbackPositionMs = useMemo(
+    () => projectPlaybackPositionMs(runtime.item, progressClockMs),
+    [runtime.item, progressClockMs]
+  );
   const playbackProgress = useMemo(() => {
     const duration = runtime.item?.durationMs;
-    const progress = runtime.item?.progressMs;
-    if (!duration || progress === undefined) return null;
-    return Math.max(0, Math.min(100, (progress / duration) * 100));
-  }, [runtime.item?.durationMs, runtime.item?.progressMs]);
+    if (!duration || playbackPositionMs === undefined) return null;
+    return Math.max(0, Math.min(100, (playbackPositionMs / duration) * 100));
+  }, [playbackPositionMs, runtime.item?.durationMs]);
 
   const selectedProvider = settings?.nowPlayingProvider ?? runtime.provider;
   const systemEnabledOnDevice = systemMediaEnabledOnThisDevice();
@@ -346,9 +365,9 @@ export function NowPlayingPage() {
                 </div>
 
                 {playbackProgress !== null ? (
-                  <div className="now0319-progress" role="progressbar" aria-label="Playback progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(playbackProgress)}>
+                  <div className="now0319-progress" role="progressbar" aria-label="Playback progress" aria-live="off" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(playbackProgress)}>
                     <i style={{ width: `${playbackProgress}%` }} />
-                    <div><span>{formatPlaybackTime(runtime.item.progressMs)}</span><span>{formatPlaybackTime(runtime.item.durationMs)}</span></div>
+                    <div><span>{formatPlaybackTime(playbackPositionMs)}</span><span>{formatPlaybackTime(runtime.item.durationMs)}</span></div>
                   </div>
                 ) : null}
 

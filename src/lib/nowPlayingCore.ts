@@ -107,6 +107,29 @@ export function parseSpotifyPlayback(payload: SpotifyPlaybackPayload, canControl
   };
 }
 
+export function projectPlaybackPositionMs(
+  item: Pick<NowPlayingItem, 'durationMs' | 'fetchedAt' | 'isPlaying' | 'progressMs'> | null | undefined,
+  nowMs = Date.now()
+) {
+  if (!item || item.progressMs === undefined || !Number.isFinite(item.progressMs)) return undefined;
+
+  const baseProgress = Math.max(0, item.progressMs);
+  if (!item.isPlaying) {
+    return item.durationMs !== undefined ? Math.min(baseProgress, Math.max(0, item.durationMs)) : baseProgress;
+  }
+
+  const fetchedAtMs = Date.parse(item.fetchedAt);
+  const elapsedMs = Number.isFinite(fetchedAtMs) && Number.isFinite(nowMs)
+    ? Math.max(0, nowMs - fetchedAtMs)
+    : 0;
+  const projected = baseProgress + elapsedMs;
+
+  return item.durationMs !== undefined
+    ? Math.min(projected, Math.max(0, item.durationMs))
+    : projected;
+}
+
+
 export interface SystemMediaSnapshotPayload {
   supported?: unknown;
   available?: unknown;

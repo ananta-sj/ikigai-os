@@ -14,6 +14,7 @@ const mini = read('src/components/GlobalNowPlaying.tsx');
 const guides = read('src/data/pageGuides.ts');
 const rust = read('src-tauri/src/lib.rs');
 const cargo = read('src-tauri/Cargo.toml');
+const hook = read('src/hooks/useNowPlaying.ts');
 
 test('v0.33 makes Windows System Media a real provider with read-only controls by default', () => {
   assert.match(types, /NowPlayingProvider\s*=\s*'none'\s*\|\s*'system'\s*\|\s*'spotify'/);
@@ -94,4 +95,16 @@ test('v0.33 Now Playing guidance distinguishes native, web and Spotify boundarie
   assert.match(guides, /Windows System Media is the recommended native source/);
   assert.match(guides, /Spotify Web API setup is available as an advanced provider/);
   assert.match(guides, /Browser\/PWA builds explicitly explain that they cannot read Windows media sessions/);
+});
+
+
+test('v0.33 progress advances locally between authoritative provider refreshes', () => {
+  assert.match(core, /export function projectPlaybackPositionMs/);
+  assert.match(core, /baseProgress \+ elapsedMs/);
+  assert.match(page, /setProgressClockMs\(Date\.now\(\)\)/);
+  assert.match(page, /window\.setInterval\(\(\) => setProgressClockMs\(Date\.now\(\)\), 1_000\)/);
+  assert.match(page, /projectPlaybackPositionMs\(runtime\.item, progressClockMs\)/);
+  assert.match(page, /formatPlaybackTime\(playbackPositionMs\)/);
+  assert.match(page, /aria-live="off"/);
+  assert.match(hook, /15_000/);
 });
