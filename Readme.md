@@ -6,7 +6,7 @@
 
 Ikigai OS is not trying to be another productivity dashboard. It is a private, calm workspace where practical rooms help you move through your day, while **Sanctuary** quietly reflects what that movement has become.
 
-**Current version:** `v0.32.0`
+**Current version:** `v0.33.0`
 
 ---
 
@@ -17,7 +17,7 @@ Ikigai OS brings several parts of day-to-day life into one coherent, local-first
 - **Today** — tasks, day notes, continuity, and a physical desk-calendar feel.
 - **Journey** — a calendar and planning space with tactile, themed calendar constructions.
 - **Focus** — deliberate focus sessions with optional quotes, fullscreen, and completion notifications.
-- **Now Playing** — an optional Spotify-connected listening surface without turning music into a productivity metric.
+- **Now Playing** — a quiet playback surface. The installed Windows app can read Windows System Media locally; Spotify Web API remains an optional advanced source.
 - **Roadmap** — phases, checkpoints, and longer-term direction.
 - **Reflection** — weekly reflection with continuity back into the rest of the app.
 - **Memories** — a private memory vault with date-aware capture and navigation.
@@ -55,9 +55,11 @@ Backups can be exported and restored through the app.
 
 Local-first does **not** mean application-level encrypted storage. Treat the device and browser profile as part of the security boundary.
 
+The installed Windows app can optionally read the current **Windows System Media** session locally. This is device-local, stores no listening history, and keeps playback controls separately opt-in.
+
 Optional integrations can use the network:
 
-- **Spotify** uses Spotify authorization and playback APIs when explicitly connected.
+- **Spotify Web API** remains an advanced, explicitly connected provider. Its OAuth tokens stay outside portable backups.
 - **Companion** can use Gemini or a configured OpenAI-compatible endpoint. Remote requests leave the device by definition, so use only providers you trust.
 - API/provider credentials are kept out of Ikigai's portable backup data.
 
@@ -75,6 +77,14 @@ PWA installation requires the app to be served from a secure origin (`https://`,
 
 Because browser storage is origin-specific, installing the PWA does not create automatic cross-device sync.
 
+### Windows app
+
+v0.33 also ships through a Tauri 2 Windows build. The native app keeps its own local storage origin, separate from the browser/PWA installation, so **Backup / Restore** is the supported migration path between them.
+
+Windows System Media is available only in the installed Windows app. It reads the current media-session metadata locally and starts read-only; play/pause/previous/next remain separately opt-in and are shown only when the active media app exposes those capabilities.
+
+Unsigned development/personal builds may trigger Windows SmartScreen. Code signing is a distribution step rather than a requirement for the app to function.
+
 ---
 
 ## Tech stack
@@ -89,6 +99,7 @@ Ikigai OS is built with:
 - Framer Motion
 - Lucide
 - vite-plugin-pwa
+- Tauri 2 for the installed Windows application
 - Node's test runner with `tsx`
 
 Dependency versions are pinned in `package.json` / `package-lock.json`.
@@ -178,11 +189,11 @@ Ikigai OS is guided by a few constraints:
 
 ## Release documentation
 
-The current release line is `v0.32.0`.
+The current release line is `v0.33.0`.
 
 Public release-gate documents include:
 
-- `MIGRATION_V0.32.0.md`
+- `MIGRATION_V0.33.0.md`
 - `RELEASE_EVIDENCE_V0.32.md`
 - `UI_SMOKE_CHECKLIST_V0.31.md`
 
@@ -202,7 +213,7 @@ and confirm the corresponding GitHub Actions release-gate run is green.
 
 Ikigai OS is an actively developed personal project.
 
-`v0.32.0` focuses on a release-ready local-first foundation: responsive rooms, a stronger mobile experience, a calmer shared capture language, PWA support, a living Sanctuary, a more natural Familiar, optional remote integrations, backup/restore safeguards, and cross-version release verification.
+`v0.33.0` adds the installed Windows release path, native Windows System Media for Now Playing, polished First Light onboarding, bounded Sanctuary Explore controls, responsive preview repairs, and final native-release hardening while preserving the local-first web/PWA experience.
 
 The next changes should earn their place by making the system more useful, more personal, or more alive without making it busier.
 

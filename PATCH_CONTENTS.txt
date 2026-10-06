@@ -1,9 +1,0 @@
-Ikigai OS v0.33 verify-fix patch contents
-
-APPLY_VERIFY_FIX.ps1
-README_FIX.txt
-PATCH_CONTENTS.txt
-BASE_SHA256.txt
-IKIGAI_V033_VERIFY_FIX.diff
-files/src/pages/NowPlayingPage.tsx
-files/src/components/sanctuary/SanctuaryWorld.tsx
