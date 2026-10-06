@@ -8,9 +8,10 @@ const today = read('src/pages/TodayPage.tsx');
 const css = read('src/daily-desk-v026.css');
 const pkg = JSON.parse(read('package.json'));
 
-test('v0.32 begins from the frozen release line with an explicit package boundary', () => {
-  assert.equal(pkg.version, '0.32.0');
-  assert.match(read('Readme.md'), /Current version:\*\* `v0\.32\.0/);
+test('v0.33 release keeps the explicit package boundary and preserves v0.32 migration history', () => {
+  assert.equal(pkg.version, '0.33.0');
+  assert.match(read('Readme.md'), /Current version:\*\* `v0\.33\.0/);
+  assert.equal(fs.existsSync('MIGRATION_V0.33.0.md'), true);
   assert.equal(fs.existsSync('MIGRATION_V0.32.0.md'), true);
   assert.match(read('tests/versionGate.ts'), /versionAtLeast/);
 });
