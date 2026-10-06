@@ -1,33 +1,80 @@
+<div align="center">
+
+<img src="./public/brand/ikigai-native-icon.png" width="136" alt="Ikigai OS logo" />
+
 # Ikigai OS
 
+### A calm, local-first space for planning, focus, reflection, memory, and the life around them.
+
+[**Live Demo**](https://ananta-sj.github.io/ikigai-os/) ·
+[**Download for Windows**](https://github.com/ananta-sj/ikigai-os/releases/latest) ·
+[**Source**](https://github.com/ananta-sj/ikigai-os)
+
+<br />
+
 [![Release gate](https://github.com/ananta-sj/ikigai-os/actions/workflows/release-gate.yml/badge.svg)](https://github.com/ananta-sj/ikigai-os/actions/workflows/release-gate.yml)
-
-**A local-first personal life OS for planning, focus, reflection, memory, career, and a living Sanctuary.**
-
-Ikigai OS is not trying to be another productivity dashboard. It is a private, calm workspace where practical rooms help you move through your day, while **Sanctuary** quietly reflects what that movement has become.
+![Version](https://img.shields.io/badge/version-v0.33.0-3d433b)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20PWA-5d625a)
+![Local first](https://img.shields.io/badge/data-local--first-766f60)
 
 **Current version:** `v0.33.0`
 
+</div>
+
 ---
 
-## What is Ikigai OS?
+## A personal OS, without turning your life into a dashboard
 
-Ikigai OS brings several parts of day-to-day life into one coherent, local-first web app:
+Ikigai OS is a private workspace for the parts of life that usually end up scattered across task managers, calendars, journals, notes, timers, career trackers, and half-forgotten documents.
 
-- **Today** — tasks, day notes, continuity, and a physical desk-calendar feel.
-- **Journey** — a calendar and planning space with tactile, themed calendar constructions.
-- **Focus** — deliberate focus sessions with optional quotes, fullscreen, and completion notifications.
-- **Now Playing** — a quiet playback surface. The installed Windows app can read Windows System Media locally; Spotify Web API remains an optional advanced source.
-- **Roadmap** — phases, checkpoints, and longer-term direction.
-- **Reflection** — weekly reflection with continuity back into the rest of the app.
-- **Memories** — a private memory vault with date-aware capture and navigation.
-- **Career** — projects, proof, opportunities, and career evidence.
-- **Companion** — optional AI assistance using a configured remote provider.
-- **Sanctuary** — a Japanese-inspired 3D living landscape shaped by local activity.
-- **Familiar** — a configurable, draggable companion that can be disabled entirely.
-- **Settings** — appearance, motion, world, integrations, backup, and other local preferences.
+It brings them together as a set of **rooms**, each designed around a different kind of attention.
 
-The goal is coherence rather than gamification. Ikigai OS deliberately avoids XP, currencies, streak pressure, and a second progress economy.
+There are no XP bars to chase, no currencies, no streak pressure, and no second economy hiding behind your real life.
+
+The goal is simpler:
+
+> **Help you remember where you are, what matters, and what you want to move toward.**
+
+---
+
+## Try Ikigai OS
+
+### 🌐 Live demo
+
+**https://ananta-sj.github.io/ikigai-os/**
+
+The browser version contains the full local-first PWA experience.
+
+Some native functionality, particularly **Windows System Media**, is available only in the installed Windows app.
+
+### 🪟 Windows
+
+Download the latest installer from:
+
+**https://github.com/ananta-sj/ikigai-os/releases/latest**
+
+The Windows application is built with **Tauri 2** and keeps its own local storage separate from the browser/PWA version.
+
+Use **Backup & Restore** to move your Ikigai OS data between installations.
+
+> Current Windows builds are unsigned, so Windows SmartScreen may show a warning during installation.
+
+---
+
+## The rooms
+
+| Room | Purpose |
+| --- | --- |
+| **Today** | Tasks, notes, continuity, and a tactile daily paper workspace |
+| **Journey** | A physical-feeling calendar for planning days and milestones |
+| **Focus** | Deliberate focus sessions without productivity theatre |
+| **Now Playing** | A quiet surface for the media already accompanying your day |
+| **Roadmap** | Longer arcs, phases, checkpoints, and direction |
+| **Reflection** | Weekly reflection connected back to the rest of the system |
+| **Memories** | A private, date-aware vault for moments worth keeping |
+| **Career** | Projects, evidence, opportunities, and professional growth |
+| **Companion** | Optional AI assistance using a provider you configure |
+| **Sanctuary** | A persistent 3D world shaped quietly by your activity |
 
 ---
 
@@ -35,93 +82,168 @@ The goal is coherence rather than gamification. Ikigai OS deliberately avoids XP
 
 Sanctuary is the emotional center of Ikigai OS.
 
-It is a persistent 3D place with a grove, Moon Pond, pavilion, Lantern Street, Tea House, changing local-time atmosphere, ambient life, and a resident Familiar. Its world state is projected from existing local records such as completed work, reflections, memories, roadmap activity, and career evidence.
+It is not a statistics page rendered in 3D.
 
-Sanctuary is intentionally **not** a dashboard in a 3D costume. Some objects are interactive, but the world is allowed to exist simply as somewhere to sit, look around, and be still.
+It is a persistent place.
 
-Core progression is conservative and idempotent: completing work can contribute to Garden growth, but rewards are stamped once and are not designed as a grindable economy.
+A grove.  
+Moon Pond.  
+A pavilion.  
+Lantern Street.  
+A Tea House.  
+Changing light.  
+Ambient life.  
+A Familiar that actually inhabits the world.
 
-Reduced Motion and lower-power rendering paths are supported.
+Your existing activity can gently influence the landscape, but Sanctuary deliberately avoids becoming another progression system to optimize.
+
+You can explore it.
+
+You can notice what has changed.
+
+Or you can simply stay there for a while.
+
+---
+
+## Familiar
+
+The Familiar is a small resident that moves between Ikigai OS and Sanctuary.
+
+It can respond to the room you are in, move around its available space, and take on different material treatments.
+
+It is also entirely optional.
+
+Disable it and Ikigai OS remains complete.
+
+That principle matters throughout the project: personality should enrich the system, never hold it hostage.
+
+---
+
+## Now Playing
+
+### Windows System Media
+
+The native Windows app can read compatible media sessions directly from Windows.
+
+It supports:
+
+- current media metadata
+- artwork when provided by the source
+- playback state
+- locally projected playback progress
+- supported play / pause / next / previous controls
+- read-only access by default
+- separately opt-in playback controls
+
+Ikigai OS does **not** capture microphone input, analyze system audio, or build a listening-history database.
+
+### Spotify
+
+Spotify Web API support remains available as an optional **Advanced** source.
+
+It uses PKCE rather than a client secret and stays separate from the normal Windows System Media path.
 
 ---
 
 ## Local-first by design
 
-Core Ikigai data lives in the browser using **IndexedDB via Dexie**.
+Your core Ikigai OS data lives locally using **IndexedDB via Dexie**.
 
-There is no required Ikigai account, no built-in cloud sync, and the core experience does not depend on a remote backend. Data belongs to the browser origin and device where it was created, so `localhost` and a deployed HTTPS site are separate stores.
+No Ikigai account is required.
 
-Backups can be exported and restored through the app.
+No Ikigai cloud backend is required.
 
-Local-first does **not** mean application-level encrypted storage. Treat the device and browser profile as part of the security boundary.
+No automatic cloud sync is silently running behind the experience.
 
-The installed Windows app can optionally read the current **Windows System Media** session locally. This is device-local, stores no listening history, and keeps playback controls separately opt-in.
+### What stays local
 
-Optional integrations can use the network:
+| Data | Behaviour |
+| --- | --- |
+| Tasks, plans, reflections and memories | Stored locally |
+| Sanctuary state | Derived from local records |
+| Windows System Media | Read locally on the device |
+| Media history | Not stored |
+| Native media permission | Device-local |
+| Backup data | Exported only when you choose |
+| Spotify OAuth tokens | Excluded from portable backups |
 
-- **Spotify Web API** remains an advanced, explicitly connected provider. Its OAuth tokens stay outside portable backups.
-- **Companion** can use Gemini or a configured OpenAI-compatible endpoint. Remote requests leave the device by definition, so use only providers you trust.
-- API/provider credentials are kept out of Ikigai's portable backup data.
+Local-first does not mean application-level encrypted storage. Your device and browser profile remain part of the security boundary.
 
-Private writing is not projected verbatim into Sanctuary scenery.
-
----
-
-## Progressive Web App
-
-Ikigai OS ships as a **PWA**.
-
-A production build includes a web app manifest and service worker so the app can be installed to a desktop or home screen and can keep its application shell and selected local assets available offline.
-
-PWA installation requires the app to be served from a secure origin (`https://`, with normal localhost exceptions during development).
-
-Because browser storage is origin-specific, installing the PWA does not create automatic cross-device sync.
-
-### Windows app
-
-v0.33 also ships through a Tauri 2 Windows build. The native app keeps its own local storage origin, separate from the browser/PWA installation, so **Backup / Restore** is the supported migration path between them.
-
-Windows System Media is available only in the installed Windows app. It reads the current media-session metadata locally and starts read-only; play/pause/previous/next remain separately opt-in and are shown only when the active media app exposes those capabilities.
-
-Unsigned development/personal builds may trigger Windows SmartScreen. Code signing is a distribution step rather than a requirement for the app to function.
+Optional remote integrations naturally leave the device when used.
 
 ---
 
-## Tech stack
+## v0.33.0
 
-Ikigai OS is built with:
+This release brings Ikigai OS into its native Windows chapter.
 
-- React + TypeScript
-- Vite
-- React Router
-- Dexie / IndexedDB
-- Three.js + React Three Fiber
-- Framer Motion
-- Lucide
-- vite-plugin-pwa
-- Tauri 2 for the installed Windows application
-- Node's test runner with `tsx`
+### Highlights
 
-Dependency versions are pinned in `package.json` / `package-lock.json`.
+- **Native Windows application** with Tauri 2
+- **Windows System Media** integration
+- locally projected, living playback progress
+- provider-neutral media controls
+- refined **First Light** onboarding
+- real text-size and Familiar previews
+- live Paper & Time preview
+- improved Journey auto-fitting
+- responsive Settings repairs
+- bounded keyboard-friendly **Sanctuary Explore**
+- official **Ikigai Seed** native branding
+- browser ↔ native migration through Backup & Restore
+- hardened Spotify advanced integration
+- dependency and release cleanup
 
-### Supported Node versions
+---
 
-The release gate verifies:
+## Built with
+
+<div align="center">
+
+**React 19** · **TypeScript** · **Vite** · **Dexie**  
+**Three.js** · **React Three Fiber** · **Framer Motion**  
+**Lucide** · **vite-plugin-pwa** · **Tauri 2**
+
+</div>
+
+The Windows build uses a deliberately narrow native bridge for functionality that cannot exist safely in the browser, including Windows System Media.
+
+---
+
+## Architecture
 
 ```text
-Node 20.19.0
-Node 22.12.0
+                         Ikigai OS
+                             │
+              ┌──────────────┴──────────────┐
+              │                             │
+          React / Vite                  Tauri 2
+              │                             │
+       ┌──────┼───────┐                     │
+       │      │       │                     │
+     Dexie   R3F     PWA             Windows native APIs
+       │      │                             │
+ IndexedDB  Sanctuary              Windows System Media
+       │
+   Local data
 ```
 
-The package engine contract is:
+Browser and native installations deliberately have separate storage origins.
 
-```text
-^20.19.0 || >=22.12.0
-```
+**Backup & Restore is the bridge between them.**
 
 ---
 
 ## Run locally
+
+Requirements:
+
+```text
+Node ^20.19.0 or >=22.12.0
+npm
+```
+
+Clone and start:
 
 ```bash
 git clone https://github.com/ananta-sj/ikigai-os.git
@@ -130,9 +252,7 @@ npm ci
 npm run dev
 ```
 
-Vite will print the local development address.
-
-For a production build:
+Production build:
 
 ```bash
 npm run build
@@ -140,50 +260,79 @@ npm run build
 
 ---
 
-## Verification
+## Native development
 
-The main release gate is:
-
-```bash
-npm run verify
-```
-
-It performs retired-source cleanup, release-contract checks, static/UI/icon audits, the test suite, a production build, and a fresh `dist` audit.
-
-Production dependency auditing is separate:
+The Windows desktop application uses Tauri 2.
 
 ```bash
-npm run audit:deps
+npm run native:dev
 ```
 
-Useful individual commands:
+Production native build:
 
-| Command | Purpose |
-| --- | --- |
-| `npm test` | Run the TypeScript test suite |
-| `npm run build` | Type-check and build production assets |
-| `npm run audit:release` | Validate version, docs, PWA, and CI contracts |
-| `npm run audit:static` | Run static source checks |
-| `npm run audit:ui` | Run UI source guardrails |
-| `npm run audit:icons` | Validate Lucide imports |
-| `npm run audit:dist` | Audit the generated production artifact |
-| `npm run verify` | Run the complete release gate |
-| `npm run audit:deps` | Audit production dependencies |
+```bash
+npm run native:build
+```
 
-GitHub Actions runs the release gate on pushes to `main` and on pull requests across the supported Node boundaries.
+Official Windows release artifacts are built through GitHub Actions rather than requiring the release machine to carry the complete native toolchain.
 
 ---
 
-## Product principles
+## Verification
 
-Ikigai OS is guided by a few constraints:
+Before release:
 
-1. **Local-first before cloud-first.** Core data should remain useful without a backend.
-2. **Calm before noisy.** Avoid dashboard density, pressure mechanics, and attention traps.
-3. **Meaning before gamification.** Sanctuary should reflect a life being lived, not create another score to optimize.
-4. **Private text stays private.** Ambient projections should use bounded state, not expose journal or memory text.
-5. **Accessibility is part of the product.** Keyboard-safe dialogs, safe-area-aware mobile layouts, reduced motion, and practical touch targets are release concerns.
-6. **Visual truth matters.** Source-level tests are not a substitute for checking the real rendered experience.
+```bash
+npm ci
+npm run verify
+npm run audit:deps
+```
+
+`npm run verify` covers release contracts, static checks, UI guardrails, icon validation, the automated test suite, production build, and generated-distribution auditing.
+
+The GitHub release gate verifies both supported Node boundaries:
+
+```text
+Node 20.19.0
+Node 22.12.0
+```
+
+---
+
+## Design principles
+
+**Calm over density.**  
+The interface should not feel like an admin panel for your existence.
+
+**Meaning over gamification.**  
+Growth may leave traces. It should not become another score.
+
+**Local-first over account-first.**  
+The core product remains useful without an Ikigai backend.
+
+**Private text stays private.**  
+Sanctuary may respond to bounded state, but private writing is not projected verbatim into scenery.
+
+**Tactile over generic.**  
+Paper, calendars, rooms, landscape, and movement should feel authored rather than assembled from dashboard components.
+
+**Accessibility is product quality.**  
+Keyboard use, reduced motion, focus management, safe areas, and practical touch targets belong inside the release definition.
+
+---
+
+## Backup & migration
+
+Browser/PWA and native Windows installations keep separate local stores.
+
+To move your existing Ikigai OS world:
+
+1. Export a backup from the current installation.
+2. Open the destination installation.
+3. Go to **Backup & Restore**.
+4. Restore the exported backup.
+
+v0.33.0 requires no destructive database migration.
 
 ---
 
@@ -217,6 +366,19 @@ Ikigai OS is an actively developed personal project.
 
 The next changes should earn their place by making the system more useful, more personal, or more alive without making it busier.
 
+---
+
+<div align="center">
+
+## Ikigai OS
+
+**Not a dashboard for measuring your life.  
+A place for inhabiting it.**
+
+[Live Demo](https://ananta-sj.github.io/ikigai-os/) ·
+[Latest Release](https://github.com/ananta-sj/ikigai-os/releases/latest)
+
+</div>
 
 <!-- Release-contract marker: v0.31.14 release candidate preflight -->
 <!-- Release-contract marker: Patch 17 release-closure sync -->
