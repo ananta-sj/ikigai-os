@@ -1,4 +1,4 @@
-# Ikigai OS — Reimagine Roadmap
+# Ikigai — Reimagine Roadmap
 
 This roadmap starts after the v0.20 UI foundation. The goal is to avoid mixing shell cleanup, 3D world design and character-system design into one untestable release.
 

@@ -22,9 +22,9 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,glb}']
       },
       manifest: {
-        name: 'Ikigai OS',
+        name: 'Ikigai',
         short_name: 'Ikigai',
-        description: 'A local-first personal growth operating system.',
+        description: 'A local-first personal workspace for planning, focus, reflection, and memory.',
         theme_color: '#08110d',
         background_color: '#08110d',
         display: 'standalone',

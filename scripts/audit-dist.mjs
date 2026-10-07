@@ -88,7 +88,7 @@ export function inspectProductionDist(distDir = path.join(process.cwd(), 'dist')
   if (fs.existsSync(manifestPath)) {
     try {
       const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-      if (manifest.name !== 'Ikigai OS') failures.push('Production manifest name is not Ikigai OS.');
+      if (manifest.name !== 'Ikigai') failures.push('Production manifest name is not Ikigai.');
       if (manifest.start_url !== '/') failures.push('Production manifest start_url must remain /.');
       if (manifest.display !== 'standalone') failures.push('Production manifest display must remain standalone.');
       const icons = Array.isArray(manifest.icons) ? manifest.icons : [];

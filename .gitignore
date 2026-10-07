@@ -1,4 +1,4 @@
-# Ikigai OS — repository hygiene
+# Ikigai — repository hygiene
 # Keep package-lock.json committed for reproducible installs/builds.
 
 # -----------------------------------------------------------------------------

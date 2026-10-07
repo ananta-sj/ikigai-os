@@ -50,7 +50,7 @@ function formatPlaybackTime(value?: number) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
-const SPOTIFY_APP_NAME = 'Ikigai OS';
+const SPOTIFY_APP_NAME = 'Ikigai';
 const SPOTIFY_APP_DESCRIPTION = 'Personal local-first life OS with a private Now Playing view using Spotify playback metadata.';
 const SPOTIFY_APP_WEBSITE = 'https://ananta-sj.github.io/ikigai-os/';
 const SPOTIFY_DASHBOARD = 'https://developer.spotify.com/dashboard';

@@ -1,4 +1,4 @@
-# Ikigai OS v0.31.20 — Patch 02
+# Ikigai v0.31.20 — Patch 02
 
 This incremental patch focuses on three areas: Career editor layout, the Focus Room's distraction-free quote wall, and a full Sanctuary earning/display/runtime audit.
 

@@ -304,7 +304,7 @@ export async function downloadBackup() {
 function assertBundleShape(value: unknown): asserts value is IkigaiBackupBundle {
   if (!isPlainRecord(value)) throw new Error('This file is not a valid Ikigai backup.');
   const bundle = value as Partial<IkigaiBackupBundle>;
-  if (bundle.format !== BACKUP_FORMAT) throw new Error('This file is not an Ikigai OS backup.');
+  if (bundle.format !== BACKUP_FORMAT) throw new Error('This file is not an Ikigai backup.');
   if (bundle.formatVersion !== BACKUP_FORMAT_VERSION) throw new Error('This backup format is not supported by this version of Ikigai.');
   if (typeof bundle.schemaVersion !== 'number' || !Number.isInteger(bundle.schemaVersion) || bundle.schemaVersion < 1) throw new Error('The backup is missing valid schema information.');
   if (bundle.schemaVersion > CURRENT_SCHEMA_VERSION) throw new Error('This backup was created by a newer Ikigai data schema. Update the app before restoring it.');

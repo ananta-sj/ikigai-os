@@ -1,4 +1,4 @@
-# Ikigai OS v0.32.0 — Patch 01 · One Life, One Atmosphere
+# Ikigai v0.32.0 — Patch 01 · One Life, One Atmosphere
 
 This is the first incremental patch on top of the frozen v0.31.20 Patch 19 baseline.
 

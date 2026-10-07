@@ -1,4 +1,4 @@
-# Ikigai OS v0.31.16 — Interaction chrome guardrails
+# Ikigai v0.31.16 — Interaction chrome guardrails
 
 ## Why this patch exists
 
@@ -18,7 +18,7 @@ Neither behavior is useful for normal room navigation, and both visually break t
   - `contenteditable="true"`
   - `contenteditable="plaintext-only"`
   - any explicit `[data-ikigai-selectable="true"]` escape hatch
-- The Ikigai OS brand-door `NavLink` is marked `draggable={false}` and cancels `dragstart`.
+- The Ikigai brand-door `NavLink` is marked `draggable={false}` and cancels `dragstart`.
 - Every Living Dock destination is marked `draggable={false}`.
 - The dock container cancels bubbled `dragstart` events so nested icons/labels cannot initiate a native drag.
 - WebKit's native element-drag behavior is also disabled on the brand/dock descendants as a CSS fallback.

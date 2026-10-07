@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "Ikigai OS",
+  "productName": "Ikigai",
   "version": "0.33.0",
   "identifier": "io.github.anantasj.ikigaios",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Ikigai OS",
+        "title": "Ikigai",
         "width": 800,
         "height": 600,
         "resizable": true,

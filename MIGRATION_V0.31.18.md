@@ -1,4 +1,4 @@
-# Ikigai OS v0.31.18 — Layout scale & workspace balance
+# Ikigai v0.31.18 — Layout scale & workspace balance
 
 ## Why this patch exists
 

@@ -1,4 +1,4 @@
-# Ikigai OS v0.31.19 — Layout Balance Corrective
+# Ikigai v0.31.19 — Layout Balance Corrective
 
 This patch is intended to be extracted over v0.31.18 at the repository root.
 

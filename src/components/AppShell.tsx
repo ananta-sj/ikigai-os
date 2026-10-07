@@ -101,7 +101,7 @@ export function AppShell() {
 
   useEffect(() => {
     const label = routeLabels[location.pathname] ?? 'Ikigai';
-    document.title = `${label} · Ikigai OS`;
+    document.title = `${label} · Ikigai`;
     setAnnouncement(`${label} opened.`);
 
     if (previousPath.current === location.pathname) return;

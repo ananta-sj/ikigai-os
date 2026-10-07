@@ -111,7 +111,7 @@ fn start_spotify_oauth_listener(app: tauri::AppHandle, state: String) -> Result<
             break;
           }
 
-          let body = "<!doctype html><meta charset=\"utf-8\"><title>Ikigai OS · Spotify</title><style>body{font:16px system-ui;background:#151713;color:#f4efe3;display:grid;place-items:center;min-height:100vh;margin:0}main{max-width:520px;padding:32px;text-align:center}small{color:#a9aa9f}</style><main><h1>Spotify returned to Ikigai OS.</h1><p>You can close this browser tab and return to Ikigai.</p><small>The authorization result was sent only to the local app on this device.</small></main>";
+          let body = "<!doctype html><meta charset=\"utf-8\"><title>Ikigai · Spotify</title><style>body{font:16px system-ui;background:#151713;color:#f4efe3;display:grid;place-items:center;min-height:100vh;margin:0}main{max-width:520px;padding:32px;text-align:center}small{color:#a9aa9f}</style><main><h1>Spotify returned to Ikigai.</h1><p>You can close this browser tab and return to Ikigai.</p><small>The authorization result was sent only to the local app on this device.</small></main>";
           write_http_response(&mut stream, "200 OK", "text/html; charset=utf-8", body);
           break;
         }

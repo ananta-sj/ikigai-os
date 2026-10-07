@@ -1,4 +1,4 @@
-# Ikigai OS v0.31 — Browser / Accessibility / Responsive Verification
+# Ikigai v0.31 — Browser / Accessibility / Responsive Verification
 
 This checklist is the manual release gate for the v0.31 source pass. Source audits are useful evidence, but they do not prove browser composition, assistive-technology behavior, touch ergonomics, or GPU performance.
 
@@ -90,7 +90,7 @@ Treat this as a visual regression gate, not a source-audit substitute. Check eve
 
 - [ ] Switch through Cedar Study, Washi Sanctuary, Indigo Draft, Sumi Workshop and Moonlit Ledger. Each should feel materially distinct rather than like the same layout with a different accent colour.
 - [ ] Verify vertical and nested scrollbars in all five workspace themes. Firefox should receive the matching track/thumb colours; Chromium/WebKit should also show the theme-specific thumb/track treatment.
-- [ ] At 1440, 1280, 1024 and the narrowest desktop layout, the floating Ikigai OS badge has clear air before Today/Journey header text and never overlaps Focus Room content.
+- [ ] At 1440, 1280, 1024 and the narrowest desktop layout, the floating Ikigai badge has clear air before Today/Journey header text and never overlaps Focus Room content.
 - [ ] Familiar Paper clay, Glasslight and Felt visibly differ as surfaces; Aura Accent remains a separate colour choice.
 - [ ] Familiar Left nook is actually left of the content area, clear of the Living Dock; Right nook mirrors correctly; mobile positioning remains reachable.
 - [ ] Journey renders all eight core calendar constructions: Nihon Sakura, Fuji Seasonal, Study Wall, Washi Minimal, Midnight Desk, Letterpress Ledger, Kraft Clip and Newsprint Month, plus the five optional special editions covered below. Verify month transitions and the date sheet remain unchanged.

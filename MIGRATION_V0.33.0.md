@@ -1,4 +1,4 @@
-# Ikigai OS v0.33.0
+# Ikigai v0.33.0
 
 v0.33 closes the native-first release milestone while preserving the existing local-first browser and PWA experience.
 

@@ -22,7 +22,7 @@ function makeValidFixture() {
     <script src="/registerSW.js"></script>
   </head><body><div id="root"></div></body></html>`);
   writeFileSync(join(dist, 'manifest.webmanifest'), JSON.stringify({
-    name: 'Ikigai OS', start_url: '/', display: 'standalone',
+    name: 'Ikigai', start_url: '/', display: 'standalone',
     icons: [{ src: '/icon-192.png' }, { src: '/icon-512.png' }]
   }));
   writeFileSync(join(dist, 'registerSW.js'), `navigator.serviceWorker.register('/sw.js', { scope: '/' });`);

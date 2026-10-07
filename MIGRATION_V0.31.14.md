@@ -1,4 +1,4 @@
-# Ikigai OS v0.31.14 — Release Candidate Preflight
+# Ikigai v0.31.14 — Release Candidate Preflight
 
 ## Why this release exists
 

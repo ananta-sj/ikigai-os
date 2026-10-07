@@ -835,8 +835,8 @@ export function OnboardingPage() {
       <div className="onboarding-grain" aria-hidden="true" />
 
       <header className="onboarding-topbar">
-        <button className="onboarding-brand" type="button" onClick={() => preview && navigate(-1)} aria-label="Ikigai OS">
-          <span className="onboarding-brand-mark"><IkigaiMark /></span><div><b>Ikigai OS</b><small>{preview ? 'welcome preview' : 'first light'}</small></div>
+        <button className="onboarding-brand" type="button" onClick={() => preview && navigate(-1)} aria-label="Ikigai">
+          <span className="onboarding-brand-mark"><IkigaiMark /></span><div><b>Ikigai</b><small>{preview ? 'welcome preview' : 'first light'}</small></div>
         </button>
         <div className="onboarding-progress" aria-label={`Step ${step + 1} of ${steps.length}`}>
           {steps.map((label, index) => <i key={label} className={index <= step ? 'active' : ''} title={label} />)}

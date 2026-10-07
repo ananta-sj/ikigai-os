@@ -1,4 +1,4 @@
-# Ikigai OS v0.32 — Release Candidate Evidence
+# Ikigai v0.32 — Release Candidate Evidence
 
 This file is the evidence ledger for the first release candidate. Do not mark v0.32 ready from source audits alone. Complete this alongside `UI_SMOKE_CHECKLIST_V0.31.md` using a clean checkout and real browser/device sessions.
 

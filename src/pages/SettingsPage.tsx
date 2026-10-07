@@ -119,7 +119,7 @@ export function SettingsPage() {
             <div className="workspace-theme-demo-shell" aria-hidden="true">
               <div className="workspace-theme-demo-dock"><i /><i /><i /><i /></div>
               <div className="workspace-theme-demo-page">
-                <div className="workspace-theme-demo-brand"><span><IkigaiMark /></span><div><strong>Ikigai OS</strong><small>local-first</small></div></div>
+                <div className="workspace-theme-demo-brand"><span><IkigaiMark /></span><div><strong>Ikigai</strong><small>local-first</small></div></div>
                 <span className="workspace-theme-demo-eyebrow">TODAY · DESK</span>
                 <h4>A quieter place to work.</h4>
                 <div className="workspace-theme-demo-grid">

@@ -1,4 +1,4 @@
-# Ikigai OS v0.31.20 — Career workspace repair
+# Ikigai v0.31.20 — Career workspace repair
 
 This patch is a corrective Career-room pass on top of v0.31.19. It does not change the local database schema or migrate user records.
 
