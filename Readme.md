@@ -24,7 +24,7 @@ Not a dashboard for measuring your life. A place for inhabiting it.
 </div>
 
 <div align="center">
-    <small>Ikigai (生き甲斐) </small>
+    <small> ikigai (生き甲斐) </small>
     <small> or </small>
     <small> 'a reason for being' is a Japanese concept of an individual's definition of the meaning of their life. </small>
     </div>
