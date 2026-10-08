@@ -25,7 +25,9 @@ Not a dashboard for measuring your life. A place for inhabiting it.
 
 ---
 
-### Ikigai (生き甲斐) or 'a reason for being' is a Japanese concept of an individual's definition of the meaning of their life.
+## Ikigai (生き甲斐) 
+## or 
+## 'a reason for being' is a Japanese concept of an individual's definition of the meaning of their life.
 
 ## A place for inhabiting your life
 
