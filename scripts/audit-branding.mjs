@@ -11,6 +11,17 @@ function classify(file, line, token, tail) {
   if (['RELEASE_AUDIT_HANDOFF.md', 'REBRANDING_SPACE.md'].includes(file)) return 'compatibility/audit documentation identifying earlier names';
   if (/^\s+Seed\b/.test(tail)) return 'preserved canonical logo family name, not the complete product';
   if (file === 'scripts/audit-branding.mjs' || file === 'scripts/audit-branding-browser.mjs') return 'legacy-name detection pattern or compatibility test';
+  // The Japanese concept "ikigai" is not a legacy product name.
+  // Only exempt its explicit definition in the README.
+  if (
+    file === 'Readme.md' &&
+    /^ikigai$/i.test(token) &&
+    /ikigai\s*\(生き甲斐\)/i.test(line) &&
+    /a reason for being/i.test(line) &&
+    /\bJapanese concept\b/i.test(line)
+  ) {
+    return 'Japanese concept definition; not product branding';
+  }
   if (token.toLowerCase() !== 'ikigai' && token.toLowerCase() !== 'ikigai os') return 'technical identifier/path/URL; preserved for compatibility';
   if (/^\s*(?:\/\/|\/\*|\*|#)/.test(line) && !file.endsWith('.md')) return 'internal source comment';
   return 'REVIEW: possible public legacy product name';
