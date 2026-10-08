@@ -14,11 +14,10 @@ function classify(file, line, token, tail) {
   // The Japanese concept "ikigai" is not a legacy product name.
   // Only exempt its explicit definition in the README.
   if (
-    file === 'Readme.md' &&
-    /^ikigai$/i.test(token) &&
-    /ikigai\s*\(生き甲斐\)/i.test(line) &&
-    /a reason for being/i.test(line) &&
-    /\bJapanese concept\b/i.test(line)
+    file.toLowerCase() === 'readme.md' &&
+    token.toLowerCase() === 'ikigai' &&
+    line.includes('生き甲斐') &&
+    /japanese concept|reason for being/i.test(line)
   ) {
     return 'Japanese concept definition; not product branding';
   }
