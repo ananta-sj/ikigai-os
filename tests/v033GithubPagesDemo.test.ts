@@ -10,7 +10,7 @@ const workflow = read('.github/workflows/release-gate.yml');
 
 test('GitHub Pages demo uses the repository base without changing production routing', () => {
   assert.match(app, /basename:\s*import\.meta\.env\.BASE_URL/);
-  assert.match(demoConfig, /base:\s*['"]\/ikigai-os\/['"]/);
+  assert.match(demoConfig, /base:\s*['"]\/ikigai-space\/['"]/);
   assert.doesNotMatch(demoConfig, /VitePWA/);
 });
 
@@ -25,6 +25,7 @@ test('live demo deploys only after the release matrix passes on main', () => {
 
 test('GitHub Pages deployment keeps deep links usable and uses official Pages actions', () => {
   assert.match(workflow, /cp dist\/index\.html dist\/404\.html/);
+  assert.match(workflow, /node scripts\/audit-demo-dist\.mjs/);
   assert.match(workflow, /actions\/configure-pages@v5/);
   assert.match(workflow, /actions\/upload-pages-artifact@v4/);
   assert.match(workflow, /actions\/deploy-pages@v4/);

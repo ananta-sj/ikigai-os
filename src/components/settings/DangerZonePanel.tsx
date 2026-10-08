@@ -2,6 +2,7 @@ import { AlertTriangle, CalendarX2, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { clearCalendarData, resetIkigaiCompletely } from '../../lib/reset';
 import { useDialogFocus } from '../ui/dialogFocus';
+import { appPath } from '../../lib/appPaths';
 
 type ResetKind = 'calendar' | 'everything';
 
@@ -48,12 +49,12 @@ export function DangerZonePanel() {
     try {
       if (kind === 'calendar') {
         await clearCalendarData();
-        window.location.assign('/');
+        window.location.assign(appPath('/'));
         return;
       }
 
       await resetIkigaiCompletely();
-      window.location.assign('/welcome');
+      window.location.assign(appPath('/welcome'));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Reset failed. No reload was performed.');
       setBusy(false);

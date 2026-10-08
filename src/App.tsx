@@ -118,7 +118,7 @@ const router = createBrowserRouter([
     ]
   }
 ], {
-  // Production keeps BASE_URL="/". GitHub Pages demo builds use "/ikigai-os/".
+  // Production keeps BASE_URL="/". GitHub Pages demo builds use "/ikigai-space/".
   // Supplying the Vite base to React Router keeps both deployments on the same route tree.
   basename: import.meta.env.BASE_URL
 });

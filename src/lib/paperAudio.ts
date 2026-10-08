@@ -1,10 +1,12 @@
+import { appPath } from './appPaths';
+
 export type TearSampleId = 'clean' | 'a' | 'b' | 'c';
 
 const SAMPLE_URLS: Record<TearSampleId, string> = {
-  clean: '/audio/tear/ikigai-clean-reference.ogg',
-  a: '/audio/tear/reference-a.ogg',
-  b: '/audio/tear/reference-b.ogg',
-  c: '/audio/tear/reference-c.ogg'
+  clean: appPath('/audio/tear/ikigai-clean-reference.ogg'),
+  a: appPath('/audio/tear/reference-a.ogg'),
+  b: appPath('/audio/tear/reference-b.ogg'),
+  c: appPath('/audio/tear/reference-c.ogg')
 };
 
 /**

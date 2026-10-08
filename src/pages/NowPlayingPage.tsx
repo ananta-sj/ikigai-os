@@ -52,7 +52,7 @@ function formatPlaybackTime(value?: number) {
 
 const SPOTIFY_APP_NAME = 'Ikigai Space';
 const SPOTIFY_APP_DESCRIPTION = 'A local-first personal workspace for planning, focus, reflection, and memory.';
-const SPOTIFY_APP_WEBSITE = 'https://ananta-sj.github.io/ikigai-os/';
+const SPOTIFY_APP_WEBSITE = 'https://ananta-sj.github.io/ikigai-space/';
 const SPOTIFY_DASHBOARD = 'https://developer.spotify.com/dashboard';
 
 type PlaybackAction = 'play' | 'pause' | 'next' | 'previous';

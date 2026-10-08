@@ -8,7 +8,7 @@
 
 Not a dashboard for measuring your life. A place for inhabiting it.
 
-[**Live Demo**](https://ananta-sj.github.io/ikigai-os/) ·
+[**Live Demo**](https://ananta-sj.github.io/ikigai-space/) ·
 [**Download for Windows**](https://github.com/ananta-sj/ikigai-os/releases/latest) ·
 [**Source**](https://github.com/ananta-sj/ikigai-os)
 
@@ -43,7 +43,7 @@ The goal is simpler:
 
 ### 🌐 Live demo
 
-**https://ananta-sj.github.io/ikigai-os/**
+**https://ananta-sj.github.io/ikigai-space/**
 
 The browser version contains the full local-first PWA experience.
 
@@ -377,7 +377,7 @@ The next changes should earn their place by making the system more useful, more 
 **Not a dashboard for measuring your life.  
 A place for inhabiting it.**
 
-[Live Demo](https://ananta-sj.github.io/ikigai-os/) ·
+[Live Demo](https://ananta-sj.github.io/ikigai-space/) ·
 [Latest Release](https://github.com/ananta-sj/ikigai-os/releases/latest)
 
 </div>

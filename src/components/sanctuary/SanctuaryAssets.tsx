@@ -2,12 +2,13 @@ import { useLoader } from '@react-three/fiber';
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { appPath } from '../../lib/appPaths';
 
 export const sanctuaryAssetUrls = {
-  guardianTree: '/assets/sanctuary/guardian_tree.glb',
-  reflectionBench: '/assets/sanctuary/reflection_bench.glb',
-  quietPavilion: '/assets/sanctuary/quiet_pavilion.glb',
-  waystoneGate: '/assets/sanctuary/waystone_gate.glb'
+  guardianTree: appPath('/assets/sanctuary/guardian_tree.glb'),
+  reflectionBench: appPath('/assets/sanctuary/reflection_bench.glb'),
+  quietPavilion: appPath('/assets/sanctuary/quiet_pavilion.glb'),
+  waystoneGate: appPath('/assets/sanctuary/waystone_gate.glb')
 } as const;
 
 export function preloadSanctuaryAssets() {

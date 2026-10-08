@@ -7,7 +7,7 @@ import react from '@vitejs/plugin-react';
 // The hosted site is a try-before-install demo; the installable PWA/native
 // builds keep using the normal vite.config.ts release path.
 export default defineConfig({
-  base: '/ikigai-os/',
+  base: '/ikigai-space/',
   plugins: [react()],
   build: {
     sourcemap: false,

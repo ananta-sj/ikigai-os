@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { downloadBackup } from '../lib/backup';
+import { appPath } from '../lib/appPaths';
 
 interface Props {
   children: ReactNode;
@@ -51,7 +52,7 @@ export class AppErrorBoundary extends Component<Props, State> {
             <button type="button" className="ik-button ik-button-secondary" disabled={this.state.backupState === 'working'} onClick={() => void this.saveBackup()}>
               {this.state.backupState === 'working' ? 'Preparing backup…' : 'Download backup first'}
             </button>
-            <button type="button" className="ik-button ik-button-quiet" onClick={() => window.location.assign('/settings')}>Open Settings</button>
+            <button type="button" className="ik-button ik-button-quiet" onClick={() => window.location.assign(appPath('/settings'))}>Open Settings</button>
           </div>
 
           {this.state.backupMessage && <p className={this.state.backupState === 'failed' ? 'ik-crash-note is-error' : 'ik-crash-note'}>{this.state.backupMessage}</p>}

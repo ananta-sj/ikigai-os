@@ -25,7 +25,9 @@
     "audit:reset-browser": "node scripts/audit-reset-browser.mjs",
     "audit:onboarding-skip-browser": "node scripts/audit-onboarding-skip-browser.mjs",
     "audit:branding-browser": "node scripts/audit-branding-browser.mjs",
-    "audit:branding": "node scripts/audit-branding.mjs"
+    "audit:branding": "node scripts/audit-branding.mjs",
+    "audit:demo-browser": "node scripts/audit-demo-browser.mjs",
+    "audit:demo-dist": "node scripts/audit-demo-dist.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "9.8.0",
