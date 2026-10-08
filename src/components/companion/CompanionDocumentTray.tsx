@@ -3,6 +3,7 @@ import { FileText, LoaderCircle, Paperclip, X } from 'lucide-react';
 import {
   addCompanionDocument,
   companionDocumentAccept,
+  companionDocumentsBusy,
   listCompanionDocuments,
   removeCompanionDocument,
   subscribeCompanionDocuments,
@@ -21,6 +22,12 @@ function kindLabel(document: CompanionDocumentAttachment) {
   if (document.kind === 'pdf') return 'PDF';
   if (document.kind === 'markdown') return 'Markdown';
   return 'Text';
+}
+
+export function useCompanionDocumentsBusy() {
+  const [busy, setBusy] = useState(companionDocumentsBusy);
+  useEffect(() => subscribeCompanionDocuments(() => setBusy(companionDocumentsBusy())), []);
+  return busy;
 }
 
 export function CompanionDocumentTray({ compact = false, disabled = false }: { compact?: boolean; disabled?: boolean }) {

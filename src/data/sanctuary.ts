@@ -23,7 +23,7 @@ export const sanctuaryRegions: SanctuaryRegion[] = [
     label: 'The Threshold',
     shortLabel: 'Entrance',
     description: 'The path into your Sanctuary. A calm starting point rather than another dashboard.',
-    meaning: 'The shared entrance reflects the overall amount of life that has accumulated across Ikigai.',
+    meaning: 'The shared entrance reflects the overall amount of life that has accumulated across Ikigai Space.',
     position: [0, 0.2, 8.2],
     camera: { target: [0, 0.8, 4.8], yaw: 0.02, pitch: 0.16, distance: 11.8 }
   },

@@ -20,7 +20,7 @@ test('familiar route context keeps Sanctuary and Companion roles distinct', () =
 
 test('familiar route context always has a useful fallback', () => {
   const unknown = familiarRouteContext('/something-new');
-  assert.equal(unknown.label, 'IKIGAI');
+  assert.equal(unknown.label, 'IKIGAI SPACE');
   assert.equal(unknown.actions.length, 2);
 });
 

@@ -27,7 +27,7 @@ export function ProductDiagnosticsPanel() {
     try {
       setReport(await runProductDiagnostics());
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Ikigai could not run local diagnostics.');
+      setError(cause instanceof Error ? cause.message : 'Ikigai Space could not run local diagnostics.');
     } finally {
       setBusy(false);
     }
@@ -38,7 +38,7 @@ export function ProductDiagnosticsPanel() {
       <div className="data-safety-clean-head">
         <div>
           <strong>Product diagnostics</strong>
-          <small>Checks browser capabilities that Ikigai depends on without reading task text, memories, attachments or API keys.</small>
+          <small>Checks browser capabilities that Ikigai Space depends on without reading task text, memories, attachments or API keys.</small>
         </div>
         <span className={report?.summary.fail ? 'data-safety-state is-attention' : report ? 'data-safety-state is-ready' : 'data-safety-state'}>
           {report ? `${report.summary.pass} pass · ${report.summary.warn} warn` : 'Not run'}

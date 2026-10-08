@@ -38,17 +38,17 @@ fn write_http_response(stream: &mut TcpStream, status: &str, content_type: &str,
 #[tauri::command]
 fn start_spotify_oauth_listener(app: tauri::AppHandle, state: String) -> Result<String, String> {
   if !spotify_state_is_valid(&state) {
-    return Err("Ikigai could not start Spotify sign-in because the authorization state was invalid.".into());
+    return Err("Ikigai Space could not start Spotify sign-in because the authorization state was invalid.".into());
   }
 
   let listener = TcpListener::bind("127.0.0.1:0")
-    .map_err(|error| format!("Ikigai could not reserve a local Spotify callback port: {error}"))?;
+    .map_err(|error| format!("Ikigai Space could not reserve a local Spotify callback port: {error}"))?;
   listener
     .set_nonblocking(true)
-    .map_err(|error| format!("Ikigai could not prepare the Spotify callback listener: {error}"))?;
+    .map_err(|error| format!("Ikigai Space could not prepare the Spotify callback listener: {error}"))?;
   let port = listener
     .local_addr()
-    .map_err(|error| format!("Ikigai could not read the Spotify callback port: {error}"))?
+    .map_err(|error| format!("Ikigai Space could not read the Spotify callback port: {error}"))?
     .port();
   let redirect_uri = format!("http://127.0.0.1:{port}{SPOTIFY_CALLBACK_PATH}");
 
@@ -107,11 +107,11 @@ fn start_spotify_oauth_listener(app: tauri::AppHandle, state: String) -> Result<
 
           let search = format!("?{query}");
           if app.emit(SPOTIFY_OAUTH_EVENT, search).is_err() {
-            write_http_response(&mut stream, "500 Internal Server Error", "text/plain; charset=utf-8", "Ikigai could not receive the authorization result");
+            write_http_response(&mut stream, "500 Internal Server Error", "text/plain; charset=utf-8", "Ikigai Space could not receive the authorization result");
             break;
           }
 
-          let body = "<!doctype html><meta charset=\"utf-8\"><title>Ikigai · Spotify</title><style>body{font:16px system-ui;background:#151713;color:#f4efe3;display:grid;place-items:center;min-height:100vh;margin:0}main{max-width:520px;padding:32px;text-align:center}small{color:#a9aa9f}</style><main><h1>Spotify returned to Ikigai.</h1><p>You can close this browser tab and return to Ikigai.</p><small>The authorization result was sent only to the local app on this device.</small></main>";
+          let body = "<!doctype html><meta charset=\"utf-8\"><title>Ikigai Space · Spotify</title><style>body{font:16px system-ui;background:#151713;color:#f4efe3;display:grid;place-items:center;min-height:100vh;margin:0}main{max-width:520px;padding:32px;text-align:center}small{color:#a9aa9f}</style><main><h1>Spotify returned to Ikigai Space.</h1><p>You can close this browser tab and return to Ikigai Space.</p><small>The authorization result was sent only to the local app on this device.</small></main>";
           write_http_response(&mut stream, "200 OK", "text/html; charset=utf-8", body);
           break;
         }
@@ -132,7 +132,7 @@ fn open_external_url(url: String) -> Result<(), String> {
     || url.chars().any(char::is_control)
     || !url.starts_with("https://accounts.spotify.com/authorize?")
   {
-    return Err("Ikigai only allows this native command to open a normal Spotify authorization URL.".into());
+    return Err("Ikigai Space only allows this native command to open a normal Spotify authorization URL.".into());
   }
 
   #[cfg(target_os = "windows")]
@@ -151,7 +151,7 @@ fn open_external_url(url: String) -> Result<(), String> {
   {
     return result
       .map(|_| ())
-      .map_err(|error| format!("Ikigai could not open Spotify in your default browser: {error}"));
+      .map_err(|error| format!("Ikigai Space could not open Spotify in your default browser: {error}"));
   }
 
   #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]

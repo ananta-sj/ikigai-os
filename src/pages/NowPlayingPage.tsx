@@ -50,8 +50,8 @@ function formatPlaybackTime(value?: number) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
-const SPOTIFY_APP_NAME = 'Ikigai';
-const SPOTIFY_APP_DESCRIPTION = 'Personal local-first life OS with a private Now Playing view using Spotify playback metadata.';
+const SPOTIFY_APP_NAME = 'Ikigai Space';
+const SPOTIFY_APP_DESCRIPTION = 'A local-first personal workspace for planning, focus, reflection, and memory.';
 const SPOTIFY_APP_WEBSITE = 'https://ananta-sj.github.io/ikigai-os/';
 const SPOTIFY_DASHBOARD = 'https://developer.spotify.com/dashboard';
 
@@ -233,7 +233,7 @@ export function NowPlayingPage() {
       const normalized = await saveSpotifyPreferences();
       await beginSpotifyAuthorization({ clientId: normalized, allowControls, remember });
       if (spotifyUsesNativeLoopback()) {
-        setMessage('Spotify sign-in opened in your default browser. Finish there, then return to Ikigai.');
+        setMessage('Spotify sign-in opened in your default browser. Finish there, then return to Ikigai Space.');
         setBusy(false);
       }
     } catch (error) {
@@ -323,7 +323,7 @@ export function NowPlayingPage() {
   }
 
   const emptyCopy = selectedProvider === 'system'
-    ? 'Start media in a Windows app that publishes system media controls. Ikigai will read the current title locally.'
+    ? 'Start media in a Windows app that publishes system media controls. Ikigai Space will read the current title locally.'
     : selectedProvider === 'spotify'
       ? 'Start something in Spotify and it will appear here automatically.'
       : 'Choose a playback source once. After that, this room can stay this simple.';
@@ -336,7 +336,7 @@ export function NowPlayingPage() {
           <div className="now0319-heading-row">
             <div>
               <h1>Just what&apos;s playing.</h1>
-              <p>Choose a source once. Ikigai keeps Now Playing quiet, local where possible, and explicit about permissions.</p>
+              <p>Choose a source once. Ikigai Space keeps Now Playing quiet, local where possible, and explicit about permissions.</p>
             </div>
             <button type="button" className="now0319-source-button" onClick={() => setSetupOpen(true)}>
               <Settings2 size={15} aria-hidden="true" /> Source
@@ -440,7 +440,7 @@ export function NowPlayingPage() {
               </div>
               <p>Reads the title and playback state Windows already exposes for the current media session. No Spotify developer app, Client ID, OAuth, or Spotify Premium is required for this source.</p>
               {nativeSystemMedia && selectedProvider === 'system' && !systemEnabledOnDevice ? (
-                <div className="now033-source-unavailable" role="note">This source was saved in Ikigai settings, but this installation has not been given local permission to read Windows media yet. Choose <b>Use Windows System Media</b> below to enable it on this device.</div>
+                <div className="now033-source-unavailable" role="note">This source was saved in Ikigai Space settings, but this installation has not been given local permission to read Windows media yet. Choose <b>Use Windows System Media</b> below to enable it on this device.</div>
               ) : null}
               {nativeSystemMedia ? <>
                 <label className="now030-check now033-source-permission">
@@ -454,7 +454,7 @@ export function NowPlayingPage() {
                     }}
                     disabled={busy}
                   />
-                  <span><strong>Allow playback controls</strong><small>Optional. When off, Ikigai only reads the current session. When on, it may send play/pause/previous/next only when the active media app exposes that exact control.</small></span>
+                  <span><strong>Allow playback controls</strong><small>Optional. When off, Ikigai Space only reads the current session. When on, it may send play/pause/previous/next only when the active media app exposes that exact control.</small></span>
                 </label>
                 <div className="now033-source-actions">
                   {selectedProvider === 'system' && systemEnabledOnDevice
@@ -469,7 +469,7 @@ export function NowPlayingPage() {
             <section className={`now033-source-card is-advanced ${selectedProvider === 'spotify' ? 'is-selected' : ''}`} aria-label="Spotify Web API advanced source">
               <button type="button" className="now033-advanced-toggle" aria-expanded={spotifyAdvancedOpen} onClick={() => setSpotifyAdvancedOpen(open => !open)}>
                 <span><Music2 size={17} aria-hidden="true" /></span>
-                <div><strong>Advanced: Spotify Web API</strong><small>Spotify Premium is required by Spotify for current Development Mode. Ikigai does not charge for this.</small></div>
+                <div><strong>Advanced: Spotify Web API</strong><small>Spotify Premium is required by Spotify for current Development Mode. Ikigai Space does not charge for this.</small></div>
                 {selectedProvider === 'spotify' ? <b>ACTIVE</b> : null}
               </button>
 
@@ -501,7 +501,7 @@ export function NowPlayingPage() {
                           {spotifyDashboardHref ? <a href={spotifyDashboardHref} target="_blank" rel="noreferrer noopener">Open Spotify Dashboard <ExternalLink size={12} /></a> : null}
                         </li>
                         <li>
-                          <div><strong>Enter these suggested app details.</strong><p>These labels are only suggestions for your personal Ikigai setup.</p></div>
+                          <div><strong>Enter these suggested app details.</strong><p>These labels are only suggestions for your personal Ikigai Space setup.</p></div>
                           <div className="now0319-guide-values">
                             <div><span>APP NAME</span><code>{SPOTIFY_APP_NAME}</code><button type="button" onClick={() => void copySetupValue(SPOTIFY_APP_NAME, 'name')} aria-label="Copy Spotify app name">{copiedField === 'name' ? <Check size={13} /> : <Copy size={13} />}</button></div>
                             <div><span>DESCRIPTION</span><code>{SPOTIFY_APP_DESCRIPTION}</code><button type="button" onClick={() => void copySetupValue(SPOTIFY_APP_DESCRIPTION, 'description')} aria-label="Copy Spotify app description">{copiedField === 'description' ? <Check size={13} /> : <Copy size={13} />}</button></div>
@@ -510,12 +510,12 @@ export function NowPlayingPage() {
                           </div>
                         </li>
                         <li>
-                          <div><strong>Register the redirect URI exactly.</strong><p>{nativeLoopback ? 'For the installed app, register the loopback URI shown below. Ikigai chooses a temporary 127.0.0.1 port during sign-in.' : 'Copy the exact address shown below into Redirect URIs. For local development, open Ikigai on 127.0.0.1, not localhost, because Spotify rejects localhost redirect URIs.'}</p></div>
+                          <div><strong>Register the redirect URI exactly.</strong><p>{nativeLoopback ? 'For the installed app, register the loopback URI shown below. Ikigai Space chooses a temporary 127.0.0.1 port during sign-in.' : 'Copy the exact address shown below into Redirect URIs. For local development, open Ikigai Space on 127.0.0.1, not localhost, because Spotify rejects localhost redirect URIs.'}</p></div>
                           <div className="now0319-guide-redirect"><code>{redirectUri || '/now-playing'}</code><button type="button" onClick={() => void copySetupValue(redirectUri, 'redirect')} disabled={!redirectUri}>{copiedField === 'redirect' ? <Check size={13} /> : <Copy size={13} />} Copy</button></div>
                           {redirectIssue ? <small className="now030-redirect-warning" role="status">{redirectIssue}</small> : null}
                         </li>
-                        <li><div><strong>Copy only the Client ID.</strong><p>Paste the Client ID into Ikigai below. <b>Do not paste the Client Secret.</b> Ikigai uses Authorization Code + PKCE because an installed/browser client cannot safely keep a secret.</p></div></li>
-                        <li><div><strong>Development Mode users.</strong><p>Spotify limits Development Mode access and requires test accounts to be authorized for the app. These are Spotify platform rules, not Ikigai charges.</p></div></li>
+                        <li><div><strong>Copy only the Client ID.</strong><p>Paste the Client ID into Ikigai Space below. <b>Do not paste the Client Secret.</b> Ikigai Space uses Authorization Code + PKCE because an installed/browser client cannot safely keep a secret.</p></div></li>
+                        <li><div><strong>Development Mode users.</strong><p>Spotify limits Development Mode access and requires test accounts to be authorized for the app. These are Spotify platform rules, not Ikigai Space charges.</p></div></li>
                       </ol>
                     </div> : null}
                   </section>
@@ -523,7 +523,7 @@ export function NowPlayingPage() {
                   <label className="now030-field">
                     <span>Spotify Client ID</span>
                     <input value={clientId} onChange={event => setClientId(event.target.value)} autoComplete="off" spellCheck={false} placeholder="Paste the Client ID, not the Client Secret" />
-                    <small>The Client ID is public app identification. Ikigai never asks for the Client Secret.</small>
+                    <small>The Client ID is public app identification. Ikigai Space never asks for the Client Secret.</small>
                   </label>
                   <div className="now030-redirect">
                     <span>{nativeLoopback ? 'REGISTER THIS REDIRECT URI' : 'REDIRECT URI'}</span>
@@ -537,7 +537,7 @@ export function NowPlayingPage() {
                   </label>
                   <label className="now030-check">
                     <input type="checkbox" checked={remember} onChange={event => setRemember(event.target.checked)} />
-                    <span><strong>Remember this connection on this device</strong><small>Stores Spotify OAuth tokens locally on this installation. Leave off on shared devices; tokens never enter Ikigai backups.</small></span>
+                    <span><strong>Remember this connection on this device</strong><small>Stores Spotify OAuth tokens locally on this installation. Leave off on shared devices; tokens never enter Ikigai Space backups.</small></span>
                   </label>
                   {!normalizedClientId ? <small className="now033-connect-blocker" role="status">Enter the Spotify Client ID before connecting.</small> : null}
                   {redirectIssue ? <small className="now033-connect-blocker" role="status">Connect is disabled until the redirect URI is accepted. {redirectIssue}</small> : null}

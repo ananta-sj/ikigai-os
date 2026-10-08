@@ -79,8 +79,10 @@ export async function createRoadmapPhase(input: {
     createdAt: timestamp,
     updatedAt: timestamp
   };
-  await db.roadmapPhases.put(phase);
-  await queueSyncChange('roadmapPhases', phase.id);
+  await db.transaction('rw', db.roadmapPhases, db.syncQueue, async () => {
+    await db.roadmapPhases.put(phase);
+    await queueSyncChange('roadmapPhases', phase.id);
+  });
   return phase;
 }
 
@@ -162,8 +164,10 @@ export async function createRoadmapItem(input: {
     createdAt: timestamp,
     updatedAt: timestamp
   };
-  await db.roadmapItems.add(item);
-  await queueSyncChange('roadmapItems', item.id);
+  await db.transaction('rw', db.roadmapItems, db.syncQueue, async () => {
+    await db.roadmapItems.add(item);
+    await queueSyncChange('roadmapItems', item.id);
+  });
   return item;
 }
 
@@ -210,8 +214,10 @@ export async function createCareerProject(input: { id?: string; title: string; s
     createdAt: timestamp,
     updatedAt: timestamp
   };
-  await db.careerProjects.add(project);
-  await queueSyncChange('careerProjects', project.id);
+  await db.transaction('rw', db.careerProjects, db.syncQueue, async () => {
+    await db.careerProjects.add(project);
+    await queueSyncChange('careerProjects', project.id);
+  });
   return project;
 }
 
@@ -241,8 +247,10 @@ export async function createProofItem(input: {
     createdAt: timestamp,
     updatedAt: timestamp
   };
-  await db.proofItems.add(item);
-  await queueSyncChange('proofItems', item.id);
+  await db.transaction('rw', db.proofItems, db.syncQueue, async () => {
+    await db.proofItems.add(item);
+    await queueSyncChange('proofItems', item.id);
+  });
   return item;
 }
 
@@ -278,8 +286,10 @@ export async function createApplication(input: {
     createdAt: timestamp,
     updatedAt: timestamp
   };
-  await db.careerApplications.add(application);
-  await queueSyncChange('careerApplications', application.id);
+  await db.transaction('rw', db.careerApplications, db.syncQueue, async () => {
+    await db.careerApplications.add(application);
+    await queueSyncChange('careerApplications', application.id);
+  });
   return application;
 }
 

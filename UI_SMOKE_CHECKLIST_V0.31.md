@@ -1,4 +1,4 @@
-# Ikigai v0.31 — Browser / Accessibility / Responsive Verification
+# Ikigai Space v0.31 — Browser / Accessibility / Responsive Verification
 
 This checklist is the manual release gate for the v0.31 source pass. Source audits are useful evidence, but they do not prove browser composition, assistive-technology behavior, touch ergonomics, or GPU performance.
 
@@ -67,7 +67,7 @@ Run at least one desktop screen reader/browser pair and one mobile screen reader
 ## Reduced motion
 
 - [ ] OS-level `prefers-reduced-motion` is honored without changing data or navigation behavior.
-- [ ] Ikigai reduced-motion preference remains functional.
+- [ ] Ikigai Space reduced-motion preference remains functional.
 - [ ] Focus, Journey, Familiar, Now Playing and Sanctuary do not rely on animation to communicate state.
 
 ## Sanctuary device / GPU matrix
@@ -90,7 +90,7 @@ Treat this as a visual regression gate, not a source-audit substitute. Check eve
 
 - [ ] Switch through Cedar Study, Washi Sanctuary, Indigo Draft, Sumi Workshop and Moonlit Ledger. Each should feel materially distinct rather than like the same layout with a different accent colour.
 - [ ] Verify vertical and nested scrollbars in all five workspace themes. Firefox should receive the matching track/thumb colours; Chromium/WebKit should also show the theme-specific thumb/track treatment.
-- [ ] At 1440, 1280, 1024 and the narrowest desktop layout, the floating Ikigai badge has clear air before Today/Journey header text and never overlaps Focus Room content.
+- [ ] At 1440, 1280, 1024 and the narrowest desktop layout, the floating Ikigai Space badge has clear air before Today/Journey header text and never overlaps Focus Room content.
 - [ ] Familiar Paper clay, Glasslight and Felt visibly differ as surfaces; Aura Accent remains a separate colour choice.
 - [ ] Familiar Left nook is actually left of the content area, clear of the Living Dock; Right nook mirrors correctly; mobile positioning remains reachable.
 - [ ] Journey renders all eight core calendar constructions: Nihon Sakura, Fuji Seasonal, Study Wall, Washi Minimal, Midnight Desk, Letterpress Ledger, Kraft Clip and Newsprint Month, plus the five optional special editions covered below. Verify month transitions and the date sheet remain unchanged.
@@ -115,7 +115,7 @@ Treat this as a visual regression gate, not a source-audit substitute. Check eve
 - [ ] In Moonlit Ledger, verify the same cards remain intentionally dark with readable text and controls rather than inheriting light-theme foreground values.
 - [ ] At 1440, 1024, 768 and ~390px widths, every First Light step can scroll vertically and the Back / Skip this / Continue controls remain reachable.
 - [ ] Use only the keyboard through all nine First Light steps. Every optional step can be skipped; cards, checkboxes/radios and text fields have visible focus; no step depends on hover.
-- [ ] Confirm the Arrival disclosure states that life data is stored in browser IndexedDB, Ikigai does not add application-level encryption at rest, exported JSON backups are readable, and SHA-256 is an integrity check rather than encryption.
+- [ ] Confirm the Arrival disclosure states that life data is stored in browser IndexedDB, Ikigai Space does not add application-level encryption at rest, exported JSON backups are readable, and SHA-256 is an integrity check rather than encryption.
 - [ ] Confirm First Light never asks for passwords, API keys, OAuth/provider tokens, exact home address or private-document uploads.
 - [ ] Enter a preferred name, finish onboarding, and verify Today uses the personalized greeting. Clear the name in Settings and verify Today returns to the neutral greeting.
 - [ ] Preview the welcome tour from Settings, change theme/interface/Familiar options, then exit preview without finishing. The previously saved preferences must be restored and no onboarding completion state should be written.

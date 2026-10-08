@@ -2695,7 +2695,7 @@ export function SanctuaryWorld({
       ) : (
         <div className="sanctuary-fallback" role="status">
           <strong>Sanctuary 3D is unavailable here.</strong>
-          <span>Your local progress is safe. This device could not start WebGL, so the rest of Ikigai remains available without the 3D world.</span>
+          <span>Your local progress is safe. This device could not start WebGL, so the rest of Ikigai Space remains available without the 3D world.</span>
         </div>
       )}
 

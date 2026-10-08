@@ -1,3 +1,5 @@
+import { CompanionConnectionStatus, useCompanionRuntime } from '../components/companion/CompanionConnectionStatus';
+import { companionOperationActive, getCompanionRuntime, providerLabel, updateCompanionRuntime } from '../lib/companionRuntime';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import {
   Activity,
@@ -24,7 +26,7 @@ import {
 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { FamiliarAvatar } from '../components/familiar/FamiliarAvatar';
-import { CompanionDocumentTray } from '../components/companion/CompanionDocumentTray';
+import { CompanionDocumentTray, useCompanionDocumentsBusy } from '../components/companion/CompanionDocumentTray';
 import { IkButton } from '../components/ui/IkButton';
 import { PageHeader } from '../components/ui/PageHeader';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -40,6 +42,7 @@ import {
   companionEndpointTrustInfo,
   configureRemoteApi,
   discoverOllamaModels,
+  discoverGeminiModels,
   dismissCompanionProposal,
   ensureCompanionState,
   hasCompanionApiKey,
@@ -94,13 +97,6 @@ type CompanionView = 'familiar' | 'connection' | 'chat';
 type RemotePreset = 'gemini' | 'custom';
 
 const GEMINI_CHAT_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
-const GEMINI_DEFAULT_MODEL = 'gemini-3.8-flash';
-const GEMINI_MODEL_OPTIONS = [
-  { value: 'gemini-3.8-flash', label: 'Gemini 3.8 Flash', note: 'Recommended · strongest stable Flash' },
-  { value: 'gemini-3.5-flash', label: 'Gemini 3.5 Flash', note: 'Stable · strong general reasoning' },
-  { value: 'gemini-3.5-flash-lite', label: 'Gemini 3.5 Flash-Lite', note: 'Fastest · lowest-cost everyday option' }
-] as const;
-
 const quickPrompts = [
   'Build a realistic plan for the next month with roadmap phases and tasks.',
   'Lighten my next three days without losing the important work.',
@@ -160,20 +156,27 @@ function ProposalCard({ messageId, proposal, checked, onToggle, onChanged }: {
   onChanged: () => Promise<void>;
 }) {
   const [busy, setBusy] = useState(false);
+  const [actionError, setActionError] = useState('');
   const pending = proposal.status === 'pending';
 
   async function apply() {
     setBusy(true);
+    setActionError('');
+    try {
     await applyCompanionProposal(messageId, proposal.id);
     await onChanged();
-    setBusy(false);
+    } catch (error) { setActionError(companionErrorPresentation(error).detail); }
+    finally { setBusy(false); }
   }
 
   async function dismiss() {
     setBusy(true);
+    setActionError('');
+    try {
     await dismissCompanionProposal(messageId, proposal.id);
     await onChanged();
-    setBusy(false);
+    } catch (error) { setActionError(companionErrorPresentation(error).detail); }
+    finally { setBusy(false); }
   }
 
   return (
@@ -190,6 +193,7 @@ function ProposalCard({ messageId, proposal, checked, onToggle, onChanged }: {
         <p>{proposal.reason}</p>
         <span>{proposalDetail(proposal)}</span>
         {proposal.error ? <em>{proposal.error}</em> : null}
+        {actionError ? <em role="alert">{actionError}</em> : null}
       </div>
       {pending ? (
         <div className="companion-proposal-actions">
@@ -211,17 +215,21 @@ function TranscriptMessage({ message, selected, setSelected, onChanged }: {
 }) {
   const pending = message.proposals?.filter(proposal => proposal.status === 'pending') ?? [];
   const [applying, setApplying] = useState(false);
+  const [applyError, setApplyError] = useState('');
 
   async function applySelected() {
     const ids = pending.filter(proposal => selected.has(proposal.id)).map(proposal => proposal.id);
     if (!ids.length) return;
     setApplying(true);
+    setApplyError('');
+    try {
     for (const id of ids) await applyCompanionProposal(message.id, id);
     const next = new Set(selected);
     ids.forEach(id => next.delete(id));
     setSelected(next);
     await onChanged();
-    setApplying(false);
+    } catch (error) { setApplyError(companionErrorPresentation(error).detail); }
+    finally { setApplying(false); }
   }
 
   if (message.role === 'user') {
@@ -237,6 +245,7 @@ function TranscriptMessage({ message, selected, setSelected, onChanged }: {
     <article className="companion-message companion-message-assistant">
       <div className="companion-message-meta"><span><Sparkles size={12} /> COMPANION</span><time>{formatTime(message.createdAt)}{message.model ? ` · ${message.model}` : ''}</time></div>
       <p>{message.content}</p>
+      {applyError ? <p role="alert">{applyError}</p> : null}
       {message.proposals?.length ? (
         <section className="companion-proposals">
           <div className="companion-proposals-head">
@@ -266,6 +275,8 @@ export function CompanionPage() {
   const [familiarNameDraft, setFamiliarNameDraft] = useState('Familiar');
   const [messages, setMessages] = useState<CompanionMessage[]>([]);
   const [models, setModels] = useState<string[]>([]);
+  const [geminiModels, setGeminiModels] = useState<string[]>([]);
+  const GEMINI_MODEL_OPTIONS = geminiModels.map(value => ({ value, label: value, note: 'Available from Google · test this connection' }));
   const [connection, setConnection] = useState<'checking' | 'online' | 'offline'>('checking');
   const [connectionError, setConnectionError] = useState('');
   const [endpointDraft, setEndpointDraft] = useState('http://localhost:11434');
@@ -274,7 +285,10 @@ export function CompanionPage() {
   const [rememberApiKey, setRememberApiKey] = useState(() => companionApiKeyRemembered());
   const [endpointTrustRevision, setEndpointTrustRevision] = useState(0);
   const [prompt, setPromptState] = useState(initialUi.draft);
-  const [sending, setSending] = useState(false);
+  const [localSending, setSending] = useState(false);
+  const runtime = useCompanionRuntime();
+  const readingDocuments = useCompanionDocumentsBusy();
+  const sending = localSending || runtime.active || readingDocuments;
   const [requestError, setRequestError] = useState<CompanionErrorPresentation | null>(initialUi.failure?.presentation ?? null);
   const [failedPrompt, setFailedPrompt] = useState(initialUi.failure?.prompt ?? '');
   const [retry, setRetry] = useState<CompanionUiRetry | null>(initialUi.retry);
@@ -313,6 +327,7 @@ export function CompanionPage() {
   }
 
   async function connectOllama(endpoint = endpointDraft) {
+    if (companionOperationActive()) return;
     setConnection('checking');
     setConnectionError('');
     try {
@@ -327,7 +342,8 @@ export function CompanionPage() {
     } catch (error) {
       setConnection('offline');
       setModels([]);
-      setConnectionError(error instanceof Error ? error.message : 'Could not reach the local model.');
+      const presentation = companionErrorPresentation(error);
+      setConnectionError(`${presentation.title}: ${presentation.detail}`);
     }
   }
 
@@ -336,7 +352,7 @@ export function CompanionPage() {
     setConnectionError('');
     if (preset === 'gemini') {
       setEndpointDraft(GEMINI_CHAT_ENDPOINT);
-      if (!GEMINI_MODEL_OPTIONS.some(option => option.value === modelDraft)) setModelDraft(GEMINI_DEFAULT_MODEL);
+      if (!modelDraft.startsWith('gemini-')) setModelDraft('');
       return;
     }
     if (endpointDraft === GEMINI_CHAT_ENDPOINT) setEndpointDraft('');
@@ -346,7 +362,7 @@ export function CompanionPage() {
   function trustRemoteEndpoint() {
     const info = trustCompanionEndpoint(endpointDraft);
     setEndpointTrustRevision(value => value + 1);
-    setConnectionError(info.trusted ? `Trusted ${info.hostname ?? 'this endpoint'} on this device.` : (info.reason ?? 'Ikigai could not store that trust decision.'));
+    setConnectionError(info.trusted ? `Trusted ${info.hostname ?? 'this endpoint'} on this device.` : (info.reason ?? 'Ikigai Space could not store that trust decision.'));
   }
 
   function forgetRemoteEndpointTrust() {
@@ -360,12 +376,24 @@ export function CompanionPage() {
     setConnection('checking');
     setConnectionError('');
     try {
-      const next = await configureRemoteApi({ endpoint: endpointDraft, model: modelDraft, apiKey: apiKeyDraft, rememberApiKey });
+      if (companionOperationActive()) return;
+      let next = await configureRemoteApi({ endpoint: endpointDraft, model: modelDraft || (endpointDraft === GEMINI_CHAT_ENDPOINT ? 'gemini-selection-pending' : ''), apiKey: apiKeyDraft, rememberApiKey });
+      if (endpointDraft === GEMINI_CHAT_ENDPOINT) {
+        const available = await discoverGeminiModels();
+        setGeminiModels(available);
+        if (!modelDraft) { next = await updateCompanionState({ model: available[0], lastConnectedAt: undefined }); setModelDraft(next.model); }
+        else if (!available.includes(modelDraft)) {
+          setState(next); setApiKeyDraft(''); setConnection('offline');
+          setConnectionError('This saved model is not in Google’s available model list. Choose a returned model, then Save & test.');
+          return;
+        }
+      }
       setState(next);
       setEndpointDraft(next.endpoint);
       setApiKeyDraft('');
       await testRemoteApiConnection({ endpoint: next.endpoint, model: next.model });
       setConnection('online');
+      setState(await ensureCompanionState());
       setConnectionError('Connection tested successfully.');
     } catch (error) {
       setConnection('offline');
@@ -388,7 +416,13 @@ export function CompanionPage() {
       await Promise.all([refreshMessages(), refreshSummary(current.contextScope)]);
       if (!alive) return;
       if (current.provider === 'ollama') await connectOllama(current.endpoint);
-      else setConnection(current.model && current.endpoint && hasCompanionApiKey() ? 'online' : 'offline');
+      else {
+        const configured = Boolean(current.model && current.endpoint && hasCompanionApiKey());
+        setConnection(configured ? 'online' : 'offline');
+        const runtime = getCompanionRuntime();
+        const provider = providerLabel(current.provider, current.endpoint);
+        if (!runtime.active && (runtime.provider !== provider || runtime.model !== current.model || runtime.phase === 'not-configured')) updateCompanionRuntime({ provider, model: current.model, phase: configured ? 'configured' : 'not-configured' });
+      }
     })();
     return () => { alive = false; };
     // Intentional one-time bootstrap.
@@ -428,6 +462,7 @@ export function CompanionPage() {
 
   const pendingCount = useMemo(() => messages.flatMap(message => message.proposals ?? []).filter(proposal => proposal.status === 'pending').length, [messages]);
   const providerReady = Boolean(state?.model) && connection === 'online';
+  const connectionIndicator = runtime.active ? 'checking' : runtime.phase === 'connected' ? 'online' : 'offline';
   const isGeminiRemote = endpointDraft === GEMINI_CHAT_ENDPOINT;
   const geminiModelPreset = GEMINI_MODEL_OPTIONS.some(option => option.value === modelDraft) ? modelDraft : '__custom__';
   const endpointTrust = useMemo(() => companionEndpointTrustInfo(endpointDraft), [endpointDraft, endpointTrustRevision]);
@@ -466,7 +501,7 @@ export function CompanionPage() {
 
   async function sendText(text: string) {
     const trimmed = text.trim();
-    if (!trimmed || sending || retry) return;
+    if (!trimmed || companionOperationActive() || sending || retry) return;
     setSending(true);
     setConnectionError('');
     clearCompanionFailure();
@@ -502,9 +537,9 @@ export function CompanionPage() {
       <div className="ik-page-width">
         <PageHeader
           eyebrow={<><Sparkles size={12} /> COMPANION · AGENT</>}
-          title="A quiet companion that lives across Ikigai."
+          title="A quiet companion that lives across Ikigai Space."
           description="The Familiar is a local character first: presence, context and small play. AI conversation is optional, documents stay ephemeral unless you approve extracted records, and every proposed write still waits for your approval."
-          actions={activeView === 'chat' ? <IkButton variant="quiet" size="sm" onClick={() => void clearConversation()} disabled={!messages.length}><Eraser size={13} /> Clear conversation</IkButton> : undefined}
+          actions={activeView === 'chat' ? <IkButton variant="quiet" size="sm" onClick={() => void clearConversation()} disabled={sending || !messages.length}><Eraser size={13} /> Clear conversation</IkButton> : undefined}
           meta={<><span>{state?.provider === 'api' ? 'REMOTE API' : 'LOCAL OLLAMA'}</span><span>·</span><span>{pendingCount} pending proposal{pendingCount === 1 ? '' : 's'}</span></>}
         />
 
@@ -513,12 +548,14 @@ export function CompanionPage() {
             <Palette size={15} /><span><strong>Familiar</strong><small>identity · presence · play</small></span>
           </button>
           <button type="button" className={activeView === 'connection' ? 'active' : ''} onClick={() => changeView('connection')}>
-            <Settings2 size={15} /><span><strong>AI settings</strong><small>API · endpoint · Ollama</small></span><i className={`companion-connection-dot ${connection}`} />
+            <Settings2 size={15} /><span><strong>AI settings</strong><small>API · endpoint · Ollama</small></span><i className={`companion-connection-dot ${connectionIndicator}`} />
           </button>
           <button type="button" className={activeView === 'chat' ? 'active' : ''} onClick={() => changeView('chat')}>
             <MessageCircle size={15} /><span><strong>Chat history</strong><small>conversation · proposals</small></span>{pendingCount ? <b>{pendingCount}</b> : null}
           </button>
         </nav>
+
+        <CompanionConnectionStatus />
 
         {activeView === 'familiar' ? (
           <section className="companion-familiar-home" aria-label="Familiar identity and presence">
@@ -535,7 +572,7 @@ export function CompanionPage() {
               </div>
               <div className="companion-familiar-preview-copy">
                 <h2>{settings?.familiarName || 'Familiar'}</h2>
-                <p>A resident of Ikigai, not a chatbot costume. It can stay nearby, offer local room context, play in small ways and carry you into conversation when you ask.</p>
+                <p>A resident of Ikigai Space, not a chatbot costume. It can stay nearby, offer local room context, play in small ways and carry you into conversation when you ask.</p>
               </div>
               <div className="companion-familiar-facts">
                 <span>{settings?.familiarEnabled === false ? 'Disabled' : `${familiarPresenceCopy(settings?.familiarActivity ?? 'calm').label} presence`}</span>
@@ -603,7 +640,7 @@ export function CompanionPage() {
                 <div className="companion-customize-heading"><span><Activity size={14} /> Presence</span><small>Visible only when you want it</small></div>
                 <label className="companion-familiar-master-toggle">
                   <input type="checkbox" checked={settings?.familiarEnabled ?? true} onChange={event => void patchFamiliar({ familiarEnabled: event.target.checked })} />
-                  <span><strong>Show Familiar across Ikigai</strong><small>Turn this off to remove the floating Familiar and its Sanctuary resident. The editor and your settings remain available here.</small></span>
+                  <span><strong>Show Familiar across Ikigai Space</strong><small>Turn this off to remove the floating Familiar and its Sanctuary resident. The editor and your settings remain available here.</small></span>
                 </label>
                 <div className={settings?.familiarEnabled === false ? 'companion-familiar-presence-controls is-disabled' : 'companion-familiar-presence-controls'}>
                 <div className="companion-activity-options" role="radiogroup" aria-label="Familiar presence">
@@ -645,7 +682,8 @@ export function CompanionPage() {
         {activeView === 'connection' ? (
           <div className="companion-connection-layout">
             <section className="companion-connection-panel companion-model-section">
-              <div className="companion-rail-heading"><span className="ik-section-kicker">MODEL CONNECTION</span><span className={`companion-connection-dot ${connection}`} /></div>
+              <fieldset disabled={runtime.active} className="companion-connection-fields">
+              <div className="companion-rail-heading"><span className="ik-section-kicker">MODEL CONNECTION</span><span className={`companion-connection-dot ${connectionIndicator}`} /></div>
               <div className="companion-provider-tabs" role="group" aria-label="AI provider">
                 <button type="button" className={state?.provider === 'ollama' ? 'active' : ''} onClick={() => void changeProvider('ollama')}><Laptop size={14} /> Ollama</button>
                 <button type="button" className={state?.provider === 'api' ? 'active' : ''} onClick={() => void changeProvider('api')}><Cloud size={14} /> Remote API</button>
@@ -653,7 +691,7 @@ export function CompanionPage() {
 
               {state?.provider === 'api' ? (
                 <>
-                  <div className="companion-model-status"><Cloud size={17} /><div><strong>{providerReady ? 'Remote model ready' : 'Connect a remote model'}</strong><small>Choose a provider and model, add your key, then save. Endpoint details stay hidden unless you choose Custom.</small></div></div>
+                  <div className="companion-model-status"><Cloud size={17} /><div><strong>{runtime.phase === 'connected' ? 'Remote connection tested' : providerReady ? 'Remote configuration saved' : 'Connect a remote model'}</strong><small>Choose Gemini, add your key, then Save & test to load available models and validate a real reply. Endpoint details stay hidden unless you choose Custom.</small></div></div>
 
                   <div className="companion-provider-presets" aria-label="Remote API provider">
                     <button type="button" className={isGeminiRemote ? 'active' : ''} onClick={() => chooseRemotePreset('gemini')} aria-pressed={isGeminiRemote}>
@@ -668,17 +706,17 @@ export function CompanionPage() {
                     <>
                       <label className="companion-field-label">Model
                         <div className="companion-select-wrap">
-                          <select value={geminiModelPreset} onChange={event => { setConnection('offline'); setConnectionError(''); setModelDraft(event.target.value === '__custom__' ? '' : event.target.value); }}>
+                          <select value={geminiModelPreset} onChange={event => { updateCompanionRuntime({ phase: 'configured' }); setConnection('offline'); setConnectionError(''); setModelDraft(event.target.value === '__custom__' ? '' : event.target.value); }}>
                             {GEMINI_MODEL_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label} — {option.note}</option>)}
-                            <option value="__custom__">Custom Gemini model ID…</option>
+                            <option value="__custom__">Enter a model ID or load available models…</option>
                           </select>
                           <ChevronDown size={13} />
                         </div>
                       </label>
                       {geminiModelPreset === '__custom__' ? (
-                        <label className="companion-field-label companion-field-subtle">Custom model ID<input value={modelDraft} onChange={event => { setConnection('offline'); setConnectionError(''); setModelDraft(event.target.value); }} spellCheck={false} autoCapitalize="none" autoCorrect="off" placeholder="e.g. gemini-3.8-flash" /></label>
+                        <label className="companion-field-label companion-field-subtle">Custom model ID<input value={modelDraft} onChange={event => { updateCompanionRuntime({ phase: 'configured' }); setConnection('offline'); setConnectionError(''); setModelDraft(event.target.value); }} spellCheck={false} autoCapitalize="none" autoCorrect="off" placeholder="Enter an exact model ID or Save & test to load available models" /></label>
                       ) : null}
-                      <div className="companion-managed-endpoint" aria-label="Gemini endpoint managed by Ikigai">
+                      <div className="companion-managed-endpoint" aria-label="Gemini endpoint managed by Ikigai Space">
                         <Sparkles size={14} />
                         <span><strong>Endpoint managed automatically</strong><small>Google Gemini · OpenAI-compatible chat endpoint</small></span>
                       </div>
@@ -691,7 +729,7 @@ export function CompanionPage() {
                           {endpointTrust.trusted ? <ShieldCheck size={17} /> : <ShieldAlert size={17} />}
                           <div>
                             <strong>{endpointTrust.trusted ? `${endpointTrust.hostname} is trusted on this device` : `Trust ${endpointTrust.hostname} before sending a key`}</strong>
-                            <small>Custom endpoints can receive your API key and the context you explicitly send to Companion. Ikigai cannot verify who operates this server.</small>
+                            <small>Custom endpoints can receive your API key and the context you explicitly send to Companion. Ikigai Space cannot verify who operates this server.</small>
                           </div>
                           {endpointTrust.trusted
                             ? <button type="button" onClick={forgetRemoteEndpointTrust}>Forget trust</button>
@@ -700,28 +738,29 @@ export function CompanionPage() {
                       ) : !endpointTrust.valid && endpointDraft.trim() ? (
                         <div className="companion-endpoint-trust is-warning"><ShieldAlert size={17} /><div><strong>Endpoint blocked</strong><small>{endpointTrust.reason}</small></div></div>
                       ) : null}
-                      <label className="companion-field-label">Model<input value={modelDraft} onChange={event => { setConnection('offline'); setConnectionError(''); setModelDraft(event.target.value); }} spellCheck={false} autoCapitalize="none" autoCorrect="off" placeholder="Provider model ID" /></label>
+                      <label className="companion-field-label">Model<input value={modelDraft} onChange={event => { updateCompanionRuntime({ phase: 'configured' }); setConnection('offline'); setConnectionError(''); setModelDraft(event.target.value); }} spellCheck={false} autoCapitalize="none" autoCorrect="off" placeholder="Provider model ID" /></label>
                     </>
                   )}
-                  <label className="companion-field-label">API key<div className="companion-key-row"><KeyRound size={14} /><input type="password" autoComplete="off" value={apiKeyDraft} onChange={event => setApiKeyDraft(event.target.value)} placeholder={hasCompanionApiKey() ? (companionApiKeyRemembered() ? 'Key remembered on this device' : 'Key loaded for this tab') : 'Paste API key'} /><button type="button" onClick={() => { setCompanionApiKey(''); setApiKeyDraft(''); setRememberApiKey(false); setConnection('offline'); }}>Clear</button></div></label>
+                  <label className="companion-field-label">API key<div className="companion-key-row"><KeyRound size={14} /><input type="password" autoComplete="off" value={apiKeyDraft} onChange={event => { setApiKeyDraft(event.target.value); updateCompanionRuntime({ phase: 'configured' }); }} placeholder={hasCompanionApiKey() ? (companionApiKeyRemembered() ? 'Key remembered on this device' : 'Key loaded for this tab') : 'Paste API key'} /><button type="button" onClick={() => { setCompanionApiKey(''); setApiKeyDraft(''); setRememberApiKey(false); setConnection('offline'); }}>Clear</button></div></label>
                   <label className="companion-key-memory">
                     <input type="checkbox" checked={rememberApiKey} onChange={event => setRememberApiKey(event.target.checked)} />
-                    <span><strong>Remember key on this device</strong><small>Persists in this browser and stays outside Ikigai backups. Browser storage is not encrypted by Ikigai, so leave this off on shared or untrusted devices.</small></span>
+                    <span><strong>Remember key on this device</strong><small>Persists in this browser and stays outside Ikigai Space backups. Browser storage is not encrypted by Ikigai Space, so leave this off on shared or untrusted devices.</small></span>
                   </label>
-                  <IkButton size="sm" variant="primary" disabled={!endpointTrust.valid || (endpointTrust.requiresTrust && !endpointTrust.trusted)} onClick={() => void saveRemoteApi()}>Save & test</IkButton>
-                  <p className="companion-api-warning">Browser-direct APIs must allow CORS. Remote mode sends the selected planning context, your message, and only documents visibly attached to that send. Ikigai refuses cross-origin redirects while an API key is attached.</p>
+                  <IkButton size="sm" variant="primary" disabled={runtime.active || connection === 'checking' || !endpointTrust.valid || (endpointTrust.requiresTrust && !endpointTrust.trusted)} onClick={() => void saveRemoteApi()}>{runtime.active ? 'Validating…' : 'Save & test'}</IkButton>
+                  <p className="companion-api-warning">Browser-direct APIs must allow CORS. Remote mode sends the selected planning context, your message, and only documents visibly attached to that send. Ikigai Space refuses cross-origin redirects while an API key is attached.</p>
                 </>
               ) : (
                 <>
                   <div className="companion-model-status">
                     {connection === 'online' ? <Bot size={17} /> : connection === 'checking' ? <LoaderCircle size={17} className="spin" /> : <WifiOff size={17} />}
-                    <div><strong>{connection === 'online' ? 'Ollama is reachable' : connection === 'checking' ? 'Checking Ollama…' : 'No local model connection'}</strong><small>No Ikigai context is sent until you press Send.</small></div>
+                    <div><strong>{connection === 'online' ? 'Ollama is reachable' : connection === 'checking' ? 'Checking Ollama…' : 'No local model connection'}</strong><small>No Ikigai Space context is sent until you press Send.</small></div>
                   </div>
                   <label className="companion-field-label">Endpoint<div className="companion-endpoint-row"><input value={endpointDraft} onChange={event => setEndpointDraft(event.target.value)} spellCheck={false} /><button type="button" onClick={() => void connectOllama()} aria-label="Check endpoint"><RefreshCw size={14} /></button></div></label>
                   <label className="companion-field-label">Model<div className="companion-select-wrap"><select value={state?.model ?? ''} onChange={event => void changeModel(event.target.value)} disabled={connection !== 'online' || !models.length}><option value="">{models.length ? 'Choose model' : 'No models found'}</option>{models.map(model => <option key={model} value={model}>{model}</option>)}</select><ChevronDown size={13} /></div></label>
                 </>
               )}
-              {connectionError ? <p className="companion-error"><CircleOff size={13} /> {connectionError}</p> : null}
+              {connectionError ? <p className="companion-error" role="alert"><CircleOff size={13} /> {connectionError}</p> : null}
+              </fieldset>
             </section>
 
             <section className="companion-connection-panel">
@@ -750,7 +789,7 @@ export function CompanionPage() {
                 icon={<MessageCircle size={20} />}
                 eyebrow="ASK FOR A PLAN, NOT JUST AN ANSWER"
                 title="It can draft the structure with you."
-                description="Ask for a plan or attach a roadmap/CV. The Companion can draft roadmap structure, Career projects, proof and tasks from that source; every proposed change stays reviewable before it touches Ikigai."
+                description="Ask for a plan or attach a roadmap/CV. The Companion can draft roadmap structure, Career projects, proof and tasks from that source; every proposed change stays reviewable before it touches Ikigai Space."
               >
                 <div className="companion-quick-prompts">{quickPrompts.map(item => <button key={item} type="button" onClick={() => updatePrompt(item)}>{item}</button>)}</div>
               </EmptyState>
@@ -805,7 +844,7 @@ export function CompanionPage() {
                 />
                 <div className="companion-composer-foot">
                   <span>{requestError && failedPrompt === prompt.trim() ? 'Not sent · edit or retry' : 'Enter to send · Shift+Enter for a new line'}</span>
-                  <IkButton type="submit" variant="primary" disabled={!prompt.trim() || sending || Boolean(retry)}>{sending ? <LoaderCircle size={14} className="spin" /> : <Send size={14} />}{sending ? 'Thinking…' : 'Send'}</IkButton>
+                  <IkButton type="submit" variant="primary" disabled={!prompt.trim() || sending || Boolean(retry)}>{sending ? <LoaderCircle size={14} className="spin" /> : <Send size={14} />}{readingDocuments ? 'Reading documents…' : sending ? 'Request in progress…' : 'Send'}</IkButton>
                 </div>
               </form>
             ) : (

@@ -52,16 +52,9 @@ function readFailure(): CompanionUiFailure | null {
 }
 
 
+let activeRetry: CompanionUiRetry | null = null;
 function readRetry(): CompanionUiRetry | null {
-  const raw = safeSessionGet(RETRY_KEY);
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw) as CompanionUiRetry;
-    if (!Number.isFinite(parsed?.nextAttempt) || !Number.isFinite(parsed?.maxAttempts) || !parsed?.retryAt || !parsed?.reason) return null;
-    return parsed;
-  } catch {
-    return null;
-  }
+  return activeRetry;
 }
 
 export function getCompanionUiState(): CompanionUiState {
@@ -94,16 +87,19 @@ export function clearCompanionFailure() {
 }
 
 export function setCompanionRetry(retry: CompanionUiRetry) {
-  safeSessionSet(RETRY_KEY, JSON.stringify(retry));
+  activeRetry = retry;
+  safeSessionSet(RETRY_KEY, null);
   emit();
 }
 
 export function clearCompanionRetry() {
+  activeRetry = null;
   safeSessionSet(RETRY_KEY, null);
   emit();
 }
 
 export function clearCompanionUi() {
+  activeRetry = null;
   safeSessionSet(DRAFT_KEY, null);
   safeSessionSet(FAILURE_KEY, null);
   safeSessionSet(RETRY_KEY, null);

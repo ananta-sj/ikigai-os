@@ -67,14 +67,14 @@ export function DataSafetyPanel() {
 
   async function restore(mode: RestoreMode) {
     if (!preview) return;
-    if (mode === 'replace' && !(await confirm({ title: 'Replace local data?', message: 'Replace local Ikigai data with this backup? The restore is validated first and applied atomically, but it will replace the current local dataset.', confirmLabel: 'Replace local data', tone: 'danger' }))) return;
+    if (mode === 'replace' && !(await confirm({ title: 'Replace local data?', message: 'Replace local Ikigai Space data with this backup? The restore is validated first and applied atomically, but it will replace the current local dataset.', confirmLabel: 'Replace local data', tone: 'danger' }))) return;
     setBusy(true); setError(''); setMessage(mode === 'replace' ? 'Validating and replacing local data…' : 'Validating and merging backup…');
     try {
       const result = await restoreBackup(preview.bundle, mode);
       const recovered = result.recoveredRoadmapPhases ? ` · ${result.recoveredRoadmapPhases} roadmap phase${result.recoveredRoadmapPhases === 1 ? '' : 's'} recovered` : '';
       setMessage(result.maintenanceWarning
         ? `Restore complete · ${result.restoredRecords} records${recovered}. ${result.maintenanceWarning}`
-        : `Restore complete · ${result.restoredRecords} records${recovered}. Reloading Ikigai…`);
+        : `Restore complete · ${result.restoredRecords} records${recovered}. Reloading Ikigai Space…`);
       window.setTimeout(() => window.location.reload(), result.maintenanceWarning ? 1600 : 700);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Restore failed. Your current local dataset was not replaced.');
@@ -99,7 +99,7 @@ export function DataSafetyPanel() {
 
   async function repairIntegrity() {
     if (!integrity?.repairableCount) return;
-    if (!(await confirm({ title: 'Repair safe issues?', message: 'Repair only the safe structural issues Ikigai found? This does not delete life records or Vault files. Missing Vault metadata is recovered into placeholder memories.', confirmLabel: 'Repair safe issues' }))) return;
+    if (!(await confirm({ title: 'Repair safe issues?', message: 'Repair only the safe structural issues Ikigai Space found? This does not delete life records or Vault files. Missing Vault metadata is recovered into placeholder memories.', confirmLabel: 'Repair safe issues' }))) return;
     setBusy(true); setError(''); setMessage('Repairing safe structural issues…');
     try {
       const result = await repairSafeIntegrityIssues();
@@ -142,7 +142,7 @@ export function DataSafetyPanel() {
         <div>
           <span className="eyebrow">YOUR DATA · LOCAL FIRST</span>
           <h3>Backup & restore</h3>
-          <p>Keep a portable copy of Ikigai. Cloud sync is optional and is not connected in this version.</p>
+          <p>Keep a portable copy of Ikigai Space. Cloud sync is optional and is not connected in this version.</p>
         </div>
       </div>
 
@@ -151,7 +151,7 @@ export function DataSafetyPanel() {
           <div className="data-safety-clean-head">
             <div>
               <strong>Portable backup</strong>
-              <small>Checksum-verified local file containing your Ikigai data and Memory Vault attachments.</small>
+              <small>Checksum-verified local file containing your Ikigai Space data and Memory Vault attachments.</small>
             </div>
             <span className="data-safety-state is-ready">Ready</span>
           </div>
@@ -188,7 +188,7 @@ export function DataSafetyPanel() {
             </div>
             <span className="data-safety-state">Off</span>
           </div>
-          <p className="data-safety-cloud-copy">Ikigai remains fully usable offline. When multi-device sync is added, it will be opt-in and live here.</p>
+          <p className="data-safety-cloud-copy">Ikigai Space remains fully usable offline. When multi-device sync is added, it will be opt-in and live here.</p>
           <button type="button" className="ik-button ik-button-quiet" disabled>Connect a provider · Later</button>
         </div>
       </div>

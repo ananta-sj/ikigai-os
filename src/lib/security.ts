@@ -112,7 +112,7 @@ export function trustCompanionEndpoint(raw: string): EndpointTrustInfo {
   const origins = readTrustedOrigins();
   origins.add(info.origin);
   if (!writeTrustedOrigins(origins)) {
-    return { ...info, trusted: false, reason: 'Browser storage blocked the trust decision. Ikigai will not send an API key to this endpoint.' };
+    return { ...info, trusted: false, reason: 'Browser storage blocked the trust decision. Ikigai Space will not send an API key to this endpoint.' };
   }
   return { ...info, trusted: true };
 }
@@ -135,7 +135,7 @@ export function assertCompanionEndpointTrusted(raw: string): EndpointTrustInfo {
   const info = companionEndpointTrustInfo(raw);
   if (!info.valid) throw new Error(info.reason || 'The model endpoint is not valid.');
   if (info.requiresTrust && !info.trusted) {
-    throw new Error(`Trust ${info.hostname ?? 'this endpoint'} in AI settings before Ikigai sends an API key there.`);
+    throw new Error(`Trust ${info.hostname ?? 'this endpoint'} in AI settings before Ikigai Space sends an API key there.`);
   }
   return info;
 }
@@ -157,7 +157,7 @@ export function probeBrowserStorage(kind: 'session' | 'local'): boolean {
 
 /**
  * Small non-sensitive UI markers may share the audited browser-storage boundary.
- * This is intentionally not a general secret store and only accepts Ikigai keys.
+ * This is intentionally not a general secret store and only accepts Ikigai Space keys.
  */
 export function readLocalUiMarker(key: string): string | null {
   if (typeof window === 'undefined' || !key.startsWith('ikigai.')) return null;

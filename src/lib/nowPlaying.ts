@@ -1,5 +1,6 @@
 import type { NowPlayingItem, NowPlayingRuntime, NowPlayingProvider } from '../types';
 import { ensureSettings, updateSettings } from './settings';
+import { boundedRequest, readBoundedResponseText, TransportFailure } from './companionTransportCore';
 import {
   controlSystemMedia,
   isTauriRuntime,
@@ -116,7 +117,7 @@ function setSystemMediaDeviceConsent(enabled: boolean, controls = false) {
   if (enabled && (!sourceStored || !controlsStored)) {
     writeDeviceFlag(SYSTEM_MEDIA_DEVICE_ENABLED_KEY, false);
     writeDeviceFlag(SYSTEM_MEDIA_DEVICE_CONTROLS_KEY, false);
-    throw new Error('Ikigai could not save the local Windows System Media permission on this device.');
+    throw new Error('Ikigai Space could not save the local Windows System Media permission on this device.');
   }
 }
 
@@ -235,14 +236,27 @@ function parseTokenResponse(raw: SpotifyTokenResponse, previous?: SpotifyTokenBu
   };
 }
 
+async function mediaRequest(url: string, init: RequestInit) {
+  try {
+    return await boundedRequest({
+      request: signal => fetch(url, { ...init, signal, credentials: 'omit', referrerPolicy: 'no-referrer', redirect: 'error', cache: 'no-store' }),
+      timeoutMs: 20000,
+      consume: async (response, signal) => new Response((await readBoundedResponseText(response, signal)) || null, { status: response.status, statusText: response.statusText, headers: response.headers })
+    });
+  } catch (error) {
+    if (error instanceof TransportFailure) throw new Error(error.kind === 'timeout' ? 'Spotify took too long to respond. Check your connection and try again.' : 'Could not reach Spotify. Check your connection and try again.');
+    throw error;
+  }
+}
+
 async function tokenRequest(body: URLSearchParams) {
-  const response = await fetch(SPOTIFY_TOKEN_URL, {
+  const response = await mediaRequest(SPOTIFY_TOKEN_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body
   });
   const payload = await response.json().catch(() => ({})) as SpotifyTokenResponse & { error_description?: string };
-  if (!response.ok) throw new Error(payload.error_description || `Spotify sign-in failed (HTTP ${response.status}).`);
+  if (!response.ok) throw new Error(`Spotify sign-in failed (HTTP ${response.status}). Check app permissions and connect again.`);
   return payload;
 }
 
@@ -354,7 +368,7 @@ class SpotifyRequestError extends Error {
 async function spotifyFetch(path: string, init?: RequestInit) {
   const entry = await usableTokens();
   if (!entry) throw new Error('Connect Spotify to use this source.');
-  const response = await fetch(`${SPOTIFY_API_ROOT}${path}`, {
+  const response = await mediaRequest(`${SPOTIFY_API_ROOT}${path}`, {
     ...init,
     headers: { ...init?.headers, Authorization: `Bearer ${entry.tokens.accessToken}` }
   });
@@ -366,7 +380,7 @@ async function spotifyFetch(path: string, init?: RequestInit) {
       429,
       quotaExceeded
         ? 'This Spotify development account has reached its shared Web API quota. Try again after the quota window resets.'
-        : 'Spotify asked Ikigai to slow down.',
+        : 'Spotify asked Ikigai Space to slow down.',
       Number.isFinite(retry) ? retry : 30
     );
   }
@@ -422,7 +436,7 @@ async function refreshSystemMedia(epoch: number, allowControls: boolean) {
         connected: false,
         item: null,
         refreshing: false,
-        error: 'This Windows build does not expose the System Media session API to Ikigai.'
+        error: 'This Windows build does not expose the System Media session API to Ikigai Space.'
       });
     }
     const item = parseSystemMediaSnapshot(snapshot, allowControls);

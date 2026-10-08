@@ -26,6 +26,10 @@ export interface CompanionDocumentRequestItem {
 
 const EVENT = 'ikigai-companion-documents-changed';
 let documents: CompanionDocumentAttachment[] = [];
+let pendingReads = 0;
+let generation = 0;
+
+export function companionDocumentsBusy() { return pendingReads > 0; }
 
 function emit() {
   if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent(EVENT));
@@ -43,11 +47,19 @@ export function subscribeCompanionDocuments(listener: (items: CompanionDocumentA
 }
 
 export async function addCompanionDocument(file: File) {
-  if (documents.length >= COMPANION_DOCUMENT_MAX_FILES) throw new Error(`Attach up to ${COMPANION_DOCUMENT_MAX_FILES} documents at a time.`);
+  if (documents.length + pendingReads >= COMPANION_DOCUMENT_MAX_FILES) throw new Error(`Attach up to ${COMPANION_DOCUMENT_MAX_FILES} documents at a time.`);
   if (!file.size) throw new Error('The selected document is empty.');
   if (file.size > COMPANION_DOCUMENT_MAX_FILE_BYTES) throw new Error('Keep each attached document under 8 MB.');
-  const bytes = new Uint8Array(await file.arrayBuffer());
-  const extracted = await extractCompanionDocument(bytes, file.name, file.type);
+  pendingReads += 1;
+  const currentGeneration = generation;
+  emit();
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+  const extracted = await Promise.race([
+    file.arrayBuffer().then(buffer => extractCompanionDocument(new Uint8Array(buffer), file.name, file.type)),
+    new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('Reading this document took too long. Try a smaller file or a text export.')), 20000); })
+  ]);
+  if (generation !== currentGeneration) throw new Error('This document read was cancelled when the attachments were cleared.');
   const attachment: CompanionDocumentAttachment = {
     id: crypto.randomUUID(),
     name: file.name.slice(0, 180),
@@ -61,6 +73,7 @@ export async function addCompanionDocument(file: File) {
   documents = [...documents, attachment];
   emit();
   return attachment;
+  } finally { clearTimeout(timer); pendingReads -= 1; emit(); }
 }
 
 export function removeCompanionDocument(id: string) {
@@ -71,7 +84,8 @@ export function removeCompanionDocument(id: string) {
 }
 
 export function clearCompanionDocuments() {
-  if (!documents.length) return;
+  if (!documents.length && !pendingReads) return;
+  generation += 1;
   documents = [];
   emit();
 }

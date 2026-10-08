@@ -77,7 +77,7 @@ function phaseFromOrphanItems(phaseId: string, items: RoadmapItem[]): RoadmapPha
     startDate,
     endDate,
     mode: 'green',
-    intent: 'Recovered by Ikigai because checkpoints referenced a phase that was missing.',
+    intent: 'Recovered by Ikigai Space because checkpoints referenced a phase that was missing.',
     note: 'Review the dates and title when convenient.',
     source: 'imported',
     createdAt: now,
@@ -121,13 +121,13 @@ export async function auditDataIntegrity(): Promise<IntegrityReport> {
   const roadmapItemIds = new Set(roadmapItems.map(item => item.id));
   const projectIds = new Set(projects.map(item => item.id));
 
-  issue(issues, 'settings-main-missing', 'warning', 'Settings record is missing', 'Ikigai can recreate the local settings record without touching life data.', settings.some(item => item.id === 'main') ? 0 : 1, true);
+  issue(issues, 'settings-main-missing', 'warning', 'Settings record is missing', 'Ikigai Space can recreate the local settings record without touching life data.', settings.some(item => item.id === 'main') ? 0 : 1, true);
   issue(issues, 'settings-extra-records', 'warning', 'Unexpected settings records', 'Only the “main” settings record is used. Extra records are left untouched for manual inspection.', settings.filter(item => item.id !== 'main').length, false);
-  issue(issues, 'garden-main-missing', 'warning', 'Garden state is missing', 'Ikigai can recreate an empty Garden state. Existing tasks and history are not changed.', gardens.some(item => item.id === 'main') ? 0 : 1, true);
+  issue(issues, 'garden-main-missing', 'warning', 'Garden state is missing', 'Ikigai Space can recreate an empty Garden state. Existing tasks and history are not changed.', gardens.some(item => item.id === 'main') ? 0 : 1, true);
   issue(issues, 'garden-extra-records', 'warning', 'Unexpected Garden records', 'Only the “main” Garden state is active. Extra records are preserved rather than deleted automatically.', gardens.filter(item => item.id !== 'main').length, false);
 
   const invalidGardenNumbers = gardens.filter(garden => [garden.water, garden.sunlight, garden.fertilizer, garden.growth].some(value => !Number.isFinite(value) || value < 0));
-  issue(issues, 'garden-invalid-numbers', 'error', 'Garden resources contain invalid values', 'Negative or non-numeric Garden resources need manual inspection; Ikigai will not guess replacement values.', invalidGardenNumbers.length, false);
+  issue(issues, 'garden-invalid-numbers', 'error', 'Garden resources contain invalid values', 'Negative or non-numeric Garden resources need manual inspection; Ikigai Space will not guess replacement values.', invalidGardenNumbers.length, false);
 
   const taskProjectRefs = tasks.filter(item => item.projectId && !projectIds.has(item.projectId));
   issue(issues, 'task-project-orphans', 'warning', 'Tasks reference missing projects', 'The missing project link can be cleared while keeping each task intact.', taskProjectRefs.length, true);
@@ -136,7 +136,7 @@ export async function auditDataIntegrity(): Promise<IntegrityReport> {
   issue(issues, 'memory-task-orphans', 'warning', 'Memories reference missing tasks', 'The stale task link can be cleared without changing the memory itself.', memoryTaskRefs.length, true);
 
   const orphanAttachments = attachments.filter(item => !memoryIds.has(item.memoryId));
-  issue(issues, 'attachment-memory-orphans', 'error', 'Vault attachments lost their memory record', 'Ikigai can recover them into placeholder memories instead of deleting the files.', orphanAttachments.length, true);
+  issue(issues, 'attachment-memory-orphans', 'error', 'Vault attachments lost their memory record', 'Ikigai Space can recover them into placeholder memories instead of deleting the files.', orphanAttachments.length, true);
 
   const invalidAttachmentMetadata = attachments.filter(item => {
     if (!(item.blob instanceof Blob)) return false;
@@ -145,10 +145,10 @@ export async function auditDataIntegrity(): Promise<IntegrityReport> {
   issue(issues, 'attachment-metadata-mismatch', 'warning', 'Vault attachment metadata is out of sync', 'File size, MIME type and attachment kind can be rebuilt from the stored Blob.', invalidAttachmentMetadata.length, true);
 
   const unreadableAttachments = attachments.filter(item => !(item.blob instanceof Blob));
-  issue(issues, 'attachment-blob-missing', 'error', 'Vault attachment data is unreadable', 'The attachment record exists but its stored Blob is missing or invalid. Ikigai will not delete it automatically.', unreadableAttachments.length, false);
+  issue(issues, 'attachment-blob-missing', 'error', 'Vault attachment data is unreadable', 'The attachment record exists but its stored Blob is missing or invalid. Ikigai Space will not delete it automatically.', unreadableAttachments.length, false);
 
   const itemPhaseRefs = roadmapItems.filter(item => !item.phaseId || !phaseIds.has(item.phaseId));
-  issue(issues, 'roadmap-phase-orphans', 'error', 'Roadmap checkpoints reference missing phases', 'Ikigai can recreate neutral imported phases around those checkpoints.', itemPhaseRefs.length, true);
+  issue(issues, 'roadmap-phase-orphans', 'error', 'Roadmap checkpoints reference missing phases', 'Ikigai Space can recreate neutral imported phases around those checkpoints.', itemPhaseRefs.length, true);
 
   const itemProjectRefs = roadmapItems.filter(item => item.projectId && !projectIds.has(item.projectId));
   issue(issues, 'roadmap-project-orphans', 'warning', 'Roadmap checkpoints reference missing projects', 'The stale project link can be cleared while preserving the checkpoint.', itemProjectRefs.length, true);
@@ -160,25 +160,25 @@ export async function auditDataIntegrity(): Promise<IntegrityReport> {
   issue(issues, 'proof-roadmap-orphans', 'warning', 'Proof items reference missing checkpoints', 'The stale checkpoint link can be cleared while preserving the proof item.', proofRoadmapRefs.length, true);
 
   const invalidMemoryLinks = memories.filter(item => item.linkUrl && !normalizeExternalHttpUrl(item.linkUrl));
-  issue(issues, 'memory-unsafe-links', 'error', 'Memories contain unsafe or malformed links', 'Ikigai can clear these links while preserving the memory text and attachments.', invalidMemoryLinks.length, true);
+  issue(issues, 'memory-unsafe-links', 'error', 'Memories contain unsafe or malformed links', 'Ikigai Space can clear these links while preserving the memory text and attachments.', invalidMemoryLinks.length, true);
 
   const invalidProjectLinks = projects.filter(item => (item.repoUrl && !normalizeExternalHttpUrl(item.repoUrl)) || (item.demoUrl && !normalizeExternalHttpUrl(item.demoUrl)));
-  issue(issues, 'career-project-unsafe-links', 'error', 'Career projects contain unsafe or malformed links', 'Ikigai can clear only the invalid link fields while preserving the project.', invalidProjectLinks.length, true);
+  issue(issues, 'career-project-unsafe-links', 'error', 'Career projects contain unsafe or malformed links', 'Ikigai Space can clear only the invalid link fields while preserving the project.', invalidProjectLinks.length, true);
 
   const invalidProofLinks = proofItems.filter(item => item.url && !normalizeExternalHttpUrl(item.url));
-  issue(issues, 'proof-unsafe-links', 'error', 'Proof items contain unsafe or malformed links', 'Ikigai can clear the unsafe link while preserving the proof record.', invalidProofLinks.length, true);
+  issue(issues, 'proof-unsafe-links', 'error', 'Proof items contain unsafe or malformed links', 'Ikigai Space can clear the unsafe link while preserving the proof record.', invalidProofLinks.length, true);
 
   const invalidApplicationLinks = applications.filter(item => item.sourceUrl && !normalizeExternalHttpUrl(item.sourceUrl));
-  issue(issues, 'application-unsafe-links', 'error', 'Opportunities contain unsafe or malformed source links', 'Ikigai can clear the unsafe link while preserving the opportunity.', invalidApplicationLinks.length, true);
+  issue(issues, 'application-unsafe-links', 'error', 'Opportunities contain unsafe or malformed source links', 'Ikigai Space can clear the unsafe link while preserving the opportunity.', invalidApplicationLinks.length, true);
 
   const invalidPhaseRanges = phases.filter(phase => !isDateKey(phase.startDate) || !isDateKey(phase.endDate) || phase.endDate < phase.startDate);
-  issue(issues, 'roadmap-invalid-ranges', 'error', 'Roadmap phases contain invalid date ranges', 'These dates may carry user intent, so Ikigai reports them instead of changing them automatically.', invalidPhaseRanges.length, false);
+  issue(issues, 'roadmap-invalid-ranges', 'error', 'Roadmap phases contain invalid date ranges', 'These dates may carry user intent, so Ikigai Space reports them instead of changing them automatically.', invalidPhaseRanges.length, false);
 
   const invalidTaskDates = tasks.filter(task => (task.dueDate && !isDateKey(task.dueDate)) || !isIsoTimestamp(task.createdAt) || (task.completedAt && !isIsoTimestamp(task.completedAt)) || (task.gardenRewardedAt && !isIsoTimestamp(task.gardenRewardedAt)));
   issue(issues, 'task-invalid-dates', 'error', 'Tasks contain invalid dates', 'The affected task dates need manual inspection; automatic repair could move or rewrite planned work.', invalidTaskDates.length, false);
 
   const invalidDayRecords = dayRecords.filter(record => !isDateKey(record.date) || !isIsoTimestamp(record.updatedAt) || (record.closedAt && !isIsoTimestamp(record.closedAt)));
-  issue(issues, 'day-record-invalid-dates', 'error', 'Daily history contains invalid dates', 'Ikigai leaves historical dates untouched and reports them for manual recovery.', invalidDayRecords.length, false);
+  issue(issues, 'day-record-invalid-dates', 'error', 'Daily history contains invalid dates', 'Ikigai Space leaves historical dates untouched and reports them for manual recovery.', invalidDayRecords.length, false);
 
   const totalRecords = totalCounts.reduce((sum, count) => sum + count, 0);
   return {
@@ -271,7 +271,7 @@ export async function repairSafeIntegrityIssues(): Promise<IntegrityRepairResult
         const memory: VaultMemory = {
           id,
           title: 'Recovered memory',
-          body: 'Recovered by Ikigai because the original Memory Vault record was missing. Review or rename this memory when convenient.',
+          body: 'Recovered by Ikigai Space because the original Memory Vault record was missing. Review or rename this memory when convenient.',
           date: isDateKey(createdAt.slice(0, 10)) ? createdAt.slice(0, 10) : todayKey(),
           tags: ['recovered'],
           kind: recoveredMemoryKind(group),

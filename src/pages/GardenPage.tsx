@@ -49,7 +49,7 @@ type WorldMessage = {
 };
 
 const SANCTUARY_TOUR: Array<WorldMessage & { region: SanctuaryRegionId }> = [
-  { region: 'threshold', label: 'WELCOME · THE THRESHOLD', title: 'This place grows from the life you record in Ikigai.', detail: 'There is nothing extra to maintain here. Sanctuary turns work, reflection, memories and long-term progress into a place you can revisit.' },
+  { region: 'threshold', label: 'WELCOME · THE THRESHOLD', title: 'This place grows from the life you record in Ikigai Space.', detail: 'There is nothing extra to maintain here. Sanctuary turns work, reflection, memories and long-term progress into a place you can revisit.' },
   { region: 'home-grove', label: 'GUIDED WALK · HOME GROVE', title: 'Everyday work grows here.', detail: 'Completed tasks feed the Guardian Tree and the life around it. Reopening a task never lets the same work pay out twice.' },
   { region: 'moon-pond', label: 'GUIDED WALK · MOON POND', title: 'Reflection leaves life around the water.', detail: 'Written reflections deepen this part of the world through reeds, lilies and quieter light instead of another score or streak.' },
   { region: 'quiet-pavilion', label: 'GUIDED WALK · QUIET PAVILION', title: 'Memories leave traces without exposing their contents.', detail: 'The world can acknowledge that memories exist while the private text and attachments stay inside Memory Vault.' },
@@ -270,7 +270,7 @@ export function GardenPage() {
     setWorldMessage({
       label: 'ACHIEVEMENT · WORLD OBJECT',
       title: sanctuaryArtifactMessage(definition),
-      detail: 'This object is earned from your existing Ikigai history. It is not a separate collectible you need to maintain.'
+      detail: 'This object is earned from your existing Ikigai Space history. It is not a separate collectible you need to maintain.'
     });
     if (settings?.sanctuaryEffectsSound) void playSanctuaryTone('artifact');
   }
@@ -323,7 +323,7 @@ export function GardenPage() {
 
   function stopTour() {
     setTourStep(null);
-    setWorldMessage({ label: 'SANCTUARY · YOURS', title: 'Explore at your own pace.', detail: 'The world is a reflection of existing Ikigai data, not another system you need to maintain.' });
+    setWorldMessage({ label: 'SANCTUARY · YOURS', title: 'Explore at your own pace.', detail: 'The world is a reflection of existing Ikigai Space data, not another system you need to maintain.' });
   }
 
   function advanceTour() {
@@ -387,7 +387,7 @@ export function GardenPage() {
           className="sanctuary-header"
           eyebrow={<><Sparkles size={14} /> SANCTUARY · A LIVING PLACE</>}
           title="A place that changes with you."
-          description="A quiet place shaped by the life you record elsewhere in Ikigai. Explore it, sit for a while, or leave it open and let the world simply be."
+          description="A quiet place shaped by the life you record elsewhere in Ikigai Space. Explore it, sit for a while, or leave it open and let the world simply be."
           actions={
             <div className="sanctuary-growth-chip" title="Your original Garden growth remains represented by the Guardian Tree.">
               <Trees size={17} aria-hidden="true" />
@@ -527,7 +527,7 @@ export function GardenPage() {
           />
 
           {!stillness ? <div className="sanctuary-world-title" aria-hidden="true">
-            <span>IKIGAI SANCTUARY · {sanctuaryThemeMood(theme, period).toUpperCase()}</span>
+            <span>IKIGAI SPACE SANCTUARY · {sanctuaryThemeMood(theme, period).toUpperCase()}</span>
             <strong>{visibleRegion.label}</strong>
           </div> : null}
 
@@ -546,7 +546,7 @@ export function GardenPage() {
           {introOpen ? <div className="sanctuary-arrival-backdrop" role="presentation">
             <section ref={arrivalDialogRef} tabIndex={-1} className="sanctuary-arrival" role="dialog" aria-modal="true" aria-labelledby="sanctuary-arrival-title">
               <span>WELCOME TO YOUR SANCTUARY</span>
-              <h2 id="sanctuary-arrival-title">This place grows from the life you already live in Ikigai.</h2>
+              <h2 id="sanctuary-arrival-title">This place grows from the life you already live in Ikigai Space.</h2>
               <p>You do not need to maintain anything here. Work, reflection, memories and long-term progress quietly change the world for you. Benches let you sit; the street and tea house are simply here when you want somewhere to stay.</p>
               <div><button type="button" className="primary" onClick={beginTour}>Walk with me <ChevronRight size={14} /></button><button type="button" onClick={dismissIntro}>Let me explore</button></div>
             </section>

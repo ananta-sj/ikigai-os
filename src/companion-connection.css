@@ -1,0 +1,7 @@
+.companion-live-status { display:flex; gap:12px; align-items:center; justify-content:space-between; padding:12px 14px; margin:12px 0; border:1px solid var(--ik-border, #a7aea6); border-radius:12px; background:var(--ik-surface, #f0eee6); color:var(--ik-text, #303b31); }
+.companion-live-status div { display:grid; gap:5px; min-width:0; }
+.companion-live-status strong { font-size:12px; overflow-wrap:anywhere; }
+.companion-live-status span { font-size:12px; }
+.companion-live-status button { flex-shrink:0; cursor:pointer; font:inherit; font-size:12px; padding:8px; border:1px solid currentColor; border-radius:8px; background:transparent; color:inherit; }
+.companion-live-status.phase-failed, .companion-live-status.phase-rate-limited { border-color:#a15b42; }
+.companion-connection-fields { border:0; margin:0; padding:0; min-width:0; }

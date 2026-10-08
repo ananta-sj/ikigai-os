@@ -5,6 +5,7 @@ import { clearCompanionUi } from './companionUi';
 import { clearCompanionDocuments } from './companionDocuments';
 import { clearCompanionEndpointTrusts } from './security';
 import { clearNowPlayingCredentials } from './nowPlaying';
+import { cancelCompanionOperation } from './companionRuntime';
 
 export async function clearCalendarData() {
   await db.transaction(
@@ -43,10 +44,12 @@ export async function clearCalendarData() {
 }
 
 export async function resetIkigaiCompletely() {
-  // Deleting the Dexie database removes every Ikigai table, including Vault
+  cancelCompanionOperation();
+  // Deleting the Dexie database removes every Ikigai Space table, including Vault
   // attachment blobs, settings, garden state, companion history and sync meta.
   await db.delete();
-  setCompanionApiKey('');
+  // Mounted observers must not query a Dexie instance that reset just deleted.
+  setCompanionApiKey('', false, false);
   clearCompanionEndpointTrusts();
   clearCompanionUi();
   clearCompanionDocuments();

@@ -37,7 +37,7 @@ export const pageGuides: Record<string, PageGuideDefinition> = {
       { title: 'Open a date', detail: 'Click or tap a calendar day. Writable dates expose task, note and marker controls only while that date is selected.' },
       { title: 'Follow the week', detail: 'The open paper sheet can show the Roadmap chapter touching that date and reopen the matching weekly Reflection without creating duplicate records.' },
       { title: 'Turn the month', detail: 'Use the page edges or month controls. Reduced Motion keeps the same navigation without large page movement.' },
-      { title: 'Desk objects', detail: 'The notebook, plant, photo frame and other desk objects are shortcuts into related Ikigai rooms.' }
+      { title: 'Desk objects', detail: 'The notebook, plant, photo frame and other desk objects are shortcuts into related Ikigai Space rooms.' }
     ],
     customize: 'Journey paper/theme choices live in Settings → Experience.',
     keyboard: ['Use Tab to reach dates and desk objects.', 'Alt + Left/Right turns the month.', 'Escape closes the open date sheet.']
@@ -63,12 +63,12 @@ export const pageGuides: Record<string, PageGuideDefinition> = {
     summary: 'The installed Windows app can read the current Windows System Media session locally. Browser/PWA builds cannot access that native session, while Spotify remains an optional advanced provider. No listening history is stored.',
     features: [
       { title: 'Local first on Windows', detail: 'Windows System Media is the recommended native source. It reads metadata Windows already exposes, needs no Spotify developer app, Client ID or Spotify Premium, and must be enabled again on a different installation even after backup restore.' },
-      { title: 'Controls stay separate', detail: 'Reading the current session and sending playback controls are different permissions inside Ikigai. Playback control is off by default and only sends actions the active media app exposes.' },
+      { title: 'Controls stay separate', detail: 'Reading the current session and sending playback controls are different permissions inside Ikigai Space. Playback control is off by default and only sends actions the active media app exposes.' },
       { title: 'Spotify stays optional', detail: 'Spotify Web API setup is available as an advanced provider for people who want it, with its Premium/Development Mode requirements shown before setup.' },
-      { title: 'Let the Familiar notice', detail: 'Active playback can give the Familiar a generic music pose. Ikigai does not inspect beats, waveforms or tempo and does not synchronize visual motion to audio.' }
+      { title: 'Let the Familiar notice', detail: 'Active playback can give the Familiar a generic music pose. Ikigai Space does not inspect beats, waveforms or tempo and does not synchronize visual motion to audio.' }
     ],
     customize: 'Open Source to choose Windows System Media, the optional Spotify Web API provider, no source, or Familiar music presence. Browser/PWA builds explicitly explain that they cannot read Windows media sessions.',
-    keyboard: ['Tab reaches the media controls and Source button.', 'Opening Source traps focus until Escape or Close returns you to the room.', 'Ikigai reads metadata only; audio keeps playing in the original media app.']
+    keyboard: ['Tab reaches the media controls and Source button.', 'Opening Source traps focus until Escape or Close returns you to the room.', 'Ikigai Space reads metadata only; audio keeps playing in the original media app.']
   },
   '/garden': {
     path: '/garden',
@@ -89,7 +89,7 @@ export const pageGuides: Record<string, PageGuideDefinition> = {
     title: 'Plan chapters, not an endless backlog.',
     summary: 'Roadmap is for larger phases and checkpoints that deserve a date range and a sense of progression. Keep ordinary daily work in Today.',
     features: [
-      { title: 'Create a phase', detail: 'A phase defines the chapter, time window and intent. You own the structure; Ikigai does not seed a personal roadmap for you.' },
+      { title: 'Create a phase', detail: 'A phase defines the chapter, time window and intent. You own the structure; Ikigai Space does not seed a personal roadmap for you.' },
       { title: 'Add checkpoints', detail: 'Use checkpoints for meaningful milestones inside a phase. Optional detail can stay collapsed.' },
       { title: 'Follow the evidence trail', detail: 'A checkpoint can open its linked Career proof, and Add proof hands Career the checkpoint context without moving evidence storage into Roadmap.' }
     ],
@@ -135,7 +135,7 @@ export const pageGuides: Record<string, PageGuideDefinition> = {
       { title: 'Proof', detail: 'Preserve evidence such as links, outcomes or artifacts. Linked proof can reopen its exact Roadmap checkpoint and Journey date.' },
       { title: 'Opportunities', detail: 'Keep applications or external opportunities visible without turning them into daily tasks automatically.' }
     ],
-    customize: 'Professional integrations are opt-in and arrive only through supported provider APIs; Ikigai does not scrape accounts.',
+    customize: 'Professional integrations are opt-in and arrive only through supported provider APIs; Ikigai Space does not scrape accounts.',
     keyboard: ['Tab reaches project/proof/opportunity actions.', 'Escape closes editors.']
   },
   '/companion': {

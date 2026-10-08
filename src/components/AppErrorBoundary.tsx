@@ -18,9 +18,9 @@ export class AppErrorBoundary extends Component<Props, State> {
     return { error, backupState: 'idle', backupMessage: '' };
   }
 
-  componentDidCatch(error: Error, info: ErrorInfo) {
+  componentDidCatch(_error: Error, _info: ErrorInfo) {
     // Keep diagnostics local. Avoid sending crash details anywhere implicitly.
-    console.error('Ikigai UI recovered from a render error.', error, info);
+    console.error('Ikigai Space UI recovered from a render error.');
   }
 
   private async saveBackup() {
@@ -43,11 +43,11 @@ export class AppErrorBoundary extends Component<Props, State> {
       <main className="ik-crash-shell" role="alert">
         <section className="ik-crash-card">
           <span className="eyebrow">LOCAL RECOVERY MODE</span>
-          <h1>Ikigai hit a display error.</h1>
+          <h1>Ikigai Space hit a display error.</h1>
           <p>Your local database is separate from this screen. Reloading usually restores the interface without deleting your data.</p>
 
           <div className="ik-crash-actions">
-            <button type="button" className="ik-button ik-button-primary" onClick={() => window.location.reload()}>Reload Ikigai</button>
+            <button type="button" className="ik-button ik-button-primary" onClick={() => window.location.reload()}>Reload Ikigai Space</button>
             <button type="button" className="ik-button ik-button-secondary" disabled={this.state.backupState === 'working'} onClick={() => void this.saveBackup()}>
               {this.state.backupState === 'working' ? 'Preparing backup…' : 'Download backup first'}
             </button>

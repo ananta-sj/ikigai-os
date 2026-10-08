@@ -75,7 +75,7 @@ export function AddTaskModal({ open, defaultDate, onClose, onSaved }: Props) {
           <div className="ik-workspace-dialog__intro">
             <span className="ik-section-kicker">NEW TASK</span>
             <h2 id="add-task-title">What needs doing?</h2>
-            <p>A title is enough. Ikigai fills in sensible defaults so adding a task stays fast.</p>
+            <p>A title is enough. Ikigai Space fills in sensible defaults so adding a task stays fast.</p>
           </div>
           <button type="button" className="ik-workspace-dialog__close" onClick={onClose} aria-label="Close task editor" disabled={saving}>
             <X size={18} aria-hidden="true" />

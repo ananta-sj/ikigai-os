@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react';
 
 /**
- * Canonical Ikigai product mark.
+ * Canonical Ikigai Space product mark.
  *
  * The sprout is intentionally independent from workspace/theme glyphs. Theme
  * kanji/labels can change with the material system; the product identity does not.

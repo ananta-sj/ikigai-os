@@ -85,12 +85,12 @@ test('flate-compressed PDF content streams are extracted locally', async () => {
 });
 
 test('modern Word document text can be extracted from a bounded local docx archive', async () => {
-  const xml = `<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="x"><w:body><w:p><w:r><w:t>Selected Projects</w:t></w:r></w:p><w:p><w:r><w:t>Ikigai — local-first planning app</w:t></w:r></w:p></w:body></w:document>`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="x"><w:body><w:p><w:r><w:t>Selected Projects</w:t></w:r></w:p><w:p><w:r><w:t>Ikigai Space — local-first planning app</w:t></w:r></w:p></w:body></w:document>`;
   const docx = storedZip('word/document.xml', xml);
   const extracted = await extractCompanionDocument(docx, 'resume.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
   assert.equal(extracted.kind, 'docx');
   assert.match(extracted.text, /Selected Projects/);
-  assert.match(extracted.text, /Ikigai/);
+  assert.match(extracted.text, /Ikigai Space/);
 });
 
 test('document context remains ephemeral and proposal writes stay reviewable', () => {

@@ -49,6 +49,27 @@ function notifySettings(next: UserSettings) {
   window.dispatchEvent(new CustomEvent<UserSettings>('ikigai-settings-changed', { detail: next }));
 }
 
+export async function skipOnboardingTour() {
+  const current = await ensureSettings();
+  const now = new Date().toISOString();
+  const nextSettings: UserSettings = {
+    ...current,
+    onboardingComplete: true,
+    onboardingCompletedAt: current.onboardingCompletedAt ?? now,
+    updatedAt: now
+  };
+
+  await db.transaction('rw', db.settings, db.syncQueue, async () => {
+    await db.settings.put(nextSettings);
+    await db.syncQueue.put({
+      id: 'settings:main', table: 'settings', recordId: 'main',
+      operation: 'upsert', changedAt: now
+    });
+  });
+  notifySettings(nextSettings);
+  return nextSettings;
+}
+
 export async function completeOnboardingSetup(input: CompleteOnboardingInput) {
   const current = await ensureSettings();
   const now = new Date().toISOString();

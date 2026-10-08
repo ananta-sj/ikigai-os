@@ -115,15 +115,24 @@ function ProofModal({ projects, roadmap, initialProjectId, initialRoadmapItemId,
   const [projectId, setProjectId] = useState(initialProjectId ?? '');
   const [roadmapItemId, setRoadmapItemId] = useState(initialRoadmapItemId ?? '');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const dialogRef = useDialogFocus<HTMLFormElement>(true, onClose);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!title.trim()) return;
+    if (saving) return;
+    setError('');
     setSaving(true);
-    await createProofItem({ title, kind, date, url, note, projectId: projectId || undefined, roadmapItemId: roadmapItemId || undefined });
-    await onCreated();
-    onClose();
+    try {
+      await createProofItem({ title, kind, date, url, note, projectId: projectId || undefined, roadmapItemId: roadmapItemId || undefined });
+      await onCreated();
+      onClose();
+    } catch {
+      setError('Ikigai Space could not finish saving this proof. Check available storage and try again. Your draft is preserved; check the list before retrying.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return createPortal(
@@ -154,6 +163,7 @@ function ProofModal({ projects, roadmap, initialProjectId, initialRoadmapItemId,
               <label className="ik-workspace-dialog__field">What this proves<textarea rows={2} value={note} onChange={event => setNote(event.target.value)} placeholder="What can someone verify or understand from this artifact?" /></label>
             </div>
           </details>
+          {error ? <p className="roadmap-form-error" role="alert">{error}</p> : null}
           <div className="ik-workspace-dialog__actions"><IkButton variant="quiet" onClick={onClose}>Cancel</IkButton><IkButton variant="primary" type="submit" disabled={saving || !title.trim()}>{saving ? 'Saving…' : 'Keep proof'}</IkButton></div>
         </div>
       </form>
@@ -170,15 +180,24 @@ function ApplicationModal({ onClose, onCreated }: { onClose: () => void; onCreat
   const [sourceUrl, setSourceUrl] = useState('');
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const dialogRef = useDialogFocus<HTMLFormElement>(true, onClose);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!company.trim() || !role.trim()) return;
+    if (saving) return;
+    setError('');
     setSaving(true);
-    await createApplication({ company, role, status, deadline, sourceUrl, note });
-    await onCreated();
-    onClose();
+    try {
+      await createApplication({ company, role, status, deadline, sourceUrl, note });
+      await onCreated();
+      onClose();
+    } catch {
+      setError('Ikigai Space could not finish saving this opportunity. Check available storage and try again. Your draft is preserved; check the list before retrying.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return createPortal(
@@ -208,6 +227,7 @@ function ApplicationModal({ onClose, onCreated }: { onClose: () => void; onCreat
               <label className="ik-workspace-dialog__field">Notes<textarea rows={2} value={note} onChange={event => setNote(event.target.value)} placeholder="Why it fits, referral, requirements, next action…" /></label>
             </div>
           </details>
+          {error ? <p className="roadmap-form-error" role="alert">{error}</p> : null}
           <div className="ik-workspace-dialog__actions"><IkButton variant="quiet" onClick={onClose}>Cancel</IkButton><IkButton variant="primary" type="submit" disabled={saving || !company.trim() || !role.trim()}>{saving ? 'Adding…' : 'Add opportunity'}</IkButton></div>
         </div>
       </form>
@@ -223,15 +243,24 @@ function ProjectModal({ onClose, onCreated }: { onClose: () => void; onCreated: 
   const [repoUrl, setRepoUrl] = useState('');
   const [demoUrl, setDemoUrl] = useState('');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const dialogRef = useDialogFocus<HTMLFormElement>(true, onClose);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!title.trim()) return;
+    if (saving) return;
+    setError('');
     setSaving(true);
-    await createCareerProject({ title, summary, targetDate, repoUrl, demoUrl });
-    await onCreated();
-    onClose();
+    try {
+      await createCareerProject({ title, summary, targetDate, repoUrl, demoUrl });
+      await onCreated();
+      onClose();
+    } catch {
+      setError('Ikigai Space could not finish saving this project. Check available storage and try again. Your draft is preserved; check the list before retrying.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return createPortal(
@@ -260,6 +289,7 @@ function ProjectModal({ onClose, onCreated }: { onClose: () => void; onCreated: 
               </div>
             </div>
           </details>
+          {error ? <p className="roadmap-form-error" role="alert">{error}</p> : null}
           <div className="ik-workspace-dialog__actions"><IkButton variant="quiet" onClick={onClose}>Cancel</IkButton><IkButton variant="primary" type="submit" disabled={saving || !title.trim()}>{saving ? 'Adding…' : 'Add project'}</IkButton></div>
         </div>
       </form>
@@ -364,7 +394,7 @@ export function CareerPage() {
         <section className="career-hub-v028" aria-label="Connected career signals">
           <article className="career-github-card ik-surface">
             <div className="career-github-head">
-              <div className="career-github-title"><span><TerminalSquare size={22} /></span><div><h2>GitHub activity</h2><p>Optional public activity view. Nothing is imported into your Ikigai records.</p></div></div>
+              <div className="career-github-title"><span><TerminalSquare size={22} /></span><div><h2>GitHub activity</h2><p>Optional public activity view. Nothing is imported into your Ikigai Space records.</p></div></div>
               <form className="career-github-form" onSubmit={loadGithub}>
                 <input value={githubUsername} onChange={event => setGithubUsername(event.target.value)} placeholder="GitHub username" aria-label="GitHub username" autoCapitalize="none" autoCorrect="off" />
                 <button type="submit" disabled={githubState === 'loading'}>{githubState === 'loading' ? <><RefreshCw size={13} /> Loading</> : githubActivity ? <><RefreshCw size={13} /> Refresh</> : <><TerminalSquare size={13} /> Show activity</>}</button>

@@ -44,14 +44,14 @@ export async function runProductDiagnostics(): Promise<ProductDiagnosticsReport>
   const strongCrypto = typeof crypto !== 'undefined' && Boolean(crypto.subtle) && typeof crypto.randomUUID === 'function';
   items.push(item('web-crypto', 'Web Crypto', strongCrypto ? 'pass' : 'warn', strongCrypto
     ? 'SHA-256 checksums and strong browser-generated IDs are available.'
-    : 'Strong Web Crypto is unavailable. Ikigai can still run, but security-sensitive browser primitives are reduced.'));
+    : 'Strong Web Crypto is unavailable. Ikigai Space can still run, but security-sensitive browser primitives are reduced.'));
 
   let dbHealthy = false;
   try {
     await db.open();
     const tableCount = db.tables.length;
     dbHealthy = tableCount >= 20;
-    items.push(item('indexeddb', 'Local database', dbHealthy ? 'pass' : 'warn', `IndexedDB opened with ${tableCount} Ikigai tables.`));
+    items.push(item('indexeddb', 'Local database', dbHealthy ? 'pass' : 'warn', `IndexedDB opened with ${tableCount} Ikigai Space tables.`));
   } catch (error) {
     items.push(item('indexeddb', 'Local database', 'fail', error instanceof Error ? error.message : 'IndexedDB could not be opened.'));
   }
@@ -77,7 +77,7 @@ export async function runProductDiagnostics(): Promise<ProductDiagnosticsReport>
     : undefined;
   items.push(item('web-audio', 'Local audio', AudioContextCtor ? 'pass' : 'info', AudioContextCtor
     ? 'Optional local interaction tones and soundscapes are supported.'
-    : 'Web Audio is unavailable; sound remains optional and the rest of Ikigai is unaffected.'));
+    : 'Web Audio is unavailable; sound remains optional and the rest of Ikigai Space is unaffected.'));
 
   const swSupported = typeof navigator !== 'undefined' && 'serviceWorker' in navigator;
   let swDetail = swSupported ? 'Service workers are supported but this page is not currently controlled.' : 'Service workers are not supported in this browser.';
@@ -94,7 +94,7 @@ export async function runProductDiagnostics(): Promise<ProductDiagnosticsReport>
       }
     } catch {
       swStatus = 'warn';
-      swDetail = 'The browser supports service workers, but Ikigai could not inspect the current registration.';
+      swDetail = 'The browser supports service workers, but Ikigai Space could not inspect the current registration.';
     }
   }
   items.push(item('service-worker', 'Offline shell', swStatus, swDetail));
@@ -118,7 +118,7 @@ export async function runProductDiagnostics(): Promise<ProductDiagnosticsReport>
 
   if (typeof navigator !== 'undefined') {
     items.push(item('network-state', 'Current network state', navigator.onLine ? 'info' : 'info', navigator.onLine
-      ? 'Browser reports online. Ikigai remains local-first; only explicitly connected services use the network.'
+      ? 'Browser reports online. Ikigai Space remains local-first; only explicitly connected services use the network.'
       : 'Browser reports offline. Local rooms should remain usable; remote AI and future connected services will not.'));
   }
 

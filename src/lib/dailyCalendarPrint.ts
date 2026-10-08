@@ -348,7 +348,7 @@ function drawTraditionalHimekuri(
   context.textAlign = 'right';
   context.fillStyle = theme.mutedInk;
   context.font = '800 16px Inter, Arial, sans-serif';
-  context.fillText('IKIGAI DAILY · ONE DAY / ONE PAGE', 818, 1204);
+  context.fillText('IKIGAI SPACE DAILY · ONE DAY / ONE PAGE', 818, 1204);
   context.restore();
 }
 
@@ -377,7 +377,7 @@ function drawEditorialDesk(
   context.textAlign = 'left';
   context.fillStyle = theme.ink;
   context.font = `700 ${profile.size === 'compact' ? 35 : 32}px Georgia, "Times New Roman", serif`;
-  context.fillText('IKIGAI DAILY PRESS', 116, 132);
+  context.fillText('IKIGAI SPACE DAILY PRESS', 116, 132);
   context.fillStyle = theme.mutedInk;
   context.font = `800 ${profile.meta - 2}px Inter, Arial, sans-serif`;
   context.fillText(`${weekday} · ${String(day).padStart(2, '0')} ${month} ${year}`, 116, 174);
@@ -409,7 +409,7 @@ function drawEditorialDesk(
 
   context.fillStyle = theme.mutedInk;
   context.font = '800 16px Inter, Arial, sans-serif';
-  context.fillText('IKIGAI PRESS · LOCAL EDITION', 116, 1206);
+  context.fillText('IKIGAI SPACE PRESS · LOCAL EDITION', 116, 1206);
   context.restore();
 }
 
@@ -635,7 +635,7 @@ function drawMinimalDesk(
   context.textAlign = 'left';
   context.fillStyle = theme.paper;
   context.font = `800 ${profile.size === 'compact' ? 28 : 25}px Inter, Arial, sans-serif`;
-  context.fillText(`IKIGAI / ${year}.${monthNumber}.${dayText}`, 80, 132);
+  context.fillText(`IKIGAI SPACE / ${year}.${monthNumber}.${dayText}`, 80, 132);
   context.textAlign = 'right';
   context.fillText(weekday.slice(0, profile.size === 'compact' ? 3 : weekday.length), 820, 132);
 

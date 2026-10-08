@@ -109,7 +109,7 @@ export function SettingsPage() {
         <section className="glass-panel ik-surface settings-card experience-settings">
           <div className="settings-section-heading">
             <div>
-              <span className="eyebrow">IKIGAI ATMOSPHERE</span>
+              <span className="eyebrow">IKIGAI SPACE ATMOSPHERE</span>
               <h3>Workspace theme</h3>
               <p>Core materials plus optional seasonal and celebratory editions. Your data never changes with the look.</p>
             </div>
@@ -119,7 +119,7 @@ export function SettingsPage() {
             <div className="workspace-theme-demo-shell" aria-hidden="true">
               <div className="workspace-theme-demo-dock"><i /><i /><i /><i /></div>
               <div className="workspace-theme-demo-page">
-                <div className="workspace-theme-demo-brand"><span><IkigaiMark /></span><div><strong>Ikigai</strong><small>local-first</small></div></div>
+                <div className="workspace-theme-demo-brand"><span><IkigaiMark /></span><div><strong>Ikigai Space</strong><small>local-first</small></div></div>
                 <span className="workspace-theme-demo-eyebrow">TODAY · DESK</span>
                 <h4>A quieter place to work.</h4>
                 <div className="workspace-theme-demo-grid">
@@ -130,7 +130,7 @@ export function SettingsPage() {
             </div>
             <footer>
               <div><strong>{previewDefinition.mark} · {previewDefinition.name}</strong><span>{previewDefinition.subtitle}</span></div>
-              <p>Hover or focus a theme below to preview it here. Click a theme to use it across Ikigai.</p>
+              <p>Hover or focus a theme below to preview it here. Click a theme to use it across Ikigai Space.</p>
             </footer>
           </div>
 
@@ -262,7 +262,7 @@ export function SettingsPage() {
         {activeTab === 'experience' ? <>
         <section className="glass-panel ik-surface settings-card experience-settings">
           <div className="settings-section-heading">
-            <div><span className="eyebrow">PERSONAL TOUCH</span><h3>What should Ikigai call you?</h3><p>This optional name is used for local greetings only. Leave it blank to keep the interface neutral.</p></div>
+            <div><span className="eyebrow">PERSONAL TOUCH</span><h3>What should Ikigai Space call you?</h3><p>This optional name is used for local greetings only. Leave it blank to keep the interface neutral.</p></div>
           </div>
           <label className="setting-block settings-profile-name">
             <div><strong>Preferred name or nickname</strong><small>Stored with your normal local settings and included in portable backups. No account or identity verification is involved.</small></div>

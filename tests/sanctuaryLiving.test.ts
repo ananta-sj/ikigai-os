@@ -21,7 +21,7 @@ function source(patch: Partial<SanctuaryLivingSource> = {}): SanctuaryLivingSour
   };
 }
 
-test('an empty Ikigai dataset keeps every Sanctuary region quiet', () => {
+test('an empty Ikigai Space dataset keeps every Sanctuary region quiet', () => {
   const state = deriveSanctuaryLivingState(source(), new Date('2026-09-26T12:00:00Z'));
   assert.equal(state.homeGrove.tier, 0);
   assert.equal(state.moonPond.tier, 0);

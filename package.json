@@ -12,14 +12,20 @@
     "test:integrity": "node --experimental-strip-types --test tests/integrityCore.test.ts",
     "audit:static": "node scripts/audit-static.mjs",
     "audit:deps": "npm audit --omit=dev --audit-level=high",
-    "verify": "npm run cleanup:retired && npm run audit:release && npm run audit:static && npm run audit:ui && npm run audit:icons && npm test && npm run build && npm run audit:dist",
+    "audit:companion-browser": "node scripts/audit-companion-browser.mjs",
+    "verify": "npm run cleanup:retired && npm run audit:release && npm run audit:static && npm run audit:ui && npm run audit:icons && npm test && npm run build && npm run audit:dist && npm run audit:branding",
     "audit:ui": "node scripts/audit-ui.mjs",
     "audit:icons": "node scripts/audit-lucide.mjs",
     "audit:release": "node scripts/audit-release.mjs",
     "audit:dist": "node scripts/audit-dist.mjs",
     "tauri": "tauri",
     "native:dev": "tauri dev",
-    "native:build": "tauri build"
+    "native:build": "tauri build",
+    "audit:workspace-browser": "node scripts/audit-workspace-browser.mjs",
+    "audit:reset-browser": "node scripts/audit-reset-browser.mjs",
+    "audit:onboarding-skip-browser": "node scripts/audit-onboarding-skip-browser.mjs",
+    "audit:branding-browser": "node scripts/audit-branding-browser.mjs",
+    "audit:branding": "node scripts/audit-branding.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "9.8.0",

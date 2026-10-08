@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { LocalStorageRecovery } from '../components/LocalStorageRecovery';
 import {
   ArrowLeft,
   ArrowRight,
@@ -26,7 +27,7 @@ import { gardenThemes } from '../data/gardenThemes';
 import { journeyThemes } from '../data/journeyThemes';
 import { paperThemes } from '../data/paperThemes';
 import { appThemes, isLightAppTheme } from '../data/themes';
-import { completeOnboardingSetup } from '../lib/onboarding';
+import { completeOnboardingSetup, skipOnboardingTour } from '../lib/onboarding';
 import { ensureSettings } from '../lib/settings';
 import { IkigaiMark } from '../components/IkigaiMark';
 import { FamiliarAvatar, type FamiliarPose } from '../components/familiar/FamiliarAvatar';
@@ -627,6 +628,7 @@ export function OnboardingPage() {
   const [sanctuaryEffectsSound, setSanctuaryEffectsSound] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [storageFailed, setStorageFailed] = useState(false);
   const worldRef = useRef<HTMLDivElement>(null);
   const journeyPreviewStageRef = useRef<HTMLDivElement>(null);
   const journeyPreviewCanvasRef = useRef<HTMLDivElement>(null);
@@ -636,8 +638,10 @@ export function OnboardingPage() {
 
   useEffect(() => {
     let alive = true;
+    const timer = window.setTimeout(() => { if (alive) setStorageFailed(true); }, 10_000);
     void ensureSettings().then(settings => {
       if (!alive) return;
+      setStorageFailed(false);
       setExisting(settings);
       setProfileName(settings.profileName ?? '');
       setChapterIntent(settings.chapterIntent ?? '');
@@ -668,8 +672,8 @@ export function OnboardingPage() {
       setSanctuaryAmbientSound(settings.sanctuaryAmbientSound);
       setSanctuaryEffectsSound(settings.sanctuaryEffectsSound);
       setLoaded(true);
-    });
-    return () => { alive = false; };
+    }).catch(() => { if (alive) setStorageFailed(true); }).finally(() => window.clearTimeout(timer));
+    return () => { alive = false; window.clearTimeout(timer); };
   }, []);
 
   useEffect(() => {
@@ -775,6 +779,20 @@ export function OnboardingPage() {
     setStep(current => Math.min(steps.length - 1, current + 1));
   }
 
+  async function skipTour() {
+    if (saving || preview) return;
+    setSaving(true);
+    setSaveError('');
+    try {
+      await skipOnboardingTour();
+      navigate('/', { replace: true });
+    } catch {
+      setSaveError('Ikigai Space could not save your choice to skip the tour. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
   async function finish() {
     if (saving) return;
     setSaveError('');
@@ -820,14 +838,15 @@ export function OnboardingPage() {
       completedRef.current = true;
       navigate('/', { replace: true });
     } catch (cause) {
-      console.error('Ikigai onboarding could not be finalized.', cause);
-      setSaveError('Ikigai could not save your setup. Nothing was finalized, so it is safe to try again.');
+      console.error('Ikigai Space onboarding could not be finalized.', cause);
+      setSaveError('Ikigai Space could not save your setup. Nothing was finalized, so it is safe to try again.');
     } finally {
       setSaving(false);
     }
   }
 
-  if (!loaded) return <div className="onboarding-boot"><span className="onboarding-boot-mark"><IkigaiMark /></span><p>Waking Ikigai…</p></div>;
+  if (storageFailed) return <LocalStorageRecovery />;
+  if (!loaded) return <div className="onboarding-boot"><span className="onboarding-boot-mark"><IkigaiMark /></span><p>Waking Ikigai Space…</p></div>;
 
   return (
     <div ref={worldRef} className="onboarding-world">
@@ -835,13 +854,15 @@ export function OnboardingPage() {
       <div className="onboarding-grain" aria-hidden="true" />
 
       <header className="onboarding-topbar">
-        <button className="onboarding-brand" type="button" onClick={() => preview && navigate(-1)} aria-label="Ikigai">
-          <span className="onboarding-brand-mark"><IkigaiMark /></span><div><b>Ikigai</b><small>{preview ? 'welcome preview' : 'first light'}</small></div>
+        <button className="onboarding-brand" type="button" onClick={() => preview && navigate(-1)} aria-label="Ikigai Space">
+          <span className="onboarding-brand-mark"><IkigaiMark /></span><div><b>Ikigai Space</b><small>{preview ? 'welcome preview' : 'first light'}</small></div>
         </button>
         <div className="onboarding-progress" aria-label={`Step ${step + 1} of ${steps.length}`}>
           {steps.map((label, index) => <i key={label} className={index <= step ? 'active' : ''} title={label} />)}
         </div>
-        {preview ? <button className="onboarding-exit" type="button" onClick={() => navigate(-1)}><X size={15} /> Exit preview</button> : <span className="onboarding-private"><ShieldCheck size={14} /> local-first</span>}
+        {preview ? <button className="onboarding-exit" type="button" onClick={() => navigate(-1)}><X size={15} /> Exit preview</button> : (
+          <button className="onboarding-exit" type="button" disabled={saving} onClick={() => void skipTour()} title="Open Today with your saved preferences. Changes made in this tour will not be saved.">{saving ? 'Saving…' : 'Skip tour'} <ArrowRight size={15} /></button>
+        )}
       </header>
 
       <main className="onboarding-stage">
@@ -852,10 +873,11 @@ export function OnboardingPage() {
               <div className="arrival-copy">
                 <span className="onboarding-kicker">WELCOME TO YOUR FIRST CHAPTER</span>
                 <h1>Your days already pass.<br /><em>Give them somewhere to live.</em></h1>
-                <p>First Light is optional setup, not an intake form. Tell Ikigai what is useful, skip what is not, and change any preference later.</p>
+                <p>Not a dashboard for measuring your life. A place for inhabiting it.</p>
+                <p>First Light is optional setup, not an intake form. Tell Ikigai Space what is useful, or skip the tour to open Today immediately. You can change any preference later in Settings.</p>
                 <aside className="onboarding-privacy-card" aria-label="Local data and encryption disclosure">
                   <ShieldCheck size={18} />
-                  <div><strong>Your data, plainly.</strong><p>Life data is stored in this browser with IndexedDB. Ikigai does <b>not</b> add application-level encryption at rest, and exported JSON backups are readable files. SHA-256 checksums protect backup integrity; they do not hide the contents. Passwords, API keys and provider tokens are deliberately not requested in this tour.</p></div>
+                  <div><strong>Your data, plainly.</strong><p>Life data is stored in this browser with IndexedDB. Ikigai Space does <b>not</b> add application-level encryption at rest, and exported JSON backups are readable files. SHA-256 checksums protect backup integrity; they do not hide the contents. Passwords, API keys and provider tokens are deliberately not requested in this tour.</p></div>
                 </aside>
                 <button className="onboarding-primary" type="button" onClick={nextStep}>Begin <ArrowRight size={18} /></button>
               </div>
@@ -870,7 +892,7 @@ export function OnboardingPage() {
                 <label className="onboarding-profile-card">
                   <UserRound size={22} />
                   <span>Preferred name or nickname</span>
-                  <input value={profileName} maxLength={48} onChange={event => setProfileName(event.target.value)} placeholder="What should Ikigai call you?" />
+                  <input value={profileName} maxLength={48} onChange={event => setProfileName(event.target.value)} placeholder="What should Ikigai Space call you?" />
                   <small>{profileName.trim() ? `Today can say “Good evening, ${profileName.trim().slice(0, 48)}.”` : 'No name stored · generic greetings stay exactly as they are.'}</small>
                 </label>
               </div>
@@ -879,7 +901,7 @@ export function OnboardingPage() {
 
           {step === 2 && (
             <motion.section key="chapter" className="onboarding-step" initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}>
-              <div className="onboarding-step-head"><span className="onboarding-kicker">02 · YOUR CHAPTER</span><h2>What deserves to grow with you?</h2><p>Choose only the areas you want Ikigai to make visible. A sentence can give the current chapter a little context.</p><small className="onboarding-optional">Optional · leave the sentence and focus areas blank if you would rather decide later.</small></div>
+              <div className="onboarding-step-head"><span className="onboarding-kicker">02 · YOUR CHAPTER</span><h2>What deserves to grow with you?</h2><p>Choose only the areas you want Ikigai Space to make visible. A sentence can give the current chapter a little context.</p><small className="onboarding-optional">Optional · leave the sentence and focus areas blank if you would rather decide later.</small></div>
               <div className="chapter-layout">
                 <label className="chapter-intent-card">
                   <span>One sentence for this chapter</span>
@@ -912,7 +934,7 @@ export function OnboardingPage() {
                 ))}
                 {importantDates.length < 5 && <button type="button" className="add-date-row" onClick={() => setImportantDates(current => [...current, newDraftDate()])}><Plus size={16} /> Add another protected date</button>}
               </div>
-              <div className="date-philosophy"><CalendarDays size={19} /><p>These become milestones, not daily tasks. Ikigai can surface what is approaching without turning every date into a checklist.</p></div>
+              <div className="date-philosophy"><CalendarDays size={19} /><p>These become milestones, not daily tasks. Ikigai Space can surface what is approaching without turning every date into a checklist.</p></div>
             </motion.section>
           )}
 
@@ -1061,7 +1083,7 @@ export function OnboardingPage() {
                 <div className="onboarding-ready-panel">
                   <div><Sprout size={18} /><span><b>The Garden starts quietly.</b><small>Your seed is there from day one. Nothing dies if you leave it alone.</small></span></div>
                   <div><Check size={18} /><span><b>No task is created for you.</b><small>Today can stay empty until you choose what deserves your attention.</small></span></div>
-                  <div><ShieldCheck size={18} /><span><b>{preview ? 'This is a safe preview.' : 'Your setup stays local by default.'}</b><small>{preview ? 'Closing the preview restores your current appearance and does not create milestones.' : 'Life data goes to IndexedDB. Ikigai does not claim app-level at-rest encryption; backups remain readable JSON unless you protect them outside Ikigai.'}</small></span></div>
+                  <div><ShieldCheck size={18} /><span><b>{preview ? 'This is a safe preview.' : 'Your setup stays local by default.'}</b><small>{preview ? 'Closing the preview restores your current appearance and does not create milestones.' : 'Life data goes to IndexedDB. Ikigai Space does not claim app-level at-rest encryption; backups remain readable JSON unless you protect them outside Ikigai Space.'}</small></span></div>
                   <div><Info size={18} /><span><b>Connections wait until you ask.</b><small>GitHub, Spotify and AI/provider credentials are not collected during First Light.</small></span></div>
                 </div>
                 <div className="onboarding-ready-summary" aria-label="Setup summary">
@@ -1087,7 +1109,7 @@ export function OnboardingPage() {
         <footer className="onboarding-controls">
           <button type="button" className="onboarding-back" onClick={() => setStep(current => Math.max(0, current - 1))}><ArrowLeft size={16} /> Back</button>
           <div className="onboarding-control-center">{step < steps.length - 1 ? <button type="button" className="onboarding-skip" onClick={nextStep}>Skip this</button> : null}<span>{String(step + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}</span></div>
-          {step < steps.length - 1 ? <button type="button" className="onboarding-primary compact" onClick={nextStep}>Keep & continue <ArrowRight size={16} /></button> : <button type="button" className="onboarding-primary compact" disabled={saving} onClick={() => void finish()}>{saving ? 'Saving…' : preview ? <>Close preview <X size={16} /></> : <>Enter Ikigai <WandSparkles size={16} /></>}</button>}
+          {step < steps.length - 1 ? <button type="button" className="onboarding-primary compact" onClick={nextStep}>Keep & continue <ArrowRight size={16} /></button> : <button type="button" className="onboarding-primary compact" disabled={saving} onClick={() => void finish()}>{saving ? 'Saving…' : preview ? <>Close preview <X size={16} /></> : <>Enter Ikigai Space <WandSparkles size={16} /></>}</button>}
         </footer>
       )}
     </div>

@@ -187,7 +187,7 @@ export function sanctuaryRegionNarrative(region: SanctuaryRegionId, state: Sanct
     case 'threshold':
       return state.threshold.totalTraces
         ? `The Sanctuary now carries ${plural(state.threshold.totalTraces, 'local trace')} from work you already recorded elsewhere.`
-        : 'A quiet beginning. The world can stay sparse until your ordinary Ikigai activity gives it something to remember.';
+        : 'A quiet beginning. The world can stay sparse until your ordinary Ikigai Space activity gives it something to remember.';
     case 'home-grove':
       if (!state.homeGrove.completedTasks) return 'The grove is resting. Completed tasks will gradually add ground cover, flowers and younger growth here.';
       return `${plural(state.homeGrove.completedTasks, 'completed task')} have enriched the grove${state.homeGrove.recentCompletedTasks ? `, including ${state.homeGrove.recentCompletedTasks} in the last 30 days` : ''}.`;

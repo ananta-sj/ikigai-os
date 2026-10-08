@@ -89,7 +89,7 @@ class PaperAudioEngine {
         this.buffers.set(id, decoded);
         return decoded;
       } catch (error) {
-        console.warn('[Ikigai] paper tear sample failed to load', error);
+        console.warn('[Ikigai Space] paper tear sample failed to load', error);
         return null;
       } finally {
         this.loading.delete(id);

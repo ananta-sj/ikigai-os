@@ -1,3 +1,5 @@
+import { CompanionConnectionStatus, useCompanionRuntime } from './companion/CompanionConnectionStatus';
+import { companionOperationActive, getCompanionRuntime, providerLabel, updateCompanionRuntime } from '../lib/companionRuntime';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent } from 'react';
 import {
   ArrowUpRight,
@@ -44,7 +46,7 @@ import type { CompanionMessage, CompanionState, FamiliarPosition, UserSettings }
 import { getNowPlayingRuntime, subscribeNowPlaying } from '../lib/nowPlaying';
 import { clearCompanionDocuments, companionDocumentsForRequest } from '../lib/companionDocuments';
 import { loadFamiliarRoomSignal, type FamiliarRoomSignal } from '../lib/workspaceContinuity';
-import { CompanionDocumentTray } from './companion/CompanionDocumentTray';
+import { CompanionDocumentTray, useCompanionDocumentsBusy } from './companion/CompanionDocumentTray';
 import { useDialogFocus } from './ui/dialogFocus';
 import '../companion-pet.css';
 
@@ -93,7 +95,10 @@ export function CompanionPet() {
   const [quickOpen, setQuickOpen] = useState(false);
   const [panelMode, setPanelMode] = useState<FamiliarPanelMode>('together');
   const [prompt, setPromptState] = useState(initialUi.draft);
-  const [sending, setSending] = useState(false);
+  const [localSending, setSending] = useState(false);
+  const runtime = useCompanionRuntime();
+  const readingDocuments = useCompanionDocumentsBusy();
+  const sending = localSending || runtime.active || readingDocuments;
   const [error, setError] = useState<CompanionErrorPresentation | null>(initialUi.failure?.presentation ?? null);
   const [failedPrompt, setFailedPrompt] = useState(initialUi.failure?.prompt ?? '');
   const [retry, setRetry] = useState<CompanionUiRetry | null>(initialUi.retry);
@@ -119,6 +124,7 @@ export function CompanionPet() {
       ensureSettings()
     ]);
     setState(nextState);
+    if (!getCompanionRuntime().active && getCompanionRuntime().phase === 'not-configured') updateCompanionRuntime({ provider: providerLabel(nextState.provider, nextState.endpoint), model: nextState.model, phase: nextState.model && (nextState.provider === 'ollama' || hasCompanionApiKey()) ? 'configured' : 'not-configured' });
     setMessages(nextMessages);
     setSettings(nextSettings);
     settingsRef.current = nextSettings;
@@ -446,7 +452,7 @@ export function CompanionPet() {
 
   async function sendText(text: string) {
     const trimmed = text.trim();
-    if (!trimmed || sending || retry || !configured) return;
+    if (!trimmed || companionOperationActive() || sending || retry || !configured) return;
     setSending(true);
     clearCompanionFailure();
     try {
@@ -588,6 +594,7 @@ export function CompanionPet() {
             </div>
           ) : (
             <div className="familiar-talk">
+              <CompanionConnectionStatus />
               {configured ? (
                 <>
                   {latest ? <article className="familiar-talk-latest"><span>LATEST REPLY</span><p>{latest.content}</p></article> : <article className="familiar-talk-latest empty"><span>CONVERSATION</span><p>Ask for help thinking, planning or shaping a proposal. The Familiar never applies a change by itself.</p></article>}

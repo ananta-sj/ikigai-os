@@ -5,11 +5,11 @@ import test from 'node:test';
 const page = fs.readFileSync('src/pages/CompanionPage.tsx', 'utf8');
 const css = fs.readFileSync('src/companion-v120.css', 'utf8');
 
-test('Gemini remote setup uses a managed endpoint and curated current model dropdown', () => {
-  assert.match(page, /const GEMINI_DEFAULT_MODEL = 'gemini-3\.8-flash'/);
-  for (const model of ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite']) assert.match(page, new RegExp(model.replaceAll('.', '\\.')));
+test('Gemini remote setup uses a managed endpoint and provider-discovered model dropdown', () => {
+  assert.match(page, /await discoverGeminiModels\(\)/);
+  assert.doesNotMatch(page, /gemini-3\.8-flash|gemini-3\.5-flash/);
   assert.match(page, /<select value=\{geminiModelPreset\}/);
-  assert.match(page, /Custom Gemini model ID…/);
+  assert.match(page, /Enter a model ID or load available models…/);
   assert.match(page, /Endpoint managed automatically/);
 });
 
@@ -21,10 +21,11 @@ test('custom OpenAI-compatible setup still exposes explicit endpoint and model f
   assert.match(page, /trustCompanionEndpoint\(endpointDraft\)/);
 });
 
-test('choosing Gemini supplies a valid default model instead of asking users to invent an id', () => {
+test('Gemini selects a model returned by the provider instead of claiming an unverified default is valid', () => {
   assert.match(page, /setEndpointDraft\(GEMINI_CHAT_ENDPOINT\)/);
-  assert.match(page, /setModelDraft\(GEMINI_DEFAULT_MODEL\)/);
-  assert.match(page, /Choose a provider and model, add your key, then save/);
+  assert.match(page, /model: available\[0\]/);
+  assert.match(page, /available\.includes\(modelDraft\)/);
+  assert.match(page, /load available models and validate a real reply/);
 });
 
 test('guided provider helper has dedicated restrained styling', () => {

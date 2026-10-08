@@ -1,4 +1,4 @@
-# Ikigai — Reimagine Roadmap
+# Ikigai Space — Reimagine Roadmap
 
 This roadmap starts after the v0.20 UI foundation. The goal is to avoid mixing shell cleanup, 3D world design and character-system design into one untestable release.
 
@@ -30,7 +30,7 @@ Replace the old Garden direction with an authored, explorable world prototype. P
 
 ## v0.22 — Living World · implemented
 
-Make the Sanctuary a spatial expression of the same local data already visible elsewhere in Ikigai.
+Make the Sanctuary a spatial expression of the same local data already visible elsewhere in Ikigai Space.
 
 - completed Tasks enrich Home Grove with flowers, younger growth and recent-work warmth
 - Roadmap progress develops the route to The Lookout through capped waystones
@@ -59,7 +59,7 @@ Turn the prototype into a durable place rather than a one-session visual demo.
 Completely rethink the Familiar after the Sanctuary gives it somewhere meaningful to live. The Familiar becomes a character system, not a floating chatbot button.
 
 ### Concept
-- define what the Familiar is in Ikigai and what role it serves
+- define what the Familiar is in Ikigai Space and what role it serves
 - separate companionship, navigation/context help and AI conversation instead of making one bubble do everything
 - establish personality/presence rules that do not pretend to be sentient or needy
 
@@ -72,7 +72,7 @@ Completely rethink the Familiar after the Sanctuary gives it somewhere meaningfu
 ### Settings
 - replace scattered Familiar controls with one coherent character/presence editor
 - appearance, motion, activity level, sounds, notifications/reactions and privacy/context permissions
-- strong defaults so users do not need to configure a pet before using Ikigai
+- strong defaults so users do not need to configure a pet before using Ikigai Space
 
 ### Behavior and play
 - idle movement, following, resting, looking at nearby UI/world objects and reacting to completed work
@@ -173,7 +173,7 @@ The v0.20–v0.24 feature reimagine is complete. The next line is about proving,
 - screenshot-based desktop/tablet/mobile composition audit remains required in a dependency-complete browser environment
 - screen-reader/touch verification and Sanctuary GPU/performance/device matrix remain required before v0.32
 - v0.31.3 adds a keyboard-accessible in-place workspace theme preview, shifts Cedar/Indigo/Sumi to lighter long-session materials, keeps Moonlit as the deliberate dark option, and lifts Sanctuary dusk/night readability
-- v0.31.4 repairs the stale onboarding panel token, adds skippable progressive personalization, optional local greeting name, and a plain-language disclosure that IndexedDB/backups are not encrypted by Ikigai itself
+- v0.31.4 repairs the stale onboarding panel token, adds skippable progressive personalization, optional local greeting name, and a plain-language disclosure that IndexedDB/backups are not encrypted by Ikigai Space itself
 - v0.31.5 reduces onboarding warning-card weight, keeps a small editable-later/local-choice reassurance on every step, and recomposes the final Ready review so it remains clear above the fixed action controls
 - v0.31.6 closes the Journey Settings preview gap: hovering or keyboard-focusing any calendar skin renders a full representative month in place, while click remains the explicit saved action
 - v0.31.7 expands Focus Room pacing with more presets, custom 1–240 minute focus/rest blocks, and an explicit distraction-free fullscreen mode with a graceful local fallback

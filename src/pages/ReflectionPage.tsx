@@ -282,7 +282,7 @@ export function ReflectionPage() {
         </section>
 
         {roadmapThreadLoaded ? (
-          <section className="reflection032-continuity" aria-label="Where this week sits in Ikigai">
+          <section className="reflection032-continuity" aria-label="Where this week sits in Ikigai Space">
             <span>WHERE THIS WEEK SITS</span>
             <div>
               <strong>{roadmapCopy.title}</strong>

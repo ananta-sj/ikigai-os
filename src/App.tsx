@@ -3,6 +3,7 @@ import { createBrowserRouter, Link, Navigate, Outlet, RouterProvider, useRouteEr
 import { AppShell } from './components/AppShell';
 import { ensureSettings } from './lib/settings';
 import { IkigaiMark } from './components/IkigaiMark';
+import { LocalStorageRecovery } from './components/LocalStorageRecovery';
 
 function lazyNamed<TModule, TKey extends keyof TModule>(loader: () => Promise<TModule>, name: TKey) {
   return lazy(async () => {
@@ -50,7 +51,7 @@ function RouteErrorPage() {
       <section className="ik-crash-card">
         <span className="eyebrow">ROOM RECOVERY</span>
         <h1>This room did not open cleanly.</h1>
-        <p>Ikigai kept the failure inside this route instead of replacing the whole app with the router's developer error screen.</p>
+        <p>Ikigai Space kept the failure inside this route instead of replacing the whole app with the router's developer error screen.</p>
         <div className="ik-crash-actions">
           <button type="button" className="ik-button ik-button-primary" onClick={() => window.location.reload()}>Reload room</button>
           <Link className="ik-button ik-button-secondary" to="/">Return to Today</Link>
@@ -67,16 +68,21 @@ function RouteErrorPage() {
 
 function RequireOnboarding() {
   const [ready, setReady] = useState<boolean | null>(null);
+  const [storageFailed, setStorageFailed] = useState(false);
 
   useEffect(() => {
     let alive = true;
-    void ensureSettings().then(settings => { if (alive) setReady(settings.onboardingComplete); });
-    return () => { alive = false; };
+    const timer = window.setTimeout(() => { if (alive) setStorageFailed(true); }, 10_000);
+    void ensureSettings().then(settings => {
+      if (alive) { setReady(settings.onboardingComplete); setStorageFailed(false); }
+    }).catch(() => { if (alive) setStorageFailed(true); }).finally(() => window.clearTimeout(timer));
+    return () => { alive = false; window.clearTimeout(timer); };
   }, []);
 
+  if (storageFailed) return <LocalStorageRecovery />;
   if (ready === null) {
     return (
-      <div className="onboarding-route-check" role="status" aria-label="Loading Ikigai">
+      <div className="onboarding-route-check" role="status" aria-label="Loading Ikigai Space">
         <span className="ik-loading-mark" aria-hidden="true"><IkigaiMark /></span>
       </div>
     );

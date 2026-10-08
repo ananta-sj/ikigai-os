@@ -45,7 +45,7 @@ function applyPreferences(settings: UserSettings) {
   const lightTheme = isLightAppTheme(settings.appTheme);
   root.style.colorScheme = lightTheme ? 'light' : 'dark';
 
-  // Installed mobile shells should visually belong to the selected Ikigai theme.
+  // Installed mobile shells should visually belong to the selected Ikigai Space theme.
   // Browser/PWA chrome is updated from the same source of truth instead of staying
   // permanently dark while the app itself may be a light paper theme.
   const themeMeta = document.querySelector<HTMLMetaElement>('meta[name=\"theme-color\"]');
@@ -77,7 +77,7 @@ export function AppShell() {
       if (!state.lastManifestAt) await rebuildSyncManifest();
     }).catch(error => {
       // Sync/bootstrap maintenance must never take the shell down.
-      console.warn('Ikigai shell maintenance could not finish.', error);
+      console.warn('Ikigai Space shell maintenance could not finish.', error);
     });
 
     const onSettings = (event: Event) => {
@@ -100,8 +100,8 @@ export function AppShell() {
   }, []);
 
   useEffect(() => {
-    const label = routeLabels[location.pathname] ?? 'Ikigai';
-    document.title = `${label} · Ikigai`;
+    const label = routeLabels[location.pathname] ?? 'Ikigai Space';
+    document.title = 'Ikigai Space';
     setAnnouncement(`${label} opened.`);
 
     if (previousPath.current === location.pathname) return;
@@ -134,7 +134,7 @@ export function AppShell() {
         className="main-stage"
         id="ikigai-main"
         tabIndex={-1}
-        aria-label={routeLabels[location.pathname] ?? 'Ikigai workspace'}
+        aria-label={routeLabels[location.pathname] ?? 'Ikigai Space workspace'}
       >
         <Outlet />
       </main>

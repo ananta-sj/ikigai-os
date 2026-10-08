@@ -30,7 +30,7 @@ test('Familiar can be disabled, freely placed and reset without losing its edito
   assert.match(familiar, /handleDragStart/);
   assert.match(familiar, /handleDragMove/);
   assert.match(familiar, /updateSettings\(\{ familiarPosition: drag\.latest, familiarSide: drag\.latest\.x < \.5 \? 'left' : 'right' \}\)/);
-  assert.match(companion, /Show Familiar across Ikigai/);
+  assert.match(companion, /Show Familiar across Ikigai Space/);
   assert.match(companion, /Free placement/);
   assert.match(companion, /familiarPosition: null/);
 });

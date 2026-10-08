@@ -1,4 +1,4 @@
-# Ikigai — repository hygiene
+# Ikigai Space — repository hygiene
 # Keep package-lock.json committed for reproducible installs/builds.
 
 # -----------------------------------------------------------------------------
@@ -16,6 +16,12 @@ coverage/
 .nyc_output/
 *.lcov
 *.tsbuildinfo
+
+# Tauri / Cargo output and downloaded bundler tools
+/target/
+/src-tauri/target/
+/src-tauri/gen/schemas/
+.tauri/
 
 # -----------------------------------------------------------------------------
 # Environment files / secrets
@@ -53,6 +59,8 @@ lerna-debug.log*
 playwright-report/
 test-results/
 .playwright/
+blob-report/
+playwright/.cache/
 
 # -----------------------------------------------------------------------------
 # Hosting / deployment local state
@@ -93,17 +101,28 @@ desktop.ini
 # -----------------------------------------------------------------------------
 # Local release-work artifacts — source/docs remain tracked normally
 # -----------------------------------------------------------------------------
-/Ikigai_OS_v*.zip
+/[Ii]kigai*.zip
 /ikigai_patch*/
 /ikigai_*_before/
 /ikigai_*_stage/
 
+# Generated installers copied out of the native build directory
+/*.exe
+/*.msi
+/*.msix
+/*.msixbundle
+/*.appx
+/*.appxbundle
+
 # Local app backup exports should not accidentally become repository content.
 # Keep intentional fixtures under tests/ with a different explicit name.
-/ikigai-backup-*.json
-/Ikigai-backup-*.json
+/[Ii]kigai*-backup[-_]*.json
+/IKIGAI*-backup[-_]*.json
 
-# Ignore Markdown by default
+# Temporary audit scripts, logs, downloads and isolated browser profiles
+/.audit-work/
+
+# Preserve the existing documentation allowlist; local migration notes stay out
 *.md
 
 # Public / required repository docs
@@ -122,3 +141,8 @@ desktop.ini
 !MIGRATION_V0.31.20.md
 !MIGRATION_V0.31.20_PATCH_02.md
 !MIGRATION_V0.33.0.md
+!SECURITY.md
+!LOCAL_AI.md
+!DESIGN_SYSTEM.md
+!REBRANDING_SPACE.md
+!RELEASE_AUDIT_HANDOFF.md

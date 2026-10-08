@@ -103,13 +103,13 @@ export function FloatingDock() {
       <div
         className="floating-brand"
         role="img"
-        aria-label="Ikigai · local-first"
+        aria-label="Ikigai Space · local-first"
         draggable={false}
         onDragStart={event => event.preventDefault()}
       >
         <span className="floating-brand-mark" aria-hidden="true"><IkigaiMark /></span>
         <span className="floating-brand-copy" aria-hidden="true">
-          <strong>Ikigai</strong>
+          <strong>Ikigai Space</strong>
           <small><span className="status-dot" aria-hidden="true" />local-first</small>
         </span>
       </div>

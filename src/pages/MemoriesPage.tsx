@@ -112,7 +112,7 @@ function MemoryImage({ attachment, alt, className = '' }: { attachment: MemoryAt
 function AttachmentDownload({ attachment, children, className = '' }: { attachment: MemoryAttachment; children: ReactNode; className?: string }) {
   const href = useObjectUrl(attachment.blob);
   if (!href) return null;
-  return <a className={className} href={href} download={safeFilename(attachment.name, 'Ikigai attachment')}>{children}</a>;
+  return <a className={className} href={href} aria-label={`Download ${attachment.name}`} download={safeFilename(attachment.name, 'Ikigai Space attachment')}>{children}</a>;
 }
 
 function CaptureMemoryModal({
@@ -192,7 +192,7 @@ function CaptureMemoryModal({
       }
       onClose();
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Ikigai could not save that memory.');
+      setError(reason instanceof Error ? reason.message : 'Ikigai Space could not save that memory.');
     } finally {
       setSaving(false);
     }

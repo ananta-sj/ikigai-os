@@ -22,8 +22,8 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,glb}']
       },
       manifest: {
-        name: 'Ikigai',
-        short_name: 'Ikigai',
+        name: 'Ikigai Space',
+        short_name: 'Ikigai Space',
         description: 'A local-first personal workspace for planning, focus, reflection, and memory.',
         theme_color: '#08110d',
         background_color: '#08110d',

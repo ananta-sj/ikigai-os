@@ -65,7 +65,7 @@ for (const [pattern, message] of [
 ]) requireText(vite, pattern, message);
 
 const indexHtml = read('index.html');
-requireText(indexHtml, /<link\s+rel=['"]icon['"]\s+href=['"]\/ikigai-mark\.svg['"]/i, 'index.html must use the canonical Ikigai mark favicon.');
+requireText(indexHtml, /<link\s+rel=['"]icon['"]\s+href=['"]\/ikigai-mark\.svg['"]/i, 'index.html must use the canonical Ikigai Space mark favicon.');
 
 function pngDimensions(relativePath) {
   const file = fs.readFileSync(path.join(root, relativePath));

@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "Ikigai",
+  "productName": "Ikigai Space",
   "version": "0.33.0",
   "identifier": "io.github.anantasj.ikigaios",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Ikigai",
+        "title": "Ikigai Space",
         "width": 800,
         "height": 600,
         "resizable": true,
@@ -26,6 +26,8 @@
   },
   "bundle": {
     "active": true,
+    "shortDescription": "A local-first personal workspace for planning, focus, reflection, and memory.",
+    "longDescription": "Ikigai Space is a local-first personal workspace for planning, focus, reflection, and memory. Not a dashboard for measuring your life. A place for inhabiting it.",
     "targets": "all",
     "icon": [
       "icons/32x32.png",

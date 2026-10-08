@@ -74,6 +74,8 @@ export function inspectProductionDist(distDir = path.join(process.cwd(), 'dist')
 
   if (fs.existsSync(indexPath)) {
     const index = fs.readFileSync(indexPath, 'utf8');
+    if (!/<title>Ikigai Space<\/title>/.test(index)) failures.push('Production page title must be Ikigai Space.');
+    if (!/<meta\s+name="description"\s+content="Ikigai Space is a local-first personal workspace for planning, focus, reflection, and memory\."/.test(index)) failures.push('Production page description does not match the public brand.');
     if (/\/src\/|src\/main\.tsx/i.test(index)) failures.push('dist/index.html still points at development source instead of built assets.');
     if (!/<link[^>]+rel=["']manifest["'][^>]+manifest\.webmanifest/i.test(index)) failures.push('dist/index.html is missing the production web manifest link.');
     if (!/<script[^>]+type=["']module["'][^>]+src=["'][^"']*\/assets\//i.test(index)) failures.push('dist/index.html is missing the hashed production module entry.');
@@ -88,7 +90,10 @@ export function inspectProductionDist(distDir = path.join(process.cwd(), 'dist')
   if (fs.existsSync(manifestPath)) {
     try {
       const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-      if (manifest.name !== 'Ikigai') failures.push('Production manifest name is not Ikigai.');
+      if (manifest.name !== 'Ikigai Space') failures.push('Production manifest name is not Ikigai Space.');
+      if (manifest.short_name !== 'Ikigai Space') failures.push('Production manifest short_name must be Ikigai Space.');
+      if (manifest.description !== 'A local-first personal workspace for planning, focus, reflection, and memory.') failures.push('Production manifest description does not match the workspace category.');
+      if (manifest.id !== '/' || manifest.scope !== '/') failures.push('Production PWA identity and scope must remain / for existing installations.');
       if (manifest.start_url !== '/') failures.push('Production manifest start_url must remain /.');
       if (manifest.display !== 'standalone') failures.push('Production manifest display must remain standalone.');
       const icons = Array.isArray(manifest.icons) ? manifest.icons : [];

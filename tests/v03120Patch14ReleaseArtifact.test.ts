@@ -15,6 +15,8 @@ function makeValidFixture() {
   const dist = join(root, 'dist');
   mkdirSync(join(dist, 'assets'), { recursive: true });
   writeFileSync(join(dist, 'index.html'), `<!doctype html><html><head>
+    <title>Ikigai Space</title>
+    <meta name="description" content="Ikigai Space is a local-first personal workspace for planning, focus, reflection, and memory." />
     <link rel="icon" href="/ikigai-mark.svg" type="image/svg+xml" />
     <script type="module" src="/assets/index-good.js"></script>
     <link rel="stylesheet" href="/assets/index-good.css" />
@@ -22,13 +24,14 @@ function makeValidFixture() {
     <script src="/registerSW.js"></script>
   </head><body><div id="root"></div></body></html>`);
   writeFileSync(join(dist, 'manifest.webmanifest'), JSON.stringify({
-    name: 'Ikigai', start_url: '/', display: 'standalone',
+    name: 'Ikigai Space', short_name: 'Ikigai Space', id: '/', scope: '/', start_url: '/', display: 'standalone',
+    description: 'A local-first personal workspace for planning, focus, reflection, and memory.',
     icons: [{ src: '/icon-192.png' }, { src: '/icon-512.png' }]
   }));
   writeFileSync(join(dist, 'registerSW.js'), `navigator.serviceWorker.register('/sw.js', { scope: '/' });`);
   writeFileSync(join(dist, 'sw.js'), `define(["./workbox-good.js"],function(w){w.precacheAndRoute([{url:"index.html"},{url:"assets/index-good.js"},{url:"assets/index-good.css"}]);w.cleanupOutdatedCaches();});`);
   writeFileSync(join(dist, 'workbox-good.js'), '/* workbox fixture */');
-  writeFileSync(join(dist, 'assets/index-good.js'), 'console.log("Ikigai production fixture");');
+  writeFileSync(join(dist, 'assets/index-good.js'), 'console.log("Ikigai Space production fixture");');
   writeFileSync(join(dist, 'assets/index-good.css'), 'body{margin:0}');
   cpSync(new URL('../public/icon-192.png', import.meta.url), join(dist, 'icon-192.png'));
   cpSync(new URL('../public/icon-512.png', import.meta.url), join(dist, 'icon-512.png'));

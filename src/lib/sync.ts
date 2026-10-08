@@ -27,7 +27,7 @@ function randomId() {
 }
 
 function defaultDeviceName() {
-  if (typeof navigator === 'undefined') return 'Ikigai device';
+  if (typeof navigator === 'undefined') return 'Ikigai Space device';
   const platform = navigator.platform?.trim();
   return platform ? `${platform} browser` : 'This browser';
 }

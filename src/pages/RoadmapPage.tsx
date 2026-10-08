@@ -114,7 +114,7 @@ function PhaseModal({ phase, onClose, onSaved }: {
     <div className="ik-workspace-dialog-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}>
       <form ref={dialogRef} tabIndex={-1} className="ik-surface ik-workspace-dialog ik-workspace-dialog--roadmap-phase" role="dialog" aria-modal="true" aria-labelledby="roadmap-phase-modal-title" onSubmit={submit}>
         <header className="ik-workspace-dialog__head">
-          <div><span className="ik-section-kicker">{phase ? 'EDIT PHASE' : 'NEW PHASE'}</span><h2 id="roadmap-phase-modal-title">{phase ? 'Shape this period.' : 'Create a period that matters.'}</h2><p>Dates and labels come from you. Ikigai does not pre-fill a life plan.</p></div>
+          <div><span className="ik-section-kicker">{phase ? 'EDIT PHASE' : 'NEW PHASE'}</span><h2 id="roadmap-phase-modal-title">{phase ? 'Shape this period.' : 'Create a period that matters.'}</h2><p>Dates and labels come from you. Ikigai Space does not pre-fill a life plan.</p></div>
           <button type="button" className="ik-workspace-dialog__close" onClick={onClose} aria-label="Close"><X size={17} aria-hidden="true" /></button>
         </header>
         <div className="ik-workspace-dialog__body">
@@ -152,15 +152,24 @@ function AddCheckpointModal({ phase, projects, onClose, onCreated }: {
   const [targetDate, setTargetDate] = useState(phase.endDate);
   const [projectId, setProjectId] = useState('');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const dialogRef = useDialogFocus<HTMLFormElement>(true, onClose);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!title.trim()) return;
+    if (saving) return;
+    setError('');
     setSaving(true);
-    await createRoadmapItem({ phaseId: phase.id, title, detail, lane, targetDate, projectId: projectId || undefined });
-    await onCreated();
-    onClose();
+    try {
+      await createRoadmapItem({ phaseId: phase.id, title, detail, lane, targetDate, projectId: projectId || undefined });
+      await onCreated();
+      onClose();
+    } catch {
+      setError('Ikigai Space could not finish saving this checkpoint. Check available storage and try again. Your draft is preserved; check the list before retrying.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return createPortal(
@@ -183,6 +192,7 @@ function AddCheckpointModal({ phase, projects, onClose, onCreated }: {
               </div>
             </div>
           </details>
+          {error ? <p className="roadmap-form-error" role="alert">{error}</p> : null}
           <div className="ik-workspace-dialog__actions"><IkButton variant="quiet" onClick={onClose}>Cancel</IkButton><IkButton type="submit" variant="primary" disabled={saving || !title.trim()}>{saving ? 'Adding…' : 'Add checkpoint'}</IkButton></div>
         </div>
       </form>
@@ -281,7 +291,7 @@ export function RoadmapPage() {
         <PageHeader
           eyebrow={<><Flag size={12} /> ROADMAP</>}
           title="Build the plan around your life."
-          description="Create your own phases, dates and checkpoints. Ikigai starts blank and only reflects the structure you choose."
+          description="Create your own phases, dates and checkpoints. Ikigai Space starts blank and only reflects the structure you choose."
           actions={<><IkButton variant="quiet" onClick={() => setPhaseModal('create')}><Plus size={15} /> New phase</IkButton>{phase ? <IkButton variant="primary" onClick={() => setAdding(true)}><Plus size={15} /> Add checkpoint</IkButton> : null}</>}
           meta={<><span>{rangeStart && rangeEnd ? `${formatShortDate(rangeStart)} → ${formatShortDate(rangeEnd)}` : 'No phases yet'}</span><span>·</span><span>{items.filter(item => item.status === 'done').length} checkpoints closed</span></>}
         />

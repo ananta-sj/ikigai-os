@@ -1,10 +1,12 @@
 <div align="center">
 
-<img src="./public/brand/ikigai-native-icon.png" width="136" alt="Ikigai logo" />
+<img src="./public/brand/ikigai-native-icon.png" width="136" alt="Ikigai Space logo" />
 
-# Ikigai
+# Ikigai Space
 
 ### A local-first personal workspace for planning, focus, reflection, and memory.
+
+Not a dashboard for measuring your life. A place for inhabiting it.
 
 [**Live Demo**](https://ananta-sj.github.io/ikigai-os/) ·
 [**Download for Windows**](https://github.com/ananta-sj/ikigai-os/releases/latest) ·
@@ -23,9 +25,9 @@
 
 ---
 
-## A personal workspace, without turning your life into a dashboard
+## A place for inhabiting your life
 
-Ikigai is a private workspace for the parts of life that usually end up scattered across task managers, calendars, journals, notes, timers, career trackers, and half-forgotten documents.
+Ikigai Space is a private workspace for the parts of life that usually end up scattered across task managers, calendars, journals, notes, timers, career trackers, and half-forgotten documents.
 
 It brings them together as a set of **rooms**, each designed around a different kind of attention.
 
@@ -37,7 +39,7 @@ The goal is simpler:
 
 ---
 
-## Try Ikigai
+## Try Ikigai Space
 
 ### 🌐 Live demo
 
@@ -55,7 +57,7 @@ Download the latest installer from:
 
 The Windows application is built with **Tauri 2** and keeps its own local storage separate from the browser/PWA version.
 
-Use **Backup & Restore** to move your Ikigai data between installations.
+Use **Backup & Restore** to move your Ikigai Space data between installations.
 
 > Current Windows builds are unsigned, so Windows SmartScreen may show a warning during installation.
 
@@ -80,7 +82,7 @@ Use **Backup & Restore** to move your Ikigai data between installations.
 
 ## Sanctuary
 
-Sanctuary is the emotional center of Ikigai.
+Sanctuary is the emotional center of Ikigai Space.
 
 It is not a statistics page rendered in 3D.
 
@@ -107,13 +109,13 @@ Or you can simply stay there for a while.
 
 ## Familiar
 
-The Familiar is a small resident that moves between Ikigai and Sanctuary.
+The Familiar is a small resident that moves between Ikigai Space and Sanctuary.
 
 It can respond to the room you are in, move around its available space, and take on different material treatments.
 
 It is also entirely optional.
 
-Disable it and Ikigai remains complete.
+Disable it and Ikigai Space remains complete.
 
 That principle matters throughout the project: personality should enrich the system, never hold it hostage.
 
@@ -135,7 +137,7 @@ It supports:
 - read-only access by default
 - separately opt-in playback controls
 
-Ikigai does **not** capture microphone input, analyze system audio, or build a listening-history database.
+Ikigai Space does **not** capture microphone input, analyze system audio, or build a listening-history database.
 
 ### Spotify
 
@@ -147,11 +149,11 @@ It uses PKCE rather than a client secret and stays separate from the normal Wind
 
 ## Local-first by design
 
-Your core Ikigai data lives locally using **IndexedDB via Dexie**.
+Your core Ikigai Space data lives locally using **IndexedDB via Dexie**.
 
-No Ikigai account is required.
+No Ikigai Space account is required.
 
-No Ikigai cloud backend is required.
+No Ikigai Space cloud backend is required.
 
 No automatic cloud sync is silently running behind the experience.
 
@@ -175,7 +177,7 @@ Optional remote integrations naturally leave the device when used.
 
 ## v0.33.0
 
-This release brings Ikigai into its native Windows chapter.
+This release brings Ikigai Space into its native Windows chapter.
 
 ### Highlights
 
@@ -213,7 +215,7 @@ The Windows build uses a deliberately narrow native bridge for functionality tha
 ## Architecture
 
 ```text
-                         Ikigai
+                         Ikigai Space
                              │
               ┌──────────────┴──────────────┐
               │                             │
@@ -308,7 +310,7 @@ The interface should not feel like an admin panel for your existence.
 Growth may leave traces. It should not become another score.
 
 **Local-first over account-first.**  
-The core product remains useful without an Ikigai backend.
+The core product remains useful without an Ikigai Space backend.
 
 **Private text stays private.**  
 Sanctuary may respond to bounded state, but private writing is not projected verbatim into scenery.
@@ -325,7 +327,7 @@ Keyboard use, reduced motion, focus management, safe areas, and practical touch 
 
 Browser/PWA and native Windows installations keep separate local stores.
 
-To move your existing Ikigai world:
+To move your existing Ikigai Space world:
 
 1. Export a backup from the current installation.
 2. Open the destination installation.
@@ -360,7 +362,7 @@ and confirm the corresponding GitHub Actions release-gate run is green.
 
 ## Project status
 
-Ikigai is an actively developed personal project.
+Ikigai Space is an actively developed personal project.
 
 `v0.33.0` adds the installed Windows release path, native Windows System Media for Now Playing, polished First Light onboarding, bounded Sanctuary Explore controls, responsive preview repairs, and final native-release hardening while preserving the local-first web/PWA experience.
 
@@ -370,7 +372,7 @@ The next changes should earn their place by making the system more useful, more 
 
 <div align="center">
 
-## Ikigai
+## Ikigai Space
 
 **Not a dashboard for measuring your life.  
 A place for inhabiting it.**

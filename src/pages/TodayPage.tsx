@@ -277,7 +277,7 @@ export function TodayPage() {
               <div className="daily026-note-heading"><PenLine size={15} /><div><span>DAY NOTE</span><strong>One thought is enough.</strong></div><small>{memoState === 'saving' ? 'saving…' : memoState === 'saved' ? 'saved' : ''}</small></div>
               <textarea value={memoDraft} onChange={event => setMemoDraft(event.target.value)} onBlur={() => void persistMemo()} placeholder="What mattered, changed, or deserves remembering?" maxLength={1200} />
 
-              <nav className="daily032-thread" aria-label="Threads into the rest of Ikigai">
+              <nav className="daily032-thread" aria-label="Threads into the rest of Ikigai Space">
                 <span>THREADS FROM TODAY</span>
                 <Link to="/roadmap">
                   <b>ROADMAP CHAPTER</b>

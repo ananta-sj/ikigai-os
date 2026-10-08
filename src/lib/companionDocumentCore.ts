@@ -86,7 +86,7 @@ async function inflate(bytes: Uint8Array, format: 'deflate' | 'deflate-raw', lim
     total += chunk.byteLength;
     if (total > limit) {
       await reader.cancel();
-      throw new Error('The compressed document expands beyond Ikigai’s safe local parsing limit.');
+      throw new Error('The compressed document expands beyond Ikigai Space’s safe local parsing limit.');
     }
     chunks.push(chunk);
   }
@@ -143,7 +143,7 @@ async function zipEntry(bytes: Uint8Array, wanted: string) {
       const compressed = bytes.subarray(start, end);
       if (method === 0) return compressed.slice();
       if (method === 8) return inflate(compressed, 'deflate-raw');
-      throw new Error('This Word file uses a compression method Ikigai does not support.');
+      throw new Error('This Word file uses a compression method Ikigai Space does not support.');
     }
 
     offset += 46 + nameLength + extraLength + commentLength;
@@ -388,6 +388,34 @@ function extractPdfContentText(content: string, cmap: Map<string, string>) {
   return pieces.join('\n');
 }
 
+function decodeAscii85(bytes: Uint8Array) {
+  const input = latin1(bytes).replace(/^\s*<~/, '').replace(/~>\s*$/, '').replace(/\s/g, '');
+  const output: number[] = [];
+  let group: number[] = [];
+  function flush(final = false) {
+    const length = group.length;
+    if (length === 1) throw new Error('Invalid ASCII85 stream.');
+    while (group.length < 5) group.push(84);
+    let value = 0;
+    for (const digit of group) value = value * 85 + digit;
+    if (value > 0xffffffff) throw new Error('Invalid ASCII85 stream.');
+    const count = final ? length - 1 : 4;
+    for (let index = 0; index < count; index += 1) output.push((value >>> (24 - index * 8)) & 255);
+    group = [];
+  }
+  for (const char of input) {
+    if (char === 'z') { if (group.length) throw new Error('Invalid ASCII85 stream.'); output.push(0, 0, 0, 0); }
+    else {
+      const digit = char.charCodeAt(0) - 33;
+      if (digit < 0 || digit > 84) throw new Error('Invalid ASCII85 stream.');
+      group.push(digit); if (group.length === 5) flush();
+    }
+    if (output.length > MAX_INFLATED_STREAM_BYTES) throw new Error('PDF stream exceeds the safe parsing limit.');
+  }
+  if (group.length) flush(true);
+  return new Uint8Array(output);
+}
+
 async function pdfStreams(bytes: Uint8Array) {
   const binary = latin1(bytes);
   const streams: Array<{ text: string; contentCandidate: boolean }> = [];
@@ -415,8 +443,15 @@ async function pdfStreams(bytes: Uint8Array) {
     if (/\/Subtype\s*\/Image\b/.test(dictionary) || raw.byteLength > MAX_INFLATED_STREAM_BYTES) continue;
     try {
       let decoded = raw.slice();
-      if (/\/FlateDecode\b/.test(dictionary)) decoded = await inflate(raw, 'deflate');
-      else if (/\/Filter\b/.test(dictionary)) continue;
+      const filterMatch = dictionary.match(/\/Filter\s*(?:\[([^\]]+)\]|\/([A-Za-z0-9]+))/);
+      const filters = filterMatch ? (filterMatch[1]?.match(/\/([A-Za-z0-9]+)/g)?.map(value => value.slice(1)) ?? [filterMatch[2]]) : [];
+      let supported = true;
+      for (const filter of filters) {
+        if (filter === 'ASCII85Decode' || filter === 'A85') decoded = decodeAscii85(decoded);
+        else if (filter === 'FlateDecode' || filter === 'Fl') decoded = await inflate(decoded, 'deflate');
+        else { supported = false; break; }
+      }
+      if (!supported) continue;
       totalDecoded += decoded.byteLength;
       if (totalDecoded > MAX_PDF_TOTAL_STREAM_BYTES) break;
       const text = latin1(decoded);
@@ -429,7 +464,7 @@ async function pdfStreams(bytes: Uint8Array) {
 }
 
 async function extractPdf(bytes: Uint8Array) {
-  if (bytes.length > MAX_PDF_SCAN_BYTES) throw new Error('This PDF is larger than Ikigai’s local parsing limit.');
+  if (bytes.length > MAX_PDF_SCAN_BYTES) throw new Error('This PDF is larger than Ikigai Space’s local parsing limit.');
   const header = latin1(bytes.subarray(0, Math.min(bytes.length, 12)));
   if (!header.startsWith('%PDF-')) throw new Error('This file does not look like a valid PDF.');
   const binary = latin1(bytes);

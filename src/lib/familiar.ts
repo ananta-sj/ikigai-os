@@ -27,7 +27,7 @@ const contexts: FamiliarRouteContext[] = [
     route: '/',
     label: 'TODAY',
     title: 'Stay close to the next thing.',
-    detail: 'The Familiar keeps this room quiet: finish what matters, then let the rest of Ikigai update around it.',
+    detail: 'The Familiar keeps this room quiet: finish what matters, then let the rest of Ikigai Space update around it.',
     actions: [
       { label: 'See the Journey', to: '/calendar' },
       { label: 'Visit Sanctuary', to: '/garden' }
@@ -117,9 +117,9 @@ const contexts: FamiliarRouteContext[] = [
 
 const fallbackContext: FamiliarRouteContext = {
   route: '*',
-  label: 'IKIGAI',
+  label: 'IKIGAI SPACE',
   title: 'I’ll stay nearby without taking over the room.',
-  detail: 'The Familiar offers optional context, play and conversation. It never blocks the rest of Ikigai.',
+  detail: 'The Familiar offers optional context, play and conversation. It never blocks the rest of Ikigai Space.',
   actions: [
     { label: 'Today', to: '/' },
     { label: 'Companion', to: '/companion' }

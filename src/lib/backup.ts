@@ -292,7 +292,7 @@ export async function downloadBackup() {
   const stamp = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}${String(date.getMinutes()).padStart(2, '0')}`;
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = `ikigai-os-backup_${stamp}.json`;
+  anchor.download = `ikigai-space-backup_${stamp}.json`;
   document.body.appendChild(anchor);
   anchor.click();
   anchor.remove();
@@ -302,12 +302,12 @@ export async function downloadBackup() {
 }
 
 function assertBundleShape(value: unknown): asserts value is IkigaiBackupBundle {
-  if (!isPlainRecord(value)) throw new Error('This file is not a valid Ikigai backup.');
+  if (!isPlainRecord(value)) throw new Error('This file is not a valid Ikigai Space backup.');
   const bundle = value as Partial<IkigaiBackupBundle>;
-  if (bundle.format !== BACKUP_FORMAT) throw new Error('This file is not an Ikigai backup.');
-  if (bundle.formatVersion !== BACKUP_FORMAT_VERSION) throw new Error('This backup format is not supported by this version of Ikigai.');
+  if (bundle.format !== BACKUP_FORMAT) throw new Error('This file is not an Ikigai Space backup.');
+  if (bundle.formatVersion !== BACKUP_FORMAT_VERSION) throw new Error('This backup format is not supported by this version of Ikigai Space.');
   if (typeof bundle.schemaVersion !== 'number' || !Number.isInteger(bundle.schemaVersion) || bundle.schemaVersion < 1) throw new Error('The backup is missing valid schema information.');
-  if (bundle.schemaVersion > CURRENT_SCHEMA_VERSION) throw new Error('This backup was created by a newer Ikigai data schema. Update the app before restoring it.');
+  if (bundle.schemaVersion > CURRENT_SCHEMA_VERSION) throw new Error('This backup was created by a newer Ikigai Space data schema. Update the app before restoring it.');
   if (!isIsoTimestamp(bundle.exportedAt)) throw new Error('The backup is missing a valid export timestamp.');
   if (!isPlainRecord(bundle.sourceDevice)) throw new Error('The backup is missing source-device metadata.');
   if (typeof bundle.sourceDevice.deviceId !== 'string' || typeof bundle.sourceDevice.deviceName !== 'string') throw new Error('The backup has invalid source-device metadata.');
@@ -316,7 +316,7 @@ function assertBundleShape(value: unknown): asserts value is IkigaiBackupBundle 
 }
 
 export async function readBackupFile(file: File): Promise<BackupPreview> {
-  if (file.size > MAX_BACKUP_FILE_BYTES) throw new Error(`That backup is larger than ${Math.round(MAX_BACKUP_FILE_BYTES / (1024 * 1024))} MB. Ikigai refuses to parse it in one browser process to avoid exhausting device memory.`);
+  if (file.size > MAX_BACKUP_FILE_BYTES) throw new Error(`That backup is larger than ${Math.round(MAX_BACKUP_FILE_BYTES / (1024 * 1024))} MB. Ikigai Space refuses to parse it in one browser process to avoid exhausting device memory.`);
   const text = await file.text();
   let parsed: unknown;
   try {

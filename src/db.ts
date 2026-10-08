@@ -328,7 +328,7 @@ export class IkigaiDB extends Dexie {
           startDate,
           endDate,
           mode: 'green',
-          intent: 'Preserved from an earlier Ikigai roadmap. Edit this phase to make it yours.',
+          intent: 'Preserved from an earlier Ikigai Space roadmap. Edit this phase to make it yours.',
           note: '',
           source: 'imported',
           createdAt: now,

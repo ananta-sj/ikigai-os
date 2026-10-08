@@ -35,7 +35,7 @@ jobs:
       - name: Install JavaScript dependencies
         run: npm ci
 
-      - name: Verify Ikigai web application
+      - name: Verify Ikigai Space web application
         run: npm run verify
 
       - name: Audit production dependencies

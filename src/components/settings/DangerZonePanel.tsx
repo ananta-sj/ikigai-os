@@ -12,9 +12,9 @@ const resetCopy: Record<ResetKind, { phrase: string; title: string; detail: stri
     detail: 'Deletes quests, day notes, torn/open day records, milestones and weekly reflections. Garden, Memories, Career, Roadmap, themes and earned relics stay.'
   },
   everything: {
-    phrase: 'RESET IKIGAI',
-    title: 'Reset all Ikigai data',
-    detail: 'Deletes everything stored by Ikigai in this browser: tasks, calendar, garden, memories and files, roadmap, career proof, achievements, AI conversations, settings and local sync metadata.'
+    phrase: 'RESET IKIGAI SPACE',
+    title: 'Reset all Ikigai Space data',
+    detail: 'Deletes everything stored by Ikigai Space in this browser: tasks, calendar, garden, memories and files, roadmap, career proof, achievements, AI conversations, settings and local sync metadata.'
   }
 };
 
@@ -67,7 +67,7 @@ export function DangerZonePanel() {
         <div>
           <div className="eyebrow">DANGER ZONE</div>
           <h3 id="danger-zone-title">Destructive resets</h3>
-          <p>These actions cannot be undone from Ikigai. Create a backup above first if there is anything you may want later.</p>
+          <p>These actions cannot be undone from Ikigai Space. Create a backup above first if there is anything you may want later.</p>
         </div>
       </div>
 
@@ -79,8 +79,8 @@ export function DangerZonePanel() {
         </article>
         <article className="is-critical">
           <div><Trash2 size={18} /><strong>Reset everything</strong></div>
-          <p>Return this browser installation to a completely fresh Ikigai.</p>
-          <button type="button" className="danger-button danger-button-solid" onClick={() => open('everything')}>Reset all Ikigai</button>
+          <p>Return this browser installation to a completely fresh Ikigai Space.</p>
+          <button type="button" className="danger-button danger-button-solid" onClick={() => open('everything')}>Reset all Ikigai Space</button>
         </article>
       </div>
 

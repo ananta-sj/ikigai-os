@@ -62,7 +62,7 @@ test('v0.33 source UI recommends local Windows media and makes Spotify explicitl
   assert.match(page, /No Spotify developer app, Client ID, OAuth, or Spotify Premium is required/);
   assert.match(page, /Advanced: Spotify Web API/);
   assert.match(page, /Spotify Premium is required by Spotify for current Development Mode/i);
-  assert.match(page, /Ikigai does not charge for this/);
+  assert.match(page, /Ikigai Space does not charge for this/);
   assert.match(page, /Do not paste the Client Secret/i);
   assert.match(page, /Browser\/PWA builds cannot read the Windows system media session or other apps directly/);
   assert.match(page, /without microphone or audio capture/);
@@ -78,7 +78,7 @@ test('v0.33 system-media permission is device-local so backups cannot silently s
   assert.match(runtime, /saved as the preferred source, but it is not enabled on this device/i);
   assert.match(runtime, /setSystemMediaDeviceConsent\(true, allowControls\)/);
   assert.match(runtime, /setSystemMediaDeviceConsent\(false\)/);
-  assert.match(page, /This source was saved in Ikigai settings, but this installation has not been given local permission/i);
+  assert.match(page, /This source was saved in Ikigai Space settings, but this installation has not been given local permission/i);
   assert.match(page, /systemMediaControlsEnabledOnThisDevice\(\)/);
 });
 
